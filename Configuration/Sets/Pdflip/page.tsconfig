@@ -1,0 +1,15 @@
+
+
+mod.wizards.newContentElement.wizardItems.common {
+  elements {
+    pdflip {
+      iconIdentifier = content-pdflip
+      title = LLL:EXT:pdflip/Resources/Private/Language/locallang.xlf:title
+      description = LLL:EXT:pdflip/Resources/Private/Language/locallang.xlf:description
+      tt_content_defValues {
+        CType = pdflip
+      }
+    }
+  }
+  show := addToList(pdflip)
+}
