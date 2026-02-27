@@ -1,0 +1,36 @@
+pdflip = PAGE
+pdflip {
+  typeNum = 68724
+  config {
+    disableAllHeaderCode = 1
+    additionalHeaders = Content-Type: application/json
+    no_cache = 1
+    xhtml_cleaning = 0
+    admPanel = 0
+    debug = 0
+  }
+
+  includeCSS {
+    pdflip = EXT:pdflip/Resources/Public/CSS/dflip.min.css
+    themify-icons = EXT:pdflip/Resources/Public/CSS/themify-icons.min.css
+  }
+
+  includeJS {
+    jquery = EXT:pdflip/Resources/Public/JavaScript/libs/jquery.min.js
+    pdflip = EXT:pdflip/Resources/Public/JavaScript/dflip.min.js
+  }
+
+  10 = FLUIDTEMPLATE
+  10 {
+
+    dataProcessing {
+
+    }
+
+    file = EXT:pdflip/Resources/Private/Templates/PDFlip.html
+    variables {
+
+    }
+
+  }
+}

@@ -1,15 +1,9 @@
 
 
-mod.wizards.newContentElement.wizardItems.common {
-  elements {
-    pdflip {
-      iconIdentifier = content-pdflip
-      title = LLL:EXT:pdflip/Resources/Private/Language/locallang.xlf:title
-      description = LLL:EXT:pdflip/Resources/Private/Language/locallang.xlf:description
-      tt_content_defValues {
-        CType = pdflip
-      }
-    }
+TCEMAIN.linkHandler.pdflip {
+  handler = WapplerSystems\Pdflip\LinkHandling\PdflipLinkHandler
+  label = Pdflip
+  configuration {
+
   }
-  show := addToList(pdflip)
 }
