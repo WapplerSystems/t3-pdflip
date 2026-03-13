@@ -2,9 +2,22 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
 namespace WapplerSystems\Pdflip\LinkHandling;
 
-
+use TYPO3\CMS\Core\LinkHandling\LinkHandlingInterface;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -16,12 +29,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * use FAL to store them in database, which means that files can be moved in the fileadmin
  * without breaking file links in the frontend/backend
  */
-class PdflipLinkHandler implements \TYPO3\CMS\Core\LinkHandling\LinkHandlingInterface
+class PdflipLinkHandler implements LinkHandlingInterface
 {
     /**
      * The Base URN
      */
     protected string $baseUrn = 't3://pdflip';
+
 
     /**
      * The resource factory object to resolve file objects
@@ -47,8 +61,11 @@ class PdflipLinkHandler implements \TYPO3\CMS\Core\LinkHandling\LinkHandlingInte
         if (!empty($parameters['fragment'])) {
             $urn .= '#' . $parameters['fragment'];
         }
+
         return $this->baseUrn . $urn;
     }
+
+
 
     /**
      * Get a file object inside the array data from the string
