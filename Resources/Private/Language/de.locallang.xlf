@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2025-12-26T00:00:00Z">
+		<header/>
+		<body>
+
+			<trans-unit id="toggleSound">
+				<source>Turn on/off Sound</source>
+				<target>Ton ein/aus</target>
+			</trans-unit>
+			<trans-unit id="toggleThumbnails">
+				<source>Toggle Thumbnails</source>
+				<target>Vorschaubilder ein/aus</target>
+			</trans-unit>
+			<trans-unit id="toggleOutline">
+				<source>Toggle Outline/Bookmark</source>
+				<target>Inhaltsverzeichnis/Lesezeichen ein/aus</target>
+			</trans-unit>
+			<trans-unit id="previousPage">
+				<source>Previous Page</source>
+				<target>Vorherige Seite</target>
+			</trans-unit>
+			<trans-unit id="nextPage">
+				<source>Next Page</source>
+				<target>Nächste Seite</target>
+			</trans-unit>
+			<trans-unit id="toggleFullscreen">
+				<source>Toggle Fullscreen</source>
+				<target>Vollbild ein/aus</target>
+			</trans-unit>
+			<trans-unit id="zoomIn">
+				<source>Zoom In</source>
+				<target>Vergrößern</target>
+			</trans-unit>
+			<trans-unit id="zoomOut">
+				<source>Zoom Out</source>
+				<target>Verkleinern</target>
+			</trans-unit>
+			<trans-unit id="toggleHelp">
+				<source>Toggle Help</source>
+				<target>Hilfe ein/aus</target>
+			</trans-unit>
+			<trans-unit id="singlePageMode">
+				<source>Single Page Mode</source>
+				<target>Einzelseitenmodus</target>
+			</trans-unit>
+			<trans-unit id="doublePageMode">
+				<source>Double Page Mode</source>
+				<target>Doppelseitenmodus</target>
+			</trans-unit>
+			<trans-unit id="downloadPDFFile">
+				<source>Download PDF File</source>
+				<target>PDF-Datei herunterladen</target>
+			</trans-unit>
+			<trans-unit id="gotoFirstPage">
+				<source>Goto First Page</source>
+				<target>Zur ersten Seite</target>
+			</trans-unit>
+			<trans-unit id="gotoLastPage">
+				<source>Goto Last Page</source>
+				<target>Zur letzten Seite</target>
+			</trans-unit>
+			<trans-unit id="play">
+				<source>Start AutoPlay</source>
+				<target>Automatische Wiedergabe starten</target>
+			</trans-unit>
+			<trans-unit id="pause">
+				<source>Pause AutoPlay</source>
+				<target>Automatische Wiedergabe pausieren</target>
+			</trans-unit>
+			<trans-unit id="share">
+				<source>Share</source>
+				<target>Teilen</target>
+			</trans-unit>
+			<trans-unit id="mailSubject">
+				<source>I wanted you to see this FlipBook</source>
+				<target>Ich wollte dir dieses FlipBook zeigen</target>
+			</trans-unit>
+			<trans-unit id="mailBody">
+				<source>Check out this site {{url}}</source>
+				<target>Schau dir diese Seite an {{url}}</target>
+			</trans-unit>
+			<trans-unit id="loading">
+				<source>Loading</source>
+				<target>Laden</target>
+			</trans-unit>
+
+		</body>
+	</file>
+</xliff>

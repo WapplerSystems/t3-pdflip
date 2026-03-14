@@ -60,7 +60,7 @@ class PdflipLinkHandler extends AbstractResourceLinkHandler
 
     public function getLinkAttributes(): array
     {
-        return ['target', 'title', 'class'];
+        return ['target', 'title', 'class', ''];
     }
 
 

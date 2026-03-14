@@ -2,8 +2,7 @@ pdflip = PAGE
 pdflip {
   typeNum = 68724
   config {
-    disableAllHeaderCode = 1
-    additionalHeaders = Content-Type: application/json
+    additionalHeaders = Content-Type: text/html
     no_cache = 1
     xhtml_cleaning = 0
     admPanel = 0
@@ -11,23 +10,29 @@ pdflip {
   }
 
   includeCSS {
-    pdflip = EXT:pdflip/Resources/Public/CSS/dflip.min.css
+    pdflip = EXT:pdflip/Resources/Public/CSS/dflip.css
     themify-icons = EXT:pdflip/Resources/Public/CSS/themify-icons.min.css
   }
 
-  includeJS {
-    jquery = EXT:pdflip/Resources/Public/JavaScript/libs/jquery.min.js
-    pdflip = EXT:pdflip/Resources/Public/JavaScript/dflip.min.js
+  includeJSFooterlibs {
+    jquery = EXT:pdflip/Resources/Public/JavaScript/Frontend/libs/jquery.min.js
+    three = EXT:pdflip/Resources/Public/JavaScript/Frontend/libs/three.min.js
+    pdfjs = EXT:pdflip/Resources/Public/JavaScript/Frontend/libs/pdf.min.js
+    pdfjsworker = EXT:pdflip/Resources/Public/JavaScript/Frontend/libs/pdf.worker.min.js
+  }
+
+  includeJSFooter {
+    pdflip = EXT:pdflip/Resources/Public/JavaScript/Frontend/dflip.js
   }
 
   10 = FLUIDTEMPLATE
   10 {
 
     dataProcessing {
-
+      10 = pdflip-file-public-url
     }
 
-    file = EXT:pdflip/Resources/Private/Templates/PDFlip.html
+    file = EXT:pdflip/Resources/Private/Frontend/Templates/PDFlip.html
     variables {
 
     }

@@ -1,7 +1,7 @@
 
 
 TCEMAIN.linkHandler.pdflip {
-  handler = WapplerSystems\Pdflip\LinkHandling\PdflipLinkHandler
+  handler = WapplerSystems\Pdflip\LinkHandler\PdflipLinkHandler
   label = Pdflip
   configuration {
 

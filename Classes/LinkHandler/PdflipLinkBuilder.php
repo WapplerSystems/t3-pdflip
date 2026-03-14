@@ -22,6 +22,9 @@ class PdflipLinkBuilder extends PageLinkBuilder
 
     public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
     {
+
+        // TODO: verschiedene Arten der Einbindung unterstützen,
+
         $file = $linkDetails['file'] ?? false;
         // check if the file exists or if a / is contained (same check as in detectLinkType)
         if (!($file instanceof FileInterface) && !($file instanceof Folder)) {

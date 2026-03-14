@@ -1,0 +1,13 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  WapplerSystems\Pdflip\:
+    resource: '../Classes/*'
+
+  WapplerSystems\Pdflip\DataProcessing\FilePublicUrlDataProcessor:
+    tags:
+      - name: 'data.processor'
+        identifier: 'pdflip-file-public-url'
