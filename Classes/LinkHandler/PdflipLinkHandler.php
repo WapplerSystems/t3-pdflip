@@ -60,14 +60,14 @@ class PdflipLinkHandler extends AbstractResourceLinkHandler
 
     public function getLinkAttributes(): array
     {
-        return ['target', 'title', 'class', ''];
+        return ['target', 'title', 'class'];
     }
 
 
     public function initializeVariables(ServerRequestInterface $request): void
     {
         parent::initializeVariables($request);
-        $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/linkbrowser-file-handler.js');
+        $this->pageRenderer->loadJavaScriptModule('@pdflip/pdflip-link-handler.js');
 
         $this->resourceDisplayMatcher = GeneralUtility::makeInstance(Matcher::class);
         $this->resourceDisplayMatcher->addMatcher(GeneralUtility::makeInstance(ResourceFolderTypeMatcher::class));
@@ -113,7 +113,7 @@ class PdflipLinkHandler extends AbstractResourceLinkHandler
      */
     public function render(ServerRequestInterface $request): string
     {
-        //$this->pageRenderer->loadJavaScriptModule('@pdflip/pdflip-link-handler.js');
+
 
 
         $viewFactoryData = new ViewFactoryData(

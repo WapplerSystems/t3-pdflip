@@ -1,32 +1,49 @@
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-import r from "@typo3/backend/link-browser.js";
-import m from "@typo3/core/event/regular-event.js";
 
-class c {
+import LinkBrowser from "@typo3/backend/link-browser.js";
+import RegularEvent from "@typo3/core/event/regular-event.js";
+import { FileListActionEvent } from "@typo3/filelist/file-list-actions.js";
+import AjaxRequest from "@typo3/core/ajax/ajax-request.js";
+import InfoWindow from "@typo3/backend/info-window.js";
+import Notification from "@typo3/backend/notification.js";
+
+
+class PdflipFileHandler {
   constructor() {
-    new m("submit", (o, t) => {
-      o.preventDefault();
-      const i = t.querySelector('[name="lemail"]').value, e = new URLSearchParams;
-      for (const a of ["subject", "cc", "bcc", "body"]) {
-        const l = t.querySelector('[data-pdflip-part="' + a + '"]');
-        l?.value.length && e.set(a, encodeURIComponent(l.value))
+    new RegularEvent(FileListActionEvent.primary, (event) => {
+      event.preventDefault();
+      const detail = event.detail;
+      detail.action = FileListActionEvent.select;
+      document.dispatchEvent(new CustomEvent(FileListActionEvent.select, { detail: detail }));
+    }).bindTo(document);
+    new RegularEvent(FileListActionEvent.select, (event) => {
+      event.preventDefault();
+      const detail = event.detail;
+      const resource = detail.resources[0];
+      if (resource.type === 'file') {
+        this.insertLink(resource);
       }
-      let n = "pdflip:" + i;
-      [...e].length > 0 && (n += "?" + e.toString()), r.finalizeFunction(n)
-    }).delegateTo(document, "#lmailform")
+    }).bindTo(document);
+    new RegularEvent(FileListActionEvent.show, (event) => {
+      event.preventDefault();
+      const detail = event.detail;
+      const resource = detail.resources[0];
+      InfoWindow.showItem('_' + resource.type.toUpperCase(), resource.identifier);
+    }).bindTo(document);
   }
-}
+  insertLink(resource) {
+    const request = new AjaxRequest(TYPO3.settings.ajaxUrls.link_resource);
+    request.post({
+      identifier: resource.identifier,
+    }).then(async (success) => {
+      const data = await success.resolve();
+      data.status.forEach((message) => {
+        Notification.showMessage(message.title, message.message, message.severity);
+      });
+      if (data.success) {
+        LinkBrowser.finalizeFunction("t3://pdflip"+ data.link.substring(9));
+      }
+    });
+  }
 
-var u = new c;
-export {u as default};
+}
+export default new PdflipFileHandler();

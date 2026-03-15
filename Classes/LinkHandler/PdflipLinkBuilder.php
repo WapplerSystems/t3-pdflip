@@ -35,7 +35,6 @@ class PdflipLinkBuilder extends PageLinkBuilder
                 $linkText
             );
         }
-        debug($linkDetails);
 
         $fragment = $this->calculateUrlFragment($conf, $linkDetails);
         $queryParameters = $this->calculateQueryParameters($conf, $linkDetails);
@@ -99,8 +98,6 @@ class PdflipLinkBuilder extends PageLinkBuilder
         }
         $url = (string)$url;
 
-
-
         $linkLocation = $file->getPublicUrl();
         if ($linkLocation === null) {
             // set the linkLocation to an empty string if null,
@@ -109,7 +106,6 @@ class PdflipLinkBuilder extends PageLinkBuilder
         }
         // Setting title if blank value to link
         $linkText = $this->encodeFallbackLinkTextIfLinkTextIsEmpty($linkText, rawurldecode($linkLocation));
-        debug($linkDetails);
         return (new LinkResult($linkDetails['type'], $this->forceAbsoluteUrl($url, $conf)))
             ->withLinkConfiguration($conf)
             ->withTarget($target ?: $this->resolveTargetAttribute($conf, 'fileTarget'))
