@@ -1,0 +1,25 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en"
+      xmlns:f="http://typo3.org/ns/fluid/ViewHelpers"
+      xmlns:pdflip="http://typo3.org/ns/WapplerSystems/Pdflip/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+
+<f:layout name="Default" />
+<f:section name="Header" />
+<f:section name="Main">
+
+    <f:render partial="PdflipAssets" arguments="{assets: settings.assets}" />
+    {pdflip:flipbookGlobalConfig(useNonce:settings.assets.useNonce)}
+
+
+    Embedded
+
+    <div id="flipbookContainer-{data.uid}">
+
+    </div>
+
+
+</f:section>
+
+
+</html>

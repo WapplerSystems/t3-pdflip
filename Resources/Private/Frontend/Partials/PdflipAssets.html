@@ -1,0 +1,19 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en"
+      xmlns:f="http://typo3.org/ns/fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<f:if condition="{assets.importJQuery}">
+    <f:asset.script identifier="jquery" src="EXT:pdflip/Resources/Public/JavaScript/Frontend/libs/jquery.min.js" useNonce="{assets.useNonce}" />
+</f:if>
+
+<f:asset.script identifier="three" src="EXT:pdflip/Resources/Public/JavaScript/Frontend/libs/three.min.js" useNonce="{assets.useNonce}" />
+<f:asset.script identifier="pdfjs" src="EXT:pdflip/Resources/Public/JavaScript/Frontend/libs/pdf.min.js" useNonce="{assets.useNonce}" />
+<f:asset.script identifier="pdfjsworker" src="EXT:pdflip/Resources/Public/JavaScript/Frontend/libs/pdf.worker.min.js" useNonce="{assets.useNonce}" />
+
+<f:asset.script identifier="dflip" src="EXT:pdflip/Resources/Public/JavaScript/Frontend/dflip.js" useNonce="{assets.useNonce}" />
+
+
+<f:asset.css identifier="dflip" href="EXT:pdflip/Resources/Public/CSS/dflip.css" />
+<f:asset.css identifier="themify-icons" href="EXT:pdflip/Resources/Public/CSS/themify-icons.min.css" />
+
+</html>

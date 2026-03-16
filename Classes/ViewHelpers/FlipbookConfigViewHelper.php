@@ -33,49 +33,14 @@ class FlipbookConfigViewHelper extends AbstractViewHelper
         $identifier = 'option_'.(string)$this->arguments['identifier'];
 
 
-        $labels = [
-            'toggleSound',
-            'toggleThumbnails',
-            'toggleOutline',
-            'previousPage',
-            'nextPage',
-            'toggleFullscreen',
-            'zoomIn',
-            'zoomOut',
-            'toggleHelp',
-            'singlePageMode',
-            'doublePageMode',
-            'downloadPDFFile',
-            'gotoFirstPage',
-            'gotoLastPage',
-            'play',
-            'pause',
-            'share',
-            'mailSubject',
-            'mailBody',
-            'loading',
-        ];
-        $jsLabels = [];
-
-        $languageService = $this->getLanguageService();
-
-        foreach ($labels as $label) {
-            $translation = $languageService->sL('LLL:EXT:pdflip/Resources/Private/Language/de.locallang.xlf:' . $label);
-            $jsLabels[$label] = $translation ?: $label;
-        }
-        $labels = json_encode($jsLabels, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) . '';
-
         $pathPrefix = PathUtility::getPublicResourceWebPath('EXT:pdflip/Resources/Public/');
 
         $content = <<<JS
 
-    DFLIP.defaults.soundFile = "{$pathPrefix}Sounds/turn2.mp3";
-    DFLIP.defaults.imagesLocation = "{$pathPrefix}Images";
-
-    const nonce = document.currentScript ? document.currentScript.nonce : null;
+    nonce = document.currentScript ? document.currentScript.nonce : null;
 
     var {$identifier} = {
-        text: {$labels}
+        nonce: nonce
     };
 
 JS;

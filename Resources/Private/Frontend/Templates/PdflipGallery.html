@@ -1,0 +1,36 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en"
+      xmlns:f="http://typo3.org/ns/fluid/ViewHelpers"
+      xmlns:pdflip="http://typo3.org/ns/WapplerSystems/Pdflip/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<f:layout name="Default" />
+<f:section name="Header" />
+<f:section name="Main">
+
+    <f:render partial="PdflipAssets" arguments="{assets: settings.assets}" />
+    {pdflip:flipbookGlobalConfig(useNonce:settings.assets.useNonce)}
+
+    <div class="df-posts">
+
+        <f:for each="{files}" as="file">
+
+            {pdflip:flipbookConfig(identifier:'flipbook_{file.uid}',useNonce:true)}
+
+            <div class="_df_thumb"
+                 id="df_intro_thumb-{file.uid}"
+                 source="{file.publicUrl}"
+                 thumb="{f:uri.image(image:file)}" >
+                {f:if(condition:file.properties.title,then:file.properties.title,else:file.properties.name)}
+            </div>
+
+
+        </f:for>
+
+    </div>
+
+
+
+</f:section>
+
+
+</html>

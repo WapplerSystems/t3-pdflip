@@ -37,5 +37,99 @@ pdflip {
 
     }
 
+    settings {
+      assets {
+        importJQuery = {$plugin.tx_pdflip.settings.importJQuery}
+        useNonce = {$plugin.tx_pdflip.settings.useNonce}
+      }
+    }
+
   }
+}
+
+
+tt_content.pdflip-gallery < lib.contentElement
+tt_content.pdflip-gallery {
+
+  templateName = PdflipGallery
+
+  templateRootPaths {
+    0 = EXT:fluid_styled_content/Resources/Private/Templates/
+    10 = EXT:pdflip/Resources/Private/Frontend/Templates/
+    20 = {$plugin.tx_pdflip.view.templateRootPath}
+  }
+
+  partialRootPaths {
+    0 = EXT:fluid_styled_content/Resources/Private/Partials/
+    10 = EXT:pdflip/Resources/Private/Frontend/Partials/
+    20 = {$plugin.tx_pdflip.view.partialRootPath}
+  }
+
+  layoutRootPaths {
+    0 = EXT:fluid_styled_content/Resources/Private/Layouts/
+    10 = EXT:pdflip/Resources/Private/Frontend/Layouts/
+    20 = {$plugin.tx_pdflip.view.layoutRootPath}
+  }
+
+  settings {
+
+    assets {
+
+      importJQuery = {$plugin.tx_pdflip.settings.importJQuery}
+      useNonce = {$plugin.tx_pdflip.settings.useNonce}
+    }
+
+  }
+
+  dataProcessing {
+    10 = files
+    10 {
+      references.fieldName = assets
+    }
+  }
+
+}
+
+
+tt_content.pdflip-embedded < lib.contentElement
+tt_content.pdflip-embedded {
+
+  templateName = PdflipEmbedded
+
+
+  templateRootPaths {
+    0 = EXT:fluid_styled_content/Resources/Private/Templates/
+    10 = EXT:pdflip/Resources/Private/Frontend/Templates/
+    20 = {$plugin.tx_pdflip.view.templateRootPath}
+  }
+
+  partialRootPaths {
+    0 = EXT:fluid_styled_content/Resources/Private/Partials/
+    10 = EXT:pdflip/Resources/Private/Frontend/Partials/
+    20 = {$plugin.tx_pdflip.view.partialRootPath}
+  }
+
+  layoutRootPaths {
+    0 = EXT:fluid_styled_content/Resources/Private/Layouts/
+    10 = EXT:pdflip/Resources/Private/Frontend/Layouts/
+    20 = {$plugin.tx_pdflip.view.layoutRootPath}
+  }
+
+  settings {
+
+    assets {
+
+      importJQuery = {$plugin.tx_pdflip.settings.importJQuery}
+      useNonce = {$plugin.tx_pdflip.settings.useNonce}
+    }
+
+  }
+
+  dataProcessing {
+    10 = files
+    10 {
+      references.fieldName = assets
+    }
+  }
+
 }

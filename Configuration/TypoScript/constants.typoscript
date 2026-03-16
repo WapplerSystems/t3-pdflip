@@ -1,0 +1,24 @@
+
+
+plugin.tx_pdflip {
+
+  view {
+    # cat=plugin.tx_pdflip/file; type=string; label=Path to template root (FE)
+    templateRootPath = EXT:pdflip/Resources/Private/Templates/
+    # cat=plugin.tx_pdflip/file; type=string; label=Path to template partials (FE)
+    partialRootPath = EXT:pdflip/Resources/Private/Partials/
+    # cat=plugin.tx_pdflip/file; type=string; label=Path to template layouts (FE)
+    layoutRootPath = EXT:pdflip/Resources/Private/Layouts/
+  }
+
+  settings {
+
+    # cat=plugin.tx_pdflip/settings/a; type=boolean; label=Import jQuery
+    importJQuery = 0
+
+    # cat=plugin.tx_pdflip/settings/b; type=boolean; label=Use nonce for scripts
+    useNonce = 1
+
+  }
+
+}

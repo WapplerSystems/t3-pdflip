@@ -7,28 +7,45 @@
  * Author URI: http://dearhive.com
  */
 "use strict";
-var DFLIP = DFLIP || {}, PRESENTATION = DFLIP;
+var DFLIP = DFLIP || {},
+  PRESENTATION = DFLIP;
+
 !function (e, t) {
-  e.version = "1.7.36", e.PAGE_MODE = {SINGLE: 1, DOUBLE: 2, AUTO: null}, e.SINGLE_PAGE_MODE = {
-    ZOOM: 1,
-    BOOKLET: 2,
-    AUTO: null
-  }, e.CONTROLSPOSITION = {HIDDEN: "hide", TOP: "top", BOTTOM: "bottom"}, e.DIRECTION = {
-    LTR: 1,
-    RTL: 2
-  }, e.LINK_TARGET = {NONE: 0, SELF: 1, BLANK: 2, PARENT: 3, TOP: 4}, e.CORNERS = {
-    TL: "tl",
-    TR: "tr",
-    BL: "bl",
-    BR: "br",
-    L: "l",
-    R: "r",
-    NONE: null
-  }, e.SOURCE_TYPE = {IMAGE: "image", PDF: "pdf", HTML: "html"}, e.DISPLAY_TYPE = {
+  e.version = "1.7.36",
+    e.PAGE_MODE = {
+      SINGLE: 1,
+      DOUBLE: 2,
+      AUTO: null
+    },
+    e.SINGLE_PAGE_MODE = {
+      ZOOM: 1,
+      BOOKLET: 2,
+      AUTO: null
+    },
+    e.CONTROLSPOSITION = {HIDDEN: "hide", TOP: "top", BOTTOM: "bottom"},
+    e.DIRECTION = {
+      LTR: 1,
+      RTL: 2
+    },
+    e.LINK_TARGET = {NONE: 0, SELF: 1, BLANK: 2, PARENT: 3, TOP: 4},
+    e.CORNERS = {
+      TL: "tl",
+      TR: "tr",
+      BL: "bl",
+      BR: "br",
+      L: "l",
+      R: "r",
+      NONE: null
+    }, e.SOURCE_TYPE = {IMAGE: "image", PDF: "pdf", HTML: "html"}, e.DISPLAY_TYPE = {
     WEBGL: "3D",
     HTML: "2D"
   }, e.PAGE_SIZE = {AUTO: 0, SINGLE: 1, DOUBLEINTERNAL: 2};
-  var n, i, o, a, s = e.defaults = {
+  var n,
+    i,
+    o,
+    a,
+    options = e.defaults = {
+      nonce: null,
       webgl: !0,
       webglShadow: !0,
       soundEnable: !0,
@@ -153,8 +170,11 @@ var DFLIP = DFLIP || {}, PRESENTATION = DFLIP;
       linkTarget: e.LINK_TARGET.BLANK,
       sharePrefix: "flipbook-",
       loadMoreCount: !1
-    }, r = "WebKitCSSMatrix" in window || document.body && "MozPerspective" in document.body.style,
-    l = "onmousedown" in window, c = (window, navigator.userAgent), d = e.utils = {
+    },
+    r = "WebKitCSSMatrix" in window || document.body && "MozPerspective" in document.body.style,
+    l = "onmousedown" in window,
+    c = (window, navigator.userAgent),
+    d = e.utils = {
       drag: {left: 0, right: 1, none: -1},
       mouseEvents: l ? {type: "mouse", start: "mousedown", move: "mousemove", end: "mouseup"} : {
         type: "touch",
@@ -256,7 +276,7 @@ var DFLIP = DFLIP || {}, PRESENTATION = DFLIP;
         return i < n ? w(Math.asin(i / n)) : 90 + w(Math.asin((i - n) / n))
       },
       log: function (e) {
-        1 == s.enableDebugLog && window.console && console.log(e)
+        1 == options.enableDebugLog && window.console && console.log(e)
       },
       lowerPowerOfTwo: function (e) {
         return Math.pow(2, Math.floor(Math.log(e) / Math.LN2))
@@ -299,9 +319,17 @@ var DFLIP = DFLIP || {}, PRESENTATION = DFLIP;
         }
 
         if (0 === t("script[src='" + e + "']").length) {
-          (a = d.getScriptCallbacks[e] = []).push(n), o = document.createElement("script");
+          (a = d.getScriptCallbacks[e] = []).push(n),
+            o = document.createElement("script");
           var r = document.body.getElementsByTagName("script")[0];
-          o.async = 1, o.setAttribute("data-cfasync", !1), null != r ? (r.parentNode.insertBefore(o, r), r = null) : document.body.appendChild(o), o.addEventListener("load", s, !1), o.addEventListener("readystatechange", s, !1), o.addEventListener("complete", s, !1), i && o.addEventListener("error", i, !1), o.src = e + ("MS" == D.dom ? "?" + Math.random(1) : "")
+          o.async = 1,
+            o.setAttribute("data-cfasync", !1),
+            null != r ? (r.parentNode.insertBefore(o, r), r = null) : document.body.appendChild(o),
+            o.addEventListener("load", s, !1),
+            o.addEventListener("readystatechange", s, !1),
+            o.addEventListener("complete", s, !1),
+          i && o.addEventListener("error", i, !1),
+            o.src = e + ("MS" == D.dom ? "?" + Math.random(1) : "");
         } else a.push(n)
       },
       isHardPage: function (e, t, n, i) {
@@ -632,9 +660,9 @@ var DFLIP = DFLIP || {}, PRESENTATION = DFLIP;
       function n(n) {
         n = n || {};
         var i = this;
-        e.call(this, n), i.options = n, i.canvas = t(i.renderer.domElement).addClass("df-3dcanvas"), i.container = n.container, i.container.append(i.canvas), i.type = "PreviewStage", i.mouse = new THREE.Vector2, i.raycaster = new THREE.Raycaster, i.camera.position.set(0, 20, 600), i.camera.lookAt(new THREE.Vector3(0, 0, 0)), i.spotLight.position.set(-220, 330, 550), i.spotLight.castShadow = !A && !d.isIPad && n.webglShadow, i.spotLight.shadow && (i.spotLight.shadow.bias = -8e-4), i.spotLight.intensity = v(n.spotLightIntensity, s.spotLightIntensity), i.ambientLight.color = new THREE.Color(v(n.ambientLightColor, s.ambientLightColor)), i.ambientLight.intensity = v(n.ambientLightIntensity, s.ambientLightIntensity);
+        e.call(this, n), i.options = n, i.canvas = t(i.renderer.domElement).addClass("df-3dcanvas"), i.container = n.container, i.container.append(i.canvas), i.type = "PreviewStage", i.mouse = new THREE.Vector2, i.raycaster = new THREE.Raycaster, i.camera.position.set(0, 20, 600), i.camera.lookAt(new THREE.Vector3(0, 0, 0)), i.spotLight.position.set(-220, 330, 550), i.spotLight.castShadow = !A && !d.isIPad && n.webglShadow, i.spotLight.shadow && (i.spotLight.shadow.bias = -8e-4), i.spotLight.intensity = v(n.spotLightIntensity, options.spotLightIntensity), i.ambientLight.color = new THREE.Color(v(n.ambientLightColor, options.ambientLightColor)), i.ambientLight.intensity = v(n.ambientLightIntensity, options.ambientLightIntensity);
         var o = new THREE.ShadowMaterial;
-        o.opacity = v(n.shadowOpacity, s.shadowOpacity), i.ground.material = o, i.ground.position.z = -2, i.orbitControl.maxAzimuthAngle = 0, i.orbitControl.minAzimuthAngle = 0, i.orbitControl.minPolarAngle = Math.PI / 2, i.orbitControl.maxPolarAngle = 2.2, i.orbitControl.mouseButtons.ORBIT = THREE.MOUSE.RIGHT, i.orbitControl.mouseButtons.PAN = -1, i.orbitControl.maxDistance = 5e3, i.orbitControl.minDistance = 50, i.orbitControl.noZoom = !0, i.selectiveRendering = !0, i.orbitControl.zoomSpeed = 5, i.orbitControl.keyPanSpeed = 0, i.orbitControl.center.set(0, 0, 0), i.orbitControl.update(), i.swipe_threshold = A ? 15 : 20;
+        o.opacity = v(n.shadowOpacity, options.shadowOpacity), i.ground.material = o, i.ground.position.z = -2, i.orbitControl.maxAzimuthAngle = 0, i.orbitControl.minAzimuthAngle = 0, i.orbitControl.minPolarAngle = Math.PI / 2, i.orbitControl.maxPolarAngle = 2.2, i.orbitControl.mouseButtons.ORBIT = THREE.MOUSE.RIGHT, i.orbitControl.mouseButtons.PAN = -1, i.orbitControl.maxDistance = 5e3, i.orbitControl.minDistance = 50, i.orbitControl.noZoom = !0, i.selectiveRendering = !0, i.orbitControl.zoomSpeed = 5, i.orbitControl.keyPanSpeed = 0, i.orbitControl.center.set(0, 0, 0), i.orbitControl.update(), i.swipe_threshold = A ? 15 : 20;
         var a = i.cssRenderer = new THREE.CSS3DRenderer;
         t(a.domElement).css({
           position: "absolute",
@@ -713,7 +741,8 @@ var DFLIP = DFLIP || {}, PRESENTATION = DFLIP;
       }, n.prototype.height = function () {
         return this.container.height()
       }, n
-    }(MOCKUP.Stage), MOCKUP.PreviewStage = H;
+    }(MOCKUP.Stage),
+      MOCKUP.PreviewStage = H;
     var n = function (t) {
       function n(e, n) {
         (e = e || {}).folds = 1, t.call(this, e, n), this.angle = 0, this.isFlipping = !1, this.material.materials[5].transparent = !0, this.material.materials[4].transparent = !0, this.type = "BookPaper"
@@ -812,7 +841,7 @@ var DFLIP = DFLIP || {}, PRESENTATION = DFLIP;
             var E = P.stiffness;
             E = x > w ? u / (Math.abs(r - t) / r) / 4 : u / (t / r) / 4, P.position.z += d, P.stiffness = isNaN(E) ? P.stiffness : E, P.updateAngle(!0), P.targetStiffness = C ? 0 : b < t ? u / (Math.abs(r - t) / r) / 4 : u / (t / r) / 4, P.targetStiffness = C ? 0 : isNaN(P.targetStiffness) ? P.stiffness : P.targetStiffness, P.isFlipping = !0, P.tween(x, w), null != this.preFlipCallback && this.preFlipCallback()
           } else P.skipFlip = !1, P.newStiffness = isNaN(P.newStiffness) ? 0 : P.newStiffness, P.angles[1] == w && P.stiffness == P.newStiffness && P.depth == P.oldDepth || (P.angles[1] = P.angles[4] = w, P.stiffness = P.newStiffness, P.updateAngle(!0));
-          P.visible = i ? n ? b < h || P.isFlipping : b >= h || P.isFlipping : y >= 0 && y < r || i && y == r, null != this.requestPage && (P.name = y.toString(), P.name != L && (P.textureLoaded = !1, P.frontImage(s.textureLoadFallback), P.frontPageStamp = "-1", P.frontTextureLoaded = !1, P.thumbLoaded = !1, P.backImage(s.textureLoadFallback), P.backPageStamp = "-1", P.backTextureLoaded = !1, this.requestPage())), P.oldDepth = P.depth;
+          P.visible = i ? n ? b < h || P.isFlipping : b >= h || P.isFlipping : y >= 0 && y < r || i && y == r, null != this.requestPage && (P.name = y.toString(), P.name != L && (P.textureLoaded = !1, P.frontImage(options.textureLoadFallback), P.frontPageStamp = "-1", P.frontTextureLoaded = !1, P.thumbLoaded = !1, P.backImage(options.textureLoadFallback), P.backPageStamp = "-1", P.backTextureLoaded = !1, this.requestPage())), P.oldDepth = P.depth;
           var k = Math.abs(P.geometry.boundingBox.max.x) < Math.abs(P.geometry.boundingBox.min.x) ? P.geometry.boundingBox.max.x : P.geometry.boundingBox.min.x;
           P.position.x = 1 == P.isEdge && 0 == P.isFlipping ? b < h ? k : -k : 0
         }
@@ -1002,825 +1031,849 @@ var DFLIP = DFLIP || {}, PRESENTATION = DFLIP;
   }();
   e.PreviewObject = V;
   var G = function (n) {
-    function i(n, i, o, a) {
-      o = o || {};
-      var r = this;
-      if (r.contentRawSource = n, r.contentSource = r.contentRawSource, r.contentSourceType = null, r.minDimension = o.minTextureSize || 256, r.maxDimension = o.maxTextureSize || 2048, r.pdfRenderQuality = o.pdfRenderQuality || e.defaults.pdfRenderQuality, r.flipbook = a, r.waitPeriod = 50, r.maxLength = 297, r.enableDebug = !1, r.zoomScale = 1, r.maxZoom = 2, r.options = o, r.outline = o.outline, r.links = o.links, r.html = o.html, r.isCrossOrigin = o.isCrossOrigin, r.normalViewport = {
-        height: 297,
-        width: 210,
-        scale: 1
-      }, r.viewport = {height: 297, width: 210, scale: 1}, r.imageViewport = {
-        height: 297,
-        width: 210,
-        scale: 1
-      }, r.bookSize = {height: 297, width: 210}, r.zoomViewport = {
-        height: 297,
-        width: 210
-      }, r.thumbsize = 128, r.cacheIndex = 256, r.cache = [], r.pageRatio = o.pageRatio || r.viewport.width / r.viewport.height, r.textureLoadTimeOut = null, r.type = "TextureLibrary", null != r.contentSource && (Array === r.contentSource.constructor || Array.isArray(r.contentSource) || r.contentSource instanceof Array)) {
-        r.contentSourceType = p.IMAGE, r.pageCount = r.contentSource.length;
-        for (var l = 0; l < r.contentSource.length; l++) r.contentSource[l] = d.httpsCorrection(r.contentSource[l].toString());
-        t("<img/>").attr("src", r.contentSource[0]).on("load", (function () {
-          r.viewport.height = this.height, r.viewport.width = this.width, r.pageRatio = r.viewport.width / r.viewport.height, r.bookSize = {
-            width: (r.pageRatio > 1 ? 1 : r.pageRatio) * r.maxLength,
-            height: r.maxLength / (r.pageRatio < 1 ? 1 : r.pageRatio)
-          }, r.zoomViewport = {
-            width: (r.pageRatio > 1 ? 1 : r.pageRatio) * r.maxDimension,
-            height: r.maxDimension / (r.pageRatio < 1 ? 1 : r.pageRatio)
-          }, r.linkService = new PDFLinkService, t(this).off(), r.options.pageSize == e.PAGE_SIZE.DOUBLEINTERNAL && (r.pageCount = 2 * r.contentSource.length - 2, 1 == r.options.webgl && (r.requiresImageTextureScaling = !0)), null != i && (i(r), i = null), E(this.height + ":" + this.width)
-        }))
-      } else if ("string" == typeof r.contentSource || r.contentSource instanceof String) {
-        var c = function () {
-          r.contentSource.indexOf(".base64") > 1 ? t.ajax({
-            url: r.contentSource, xhrFields: {
-              onprogress: function (e) {
-                if (e.lengthComputable) {
+      function i(n, i, o, a) {
+        o = o || {};
+        var r = this;
+        if (r.contentRawSource = n, r.contentSource = r.contentRawSource, r.contentSourceType = null, r.minDimension = o.minTextureSize || 256, r.maxDimension = o.maxTextureSize || 2048, r.pdfRenderQuality = o.pdfRenderQuality || e.defaults.pdfRenderQuality, r.flipbook = a, r.waitPeriod = 50, r.maxLength = 297, r.enableDebug = !1, r.zoomScale = 1, r.maxZoom = 2, r.options = o, r.outline = o.outline, r.links = o.links, r.html = o.html, r.isCrossOrigin = o.isCrossOrigin, r.normalViewport = {
+          height: 297,
+          width: 210,
+          scale: 1
+        }, r.viewport = {height: 297, width: 210, scale: 1}, r.imageViewport = {
+          height: 297,
+          width: 210,
+          scale: 1
+        }, r.bookSize = {height: 297, width: 210}, r.zoomViewport = {
+          height: 297,
+          width: 210
+        }, r.thumbsize = 128, r.cacheIndex = 256, r.cache = [], r.pageRatio = o.pageRatio || r.viewport.width / r.viewport.height, r.textureLoadTimeOut = null, r.type = "TextureLibrary", null != r.contentSource && (Array === r.contentSource.constructor || Array.isArray(r.contentSource) || r.contentSource instanceof Array)) {
+          r.contentSourceType = p.IMAGE, r.pageCount = r.contentSource.length;
+          for (var l = 0; l < r.contentSource.length; l++) r.contentSource[l] = d.httpsCorrection(r.contentSource[l].toString());
+          t("<img/>").attr("src", r.contentSource[0]).on("load", (function () {
+            r.viewport.height = this.height,
+              r.viewport.width = this.width,
+              r.pageRatio = r.viewport.width / r.viewport.height,
+              r.bookSize = {
+                width: (r.pageRatio > 1 ? 1 : r.pageRatio) * r.maxLength,
+                height: r.maxLength / (r.pageRatio < 1 ? 1 : r.pageRatio)
+              },
+              r.zoomViewport = {
+                width: (r.pageRatio > 1 ? 1 : r.pageRatio) * r.maxDimension,
+                height: r.maxDimension / (r.pageRatio < 1 ? 1 : r.pageRatio)
+              },
+              r.linkService = new PDFLinkService,
+              t(this).off(),
+            r.options.pageSize == e.PAGE_SIZE.DOUBLEINTERNAL && (r.pageCount = 2 * r.contentSource.length - 2, 1 == r.options.webgl && (r.requiresImageTextureScaling = !0)), null != i && (i(r), i = null), E(this.height + ":" + this.width)
+          }))
+        } else if ("string" == typeof r.contentSource || r.contentSource instanceof String) {
+          var c = function () {
+            r.contentSource.indexOf(".base64") > 1 ? t.ajax({
+              url: r.contentSource, xhrFields: {
+                onprogress: function (e) {
+                  if (e.lengthComputable) {
+                    var t = 100 * e.loaded / e.total;
+                    r.updateInfo(r.options.text.loading + " PDF " + t.toString().split(".")[0] + "% ...")
+                  }
+                }
+              },
+              success: function (e) {
+                r.options.docParameters = {data: atob(e)}, u()
+              }
+            }) : u()
+          }, u = function () {
+            if (r) {
+              pdfjsLib.GlobalWorkerOptions.workerSrc = options.pdfjsWorkerSrc,
+                r.contentSourceType = p.PDF;
+              var t = r.options.disableFontFace;
+              z || B || r.options.disableFontFace;
+              var o = r.loading = pdfjsLib.getDocument(r.options.docParameters ? r.options.docParameters : {
+                url: d.httpsCorrection(n),
+                rangeChunkSize: isNaN(r.options.rangeChunkSize) ? 524288 : r.options.rangeChunkSize,
+                cMapUrl: options.cMapUrl,
+                cMapPacked: !0,
+                imageResourcesPath: options.imageResourcesPath,
+                disableAutoFetch: !0,
+                disableStream: !0,
+                disableRange: !0 === r.options.disableRange,
+                disableFontFace: t
+              });
+              o.promise.then((function (t) {
+                r.pdfDocument = t, t.getPage(1).then((function (n) {
+                  r.normalViewport = n.getViewport({scale: 1}), r.viewport = n.getViewport({scale: 1}), r.viewport.height = r.viewport.height / 10, r.viewport.width = r.viewport.width / 10, r.pageRatio = r.viewport.width / r.viewport.height, r.bookSize = {
+                    width: (r.pageRatio > 1 ? 1 : r.pageRatio) * r.maxLength,
+                    height: r.maxLength / (r.pageRatio < 1 ? 1 : r.pageRatio)
+                  }, r.zoomViewport = {
+                    width: (r.pageRatio > 1 ? 1 : r.pageRatio) * r.maxDimension,
+                    height: r.maxDimension / (r.pageRatio < 1 ? 1 : r.pageRatio)
+                  }, r.refPage = n, t.numPages > 1 ? t.getPage(2).then((function (n) {
+                    if (r.options.pageSize == e.PAGE_SIZE.AUTO) {
+                      var o = n.getViewport({scale: 1});
+                      o.width / o.height > 1.5 * r.pageRatio ? (r.options.pageSize = e.PAGE_SIZE.DOUBLEINTERNAL, r.pageCount = 2 * t.numPages - 2) : r.options.pageSize = e.PAGE_SIZE.SINGLE
+                    }
+                    null != i && (i(r), i = null)
+                  })) : null != i && (i(r), i = null)
+                })), r.linkService = new PDFLinkService, r.linkService.setDocument(t, null), r.pageCount = t.numPages, r.contentSource = t
+              }), (function (e) {
+                if (r) {
+                  var t = "", n = document.createElement("a");
+                  n.href = r.contentSource, n.hostname !== window.location.hostname && (t = "CROSS ORIGIN!! "), r.updateInfo(t + "Cannot access file!  " + r.contentSource)
+                }
+              })), o.onProgress = function (e) {
+                if (r) {
                   var t = 100 * e.loaded / e.total;
-                  r.updateInfo(r.options.text.loading + " PDF " + t.toString().split(".")[0] + "% ...")
+                  isNaN(t) ? e && e.loaded ? r.updateInfo(r.options.text.loading + " PDF " + (Math.ceil(e.loaded / 1e4) / 100).toString() + "MB ...") : r.updateInfo(r.options.text.loading + " PDF ...") : r.updateInfo(r.options.text.loading + " PDF " + t.toString().split(".")[0] + "% ...")
                 }
               }
-            }, success: function (e) {
-              r.options.docParameters = {data: atob(e)}, u()
             }
-          }) : u()
-        }, u = function () {
-          if (r) {
-            pdfjsLib.GlobalWorkerOptions.workerSrc = s.pdfjsWorkerSrc, r.contentSourceType = p.PDF;
-            var t = r.options.disableFontFace;
-            z || B || r.options.disableFontFace;
-            var o = r.loading = pdfjsLib.getDocument(r.options.docParameters ? r.options.docParameters : {
-              url: d.httpsCorrection(n),
-              rangeChunkSize: isNaN(r.options.rangeChunkSize) ? 524288 : r.options.rangeChunkSize,
-              cMapUrl: s.cMapUrl,
-              cMapPacked: !0,
-              imageResourcesPath: s.imageResourcesPath,
-              disableAutoFetch: !0,
-              disableStream: !0,
-              disableRange: !0 === r.options.disableRange,
-              disableFontFace: t
-            });
-            o.promise.then((function (t) {
-              r.pdfDocument = t, t.getPage(1).then((function (n) {
-                r.normalViewport = n.getViewport({scale: 1}), r.viewport = n.getViewport({scale: 1}), r.viewport.height = r.viewport.height / 10, r.viewport.width = r.viewport.width / 10, r.pageRatio = r.viewport.width / r.viewport.height, r.bookSize = {
-                  width: (r.pageRatio > 1 ? 1 : r.pageRatio) * r.maxLength,
-                  height: r.maxLength / (r.pageRatio < 1 ? 1 : r.pageRatio)
-                }, r.zoomViewport = {
-                  width: (r.pageRatio > 1 ? 1 : r.pageRatio) * r.maxDimension,
-                  height: r.maxDimension / (r.pageRatio < 1 ? 1 : r.pageRatio)
-                }, r.refPage = n, t.numPages > 1 ? t.getPage(2).then((function (n) {
-                  if (r.options.pageSize == e.PAGE_SIZE.AUTO) {
-                    var o = n.getViewport({scale: 1});
-                    o.width / o.height > 1.5 * r.pageRatio ? (r.options.pageSize = e.PAGE_SIZE.DOUBLEINTERNAL, r.pageCount = 2 * t.numPages - 2) : r.options.pageSize = e.PAGE_SIZE.SINGLE
-                  }
-                  null != i && (i(r), i = null)
-                })) : null != i && (i(r), i = null)
-              })), r.linkService = new PDFLinkService, r.linkService.setDocument(t, null), r.pageCount = t.numPages, r.contentSource = t
-            }), (function (e) {
-              if (r) {
-                var t = "", n = document.createElement("a");
-                n.href = r.contentSource, n.hostname !== window.location.hostname && (t = "CROSS ORIGIN!! "), r.updateInfo(t + "Cannot access file!  " + r.contentSource)
-              }
-            })), o.onProgress = function (e) {
-              if (r) {
-                var t = 100 * e.loaded / e.total;
-                isNaN(t) ? e && e.loaded ? r.updateInfo(r.options.text.loading + " PDF " + (Math.ceil(e.loaded / 1e4) / 100).toString() + "MB ...") : r.updateInfo(r.options.text.loading + " PDF ...") : r.updateInfo(r.options.text.loading + " PDF " + t.toString().split(".")[0] + "% ...")
-              }
+          }, h = function () {
+            if (r) {
+              options.pdfjsWorkerSrc.indexOf("?ver") < 0 && (options.pdfjsWorkerSrc += "?ver=" + e.version), r.updateInfo(r.options.text.loading + " PDF Worker ...");
+              var n = document.createElement("a");
+              n.href = options.pdfjsWorkerSrc,
+                n.hostname !== window.location.hostname ? (r.updateInfo(r.options.text.loading + " PDF Worker CORS ..."),
+                  t.ajax({
+                    url: options.pdfjsWorkerSrc,
+                    cache: !0,
+                    success: function (t) {
+                      options.pdfjsWorkerSrc = e.createObjectURL(t, "text/javascript"), c()
+                    }
+                  })) : c()
             }
-          }
-        }, h = function () {
-          if (r) {
-            s.pdfjsWorkerSrc.indexOf("?ver") < 0 && (s.pdfjsWorkerSrc += "?ver=" + e.version), r.updateInfo(r.options.text.loading + " PDF Worker ...");
-            var n = document.createElement("a");
-            n.href = s.pdfjsWorkerSrc, n.hostname !== window.location.hostname ? (r.updateInfo(r.options.text.loading + " PDF Worker CORS ..."), t.ajax({
-              url: s.pdfjsWorkerSrc,
-              cache: !0,
-              success: function (t) {
-                s.pdfjsWorkerSrc = e.createObjectURL(t, "text/javascript"), c()
-              }
-            })) : c()
+          };
+          null == window.pdfjsLib ? r && (r.updateInfo(r.options.text.loading + " PDF Service ..."),
+            R(options.pdfjsSrc + "?ver=" + e.version,
+              (function () {
+                "function" == typeof define && define.amd && window.requirejs ? (r.updateInfo(r.options.text.loading + " PDF Service (require) ..."), require.config({paths: {"pdfjs-dist/build/pdf.worker": options.pdfjsWorkerSrc.replace(".js", "")}}), require(["pdfjs-dist/build/pdf"], (function (e) {
+                  window.pdfjsLib = e, h()
+                }))) : "object" == typeof exports && null != exports["pdfjs-dist/build/pdf"] ? (window.pdfjsLib = exports["pdfjs-dist/build/pdf"], h()) : h()
+              }),
+              (function () {
+                r.updateInfo("Unable to load PDF service..")
+              }))) : c()
+        } else r.updateInfo("Please set a valid document file or source."), console.error("Unknown source type. Please set a valid document file source.");
+
+        return this.dispose = function () {
+          r.loading && r.loading.destroy && r.loading.destroy(), r.loading = null, r.textureLoadTimeOut && (clearTimeout(r.textureLoadTimeOut), r.textureLoadTimeOut = null), this.targetObject && (this.targetObject.thumbContainer && this.targetObject.thumbContainer.remove && this.targetObject.thumbContainer.remove(), this.targetObject.outlineContainer && this.targetObject.outlineContainer.remove && this.targetObject.outlineContainer.remove(), this.targetObject.dispose && this.targetObject.dispose(), this.targetObject.processPage = null, this.targetObject.requestPage = null, this.targetObject.container && this.targetObject.container.off && this.targetObject.container.off()), this.pdfDocument && this.pdfDocument.destroy && this.pdfDocument.destroy(), this.linkService && this.linkService.dispose && this.linkService.dispose(), this.outlineViewer && this.outlineViewer.dispose && this.outlineViewer.dispose(), this.thumblist && this.thumblist.dispose && (this.thumblist.review = null, this.thumblist.dispose()), this.activeThumb = null, this.targetObject = null, this.pdfDocument = null, this.linkService = null, this.outlineViewer = null, this.thumblist = null, r = null
+        }, this
+      }
+
+      return j(i, {}), i.prototype.updateInfo = function (e) {
+        this.flipbook && this.flipbook.updateInfo && this.flipbook.updateInfo(e)
+      }, i.prototype.initThumbs = function () {
+        var e, n = this;
+        null == n.cache[n.thumbsize] && (n.cache[n.thumbsize] = []);
+        var i = function () {
+          clearTimeout(e), e = setTimeout((function () {
+            e = setTimeout(o, n.waitPeriod / 2)
+          }), n.waitPeriod)
+        }, o = function () {
+          var o = 0;
+          if ((Date.now() - n.thumblist.lastScrolled < 100 ? o = 1 : (n.targetObject.container.find(".df-thumb-container .df-vrow").each((function () {
+            var e = t(this);
+            if (!e.hasClass("df-thumb-loaded")) {
+              o++;
+              var a = t(this).attr("id").replace("df-thumb", "");
+              return n.getPage(a, i, !0), e.addClass("df-thumb-loaded"), !1
+            }
+          })), 0 == o && clearTimeout(e)), o > 0 && i(), n.activeThumb != n.targetObject._activePage) && (null != n.targetObject.thumbContainer && n.targetObject.thumbContainer.hasClass("df-sidemenu-visible"))) {
+            var a = n.thumblist.container, s = a.scrollTop, r = a.getBoundingClientRect().height,
+              l = n.targetObject.thumbContainer.find("#df-thumb" + n.targetObject._activePage);
+            l.length > 0 ? (n.targetObject.thumbContainer.find(".df-selected").removeClass("df-selected"), l.addClass("df-selected"), s + r < (l = l[0]).offsetTop + l.scrollHeight ? d.scrollIntoView(l, null, !1) : s > l.offsetTop && d.scrollIntoView(l), n.activeThumb = n.targetObject._activePage) : (t(a).scrollTop(124 * n.targetObject._activePage), i())
           }
         };
-        null == window.pdfjsLib ? r && (r.updateInfo(r.options.text.loading + " PDF Service ..."), R(s.pdfjsSrc + "?ver=" + e.version, (function () {
-          "function" == typeof define && define.amd && window.requirejs ? (r.updateInfo(r.options.text.loading + " PDF Service (require) ..."), require.config({paths: {"pdfjs-dist/build/pdf.worker": s.pdfjsWorkerSrc.replace(".js", "")}}), require(["pdfjs-dist/build/pdf"], (function (e) {
-            window.pdfjsLib = e, h()
-          }))) : "object" == typeof exports && null != exports["pdfjs-dist/build/pdf"] ? (window.pdfjsLib = exports["pdfjs-dist/build/pdf"], h()) : h()
-        }), (function () {
-          r.updateInfo("Unable to load PDF service..")
-        }))) : c()
-      } else r.updateInfo("Please set a valid document file or source."), console.error("Unknown source type. Please set a valid document file source.");
-      return this.dispose = function () {
-        r.loading && r.loading.destroy && r.loading.destroy(), r.loading = null, r.textureLoadTimeOut && (clearTimeout(r.textureLoadTimeOut), r.textureLoadTimeOut = null), this.targetObject && (this.targetObject.thumbContainer && this.targetObject.thumbContainer.remove && this.targetObject.thumbContainer.remove(), this.targetObject.outlineContainer && this.targetObject.outlineContainer.remove && this.targetObject.outlineContainer.remove(), this.targetObject.dispose && this.targetObject.dispose(), this.targetObject.processPage = null, this.targetObject.requestPage = null, this.targetObject.container && this.targetObject.container.off && this.targetObject.container.off()), this.pdfDocument && this.pdfDocument.destroy && this.pdfDocument.destroy(), this.linkService && this.linkService.dispose && this.linkService.dispose(), this.outlineViewer && this.outlineViewer.dispose && this.outlineViewer.dispose(), this.thumblist && this.thumblist.dispose && (this.thumblist.review = null, this.thumblist.dispose()), this.activeThumb = null, this.targetObject = null, this.pdfDocument = null, this.linkService = null, this.outlineViewer = null, this.thumblist = null, r = null
-      }, this
-    }
-
-    return j(i, {}), i.prototype.updateInfo = function (e) {
-      this.flipbook && this.flipbook.updateInfo && this.flipbook.updateInfo(e)
-    }, i.prototype.initThumbs = function () {
-      var e, n = this;
-      null == n.cache[n.thumbsize] && (n.cache[n.thumbsize] = []);
-      var i = function () {
-        clearTimeout(e), e = setTimeout((function () {
-          e = setTimeout(o, n.waitPeriod / 2)
-        }), n.waitPeriod)
-      }, o = function () {
-        var o = 0;
-        if ((Date.now() - n.thumblist.lastScrolled < 100 ? o = 1 : (n.targetObject.container.find(".df-thumb-container .df-vrow").each((function () {
-          var e = t(this);
-          if (!e.hasClass("df-thumb-loaded")) {
-            o++;
-            var a = t(this).attr("id").replace("df-thumb", "");
-            return n.getPage(a, i, !0), e.addClass("df-thumb-loaded"), !1
+        n.thumblist = n.targetObject.thumblist = new ThumbList({
+          h: 500, addFn: function (e) {
+          }, scrollFn: i, itemHeight: 128, totalRows: n.pageCount, generatorFn: function (e) {
+            var t = document.createElement("div"), n = e + 1;
+            t.id = "df-thumb" + n;
+            var i = document.createElement("div");
+            return i.innerHTML = n, t.appendChild(i), t
           }
-        })), 0 == o && clearTimeout(e)), o > 0 && i(), n.activeThumb != n.targetObject._activePage) && (null != n.targetObject.thumbContainer && n.targetObject.thumbContainer.hasClass("df-sidemenu-visible"))) {
-          var a = n.thumblist.container, s = a.scrollTop, r = a.getBoundingClientRect().height,
-            l = n.targetObject.thumbContainer.find("#df-thumb" + n.targetObject._activePage);
-          l.length > 0 ? (n.targetObject.thumbContainer.find(".df-selected").removeClass("df-selected"), l.addClass("df-selected"), s + r < (l = l[0]).offsetTop + l.scrollHeight ? d.scrollIntoView(l, null, !1) : s > l.offsetTop && d.scrollIntoView(l), n.activeThumb = n.targetObject._activePage) : (t(a).scrollTop(124 * n.targetObject._activePage), i())
-        }
-      };
-      n.thumblist = n.targetObject.thumblist = new ThumbList({
-        h: 500, addFn: function (e) {
-        }, scrollFn: i, itemHeight: 128, totalRows: n.pageCount, generatorFn: function (e) {
-          var t = document.createElement("div"), n = e + 1;
-          t.id = "df-thumb" + n;
-          var i = document.createElement("div");
-          return i.innerHTML = n, t.appendChild(i), t
-        }
-      }), n.thumblist.lastScrolled = Date.now(), n.thumblist.review = i, i();
-      var a = t("<div>").addClass("df-thumb-container df-sidemenu-visible df-sidemenu");
-      a.append(t(n.thumblist.container).addClass("df-thumb-wrapper")), n.targetObject.thumbContainer = a, n.targetObject.container.append(a);
-      var s = t(m.div, {class: "df-ui-btn df-ui-sidemenu-close ti-close"});
-      a.append(s), n.thumblist.reset(t(n.thumblist.container).height()), n.targetObject.container.on("click", ".df-thumb-container .df-vrow", (function (e) {
-        e.stopPropagation();
-        var i = t(this).attr("id").replace("df-thumb", "");
-        n.targetObject.gotoPage(parseInt(i, 10))
-      }))
-    }, i.prototype.initOutline = function () {
-      var e = this, n = t("<div>").addClass("df-outline-container df-sidemenu"),
-        i = t("<div>").addClass("df-outline-wrapper"), o = t(m.div, {class: "df-ui-btn df-ui-sidemenu-close ti-close"});
-
-      function a(t) {
-        if (1 == e.options.overwritePDFOutline && (t = []), t = t || [], e.outline) for (var n = 0; n < e.outline.length; n++) e.outline[n].custom = !0, t && t.push(e.outline[n]);
-        0 === t.length && null != e.targetObject.ui.outline ? e.targetObject.ui.outline.hide() : 1 == e.options.autoEnableOutline && e.targetObject.ui.outline.trigger("click"), e.outlineViewer.render({outline: t})
-      }
-
-      n.append(o).append(i), e.targetObject.container.append(n), e.targetObject.outlineContainer = n, e.outlineViewer = new BookMarkViewer({
-        container: i[0],
-        linkService: e.linkService,
-        outlineItemClass: "df-outline-item",
-        outlineToggleClass: "df-outline-toggle",
-        outlineToggleHiddenClass: "df-outlines-hidden"
-      }), e.pdfDocument ? e.pdfDocument.getOutline().then((function (e) {
-        a(e)
-      })) : a([]), 1 == e.options.autoEnableThumbnail && e.targetObject.ui.thumbnail.trigger("click")
-    }, i.prototype.checkViewportSize = function (e, t, n) {
-      var i = this, o = i.targetObject, a = e * n, r = t * n, l = i.cacheIndex;
-      if (i.contentSourceType == p.PDF) {
-        if (i.cacheIndex = Math.ceil(Math.max(a, r)), i.cacheIndex = Math.floor(Math.max(a, r)), i.cacheIndex = C(i.cacheIndex * s.pixelRatio, i.minDimension, i.maxDimension), null == i.cache[i.cacheIndex] && (i.cache[i.cacheIndex] = []), l !== i.cacheIndex) {
-          for (var c = 0; c < o.children.length; c++) o.children[c];
-          o.refresh()
-        }
-        i.imageViewport = i.refPage.getViewport({scale: r / i.normalViewport.height}), i.viewport = "css" == o.mode ? i.imageViewport : i.refPage.getViewport({scale: i.bookSize.height / i.normalViewport.height}), E(i.cacheIndex), i.annotedPage = void 0, i.review()
-      } else null == i.cache[i.cacheIndex] && (i.cache[i.cacheIndex] = [])
-    }, i.prototype.getCache = function (e, t) {
-      return 1 == t ? null == this.cache[this.thumbsize] ? null : this.cache[this.thumbsize][e] : null == this.cache[this.cacheIndex] ? null : this.cache[this.cacheIndex][e]
-    }, i.prototype.setCache = function (e, t, n, i) {
-      if (1 == n) null != this.cache[this.thumbsize] && (this.cache[this.thumbsize][e] = t); else {
-        var o = null == i ? this.cacheIndex : i;
-        null != this.cache[o] && (this.cache[o][e] = t)
-      }
-    }, i.prototype.setTarget = function (e) {
-      var t = this;
-      if (null == e) return this.targetObject;
-      this.targetObject = e, e.contentProvider = this, e.container.removeClass("df-loading df-init"), null != t.linkService && (t.linkService.setViewer(e), t.initOutline()), e.processPage = function (e, n) {
-        e > 0 && e <= t.pageCount ? t.getPage(e, n) : t.setPage(e, s.textureLoadFallback, n)
-      }, e.requestPage = function () {
-        t.review("Request")
-      }, null != e.resize && e.resize()
-    }, i.prototype.review = function (e) {
-      var t = this;
-      e = e || "timer review", clearTimeout(t.textureLoadTimeOut), t.textureLoadTimeOut = setTimeout((function () {
-        t.textureLoadTimeOut = setTimeout(t.reviewPages, t.waitPeriod / 2, t, e)
-      }), t.waitPeriod)
-    }, i.prototype.reviewPages = function (e, n) {
-      var i = (e = e || this).targetObject;
-      if (null != i) {
-        var o = M(i);
-        null != n && E(n);
-        var a, s = !1;
-        for (a = 0; a < e.targetObject.children.length; a++) if (1 == i.children[a].isFlipping) {
-          s = !0;
-          break
-        }
-        if (0 == s) {
-          var r = i.children.length > 3 ? 3 : i.children.length, l = o ? i._activePage : O(i._activePage);
-          for (e.baseNumber = l, e.zoomScale > 1 && (r = 1), a = 0; a < r; a++) {
-            var c = Math.floor(a / 2), d = a % 2 == 0 ? -c * (o ? 1 : 2) : (0 == c ? 1 : c) * (o ? 1 : 2), u = l + d,
-              h = l + d + 1, p = i.getPageByNumber(u), g = i.getPageByNumber(h), f = u + "|" + e.cacheIndex,
-              m = h + "|" + e.cacheIndex, v = 0;
-            if (null != p && p.frontPageStamp != f && 1 == p.visible && (p.frontTextureLoaded = !1, i.processPage(u, (function () {
-              e.review("Batch Call")
-            })), p.frontPageStamp = f, v++), null == g || g.backPageStamp == m || 1 != g.visible || o || (g.backTextureLoaded = !1, i.processPage(h, (function () {
-              e.review("Batch Call")
-            })), g.backPageStamp = m, v++), 0 == d && e.annotedPage !== l && (e.getAnnotations(u), o || e.getAnnotations(h), e.annotedPage = l), v > 0) break
-          }
-          0 == v && "css" !== i.mode && e.setLoading(l)
-        } else if (e.review("Revisit request"), null != e.annotedPage && "css" !== i.mode) {
-          var b = O(i._activePage);
-          t(i.getContentLayer(b)).html(""), t(i.getContentLayer(b + 1)).html(""), e.annotedPage = null
-        }
-      }
-    }, i.prototype.getPage = function (n, i, o) {
-      var a = this, r = n = parseInt(n, 10), l = a.contentSource;
-      n <= 0 && n >= a.pageCount ? a.setPage(n, s.textureLoadFallback, i, o) : a.contentSourceType == p.PDF ? null != a.getCache(n, o) ? (a.setPage(n, a.getCache(n, o), i, o), E("Page " + n + " loaded from cache")) : (!0 !== o && a.setLoading(n, !0), a.options.pageSize == e.PAGE_SIZE.DOUBLEINTERNAL && n > 2 && (r = Math.ceil((n - 1) / 2) + 1), l.getPage(r, o).then((function (t) {
-        !function (t, n, i, o) {
-          var s = a.options.forceFit, r = a.options.pageSize == e.PAGE_SIZE.DOUBLEINTERNAL && n > 1 && n < a.pageCount,
-            l = r && s ? 2 : 1, c = s ? t.getViewport({scale: 1}) : a.normalViewport,
-            d = a.cacheIndex / Math.max(c.width / l, c.height);
-          1 == a.webgl && (d = k(a.cacheIndex) / (a.pageRatio > 1 ? c.width / l : c.height));
-          var u = document.createElement("canvas"), h = performance.now(), p = a.cacheIndex,
-            g = u.getContext("2d", {willReadFrequently: !0});
-          1 == o && (d = a.thumbsize / a.normalViewport.height);
-          u.height = Math.round(c.height * d), u.width = Math.round(c.width / l * d), "css" == a.targetObject.mode && Math.abs(a.targetObject.zoomHeight - u.height) < 2 && Math.abs(a.targetObject.zoomWidth - u.width) < 2 && (u.height = a.targetObject.zoomHeight + 0, u.width = a.targetObject.zoomWidth + 0);
-          c = t.getViewport({scale: d}), E("rendering " + n + " at " + u.width + "x" + u.height), r && (N(a.targetObject) ? n % 2 == 0 && (c.transform[4] = -u.width) : n % 2 == 1 && (c.transform[4] = -u.width));
-          var f = {canvasContext: g, viewport: c};
-          t.cleanupAfterRender = !0, t.render(f).promise.then((function () {
-            E(performance.now() - h), h = performance.now(), 1 == o || 1 == a.options.canvasToBlob && !0 !== a.webgl ? u.toBlob((function (t) {
-              var s = e.createObjectURL(t, "image/jpeg");
-              E(performance.now() - h), a.setCache(n, s, o, p), a.setPage(n, s, i, o)
-            }), "image/jpeg", a.pdfRenderQuality) : (E("Setting Page " + n), a.setPage(n, u, i, o)), f = null
-          }))
-        }(t, n, i, o)
-      }))) : a.contentSourceType != p.IMAGE && a.contentSourceType != p.HTML || (null != a.getCache(n, o) ? (a.setPage(n, a.getCache(n, o), i, o), E("Page " + n + " loaded from cache")) : (!0 !== o && a.setLoading(n, !0), a.options.pageSize == e.PAGE_SIZE.DOUBLEINTERNAL && n > 2 && (r = Math.ceil((n - 1) / 2) + 1), function (e, n, i) {
-        t("<img/>").attr("src", e).on("load", (function () {
-          t(this).off(), null != n && n(e), E(this.height + ":" + this.width)
+        }), n.thumblist.lastScrolled = Date.now(), n.thumblist.review = i, i();
+        var a = t("<div>").addClass("df-thumb-container df-sidemenu-visible df-sidemenu");
+        a.append(t(n.thumblist.container).addClass("df-thumb-wrapper")), n.targetObject.thumbContainer = a, n.targetObject.container.append(a);
+        var s = t(m.div, {class: "df-ui-btn df-ui-sidemenu-close ti-close"});
+        a.append(s), n.thumblist.reset(t(n.thumblist.container).height()), n.targetObject.container.on("click", ".df-thumb-container .df-vrow", (function (e) {
+          e.stopPropagation();
+          var i = t(this).attr("id").replace("df-thumb", "");
+          n.targetObject.gotoPage(parseInt(i, 10))
         }))
-      }(l[r - 1], (function (e) {
-        a.setCache(n, e, o, a.cacheIndex), a.setPage(n, e, i, o), null != i && i()
-      }), a.isCrossOrigin)))
-    }, i.prototype.getTargetPage = function (e) {
-    }, i.prototype.setLoading = function (e, n) {
-      if (null != this.targetObject) if (1 == this.webgl) {
-        var i = this.targetObject.container;
-        1 == n ? !0 !== i.isLoading && (i.addClass("df-loading"), i.isLoading = !0, E("Loading icon at " + e + " as " + n)) : null != i.isLoading && (i.removeClass("df-loading"), i.isLoading = null, E("Loading icon at " + e + " as " + n))
-      } else {
-        var o = t(this.targetObject.getContentLayer(e));
-        null != o && (1 == n ? o.addClass("df-page-loading") : o.removeClass("df-page-loading"), E("Loading icon at " + e + " as " + n))
-      }
-    }, i.prototype.getAnnotations = function (n) {
-      var i = this;
-      if (0 != i.options.enableAnnotation) {
-        var o = i.targetObject;
-        n = parseInt(n, 10);
-        var a = i.contentSource, s = t(o.getContentLayer(n));
-        if (s.empty(), n > 0 && n <= i.pageCount) {
-          if (i.contentSourceType == p.PDF) {
-            O(n);
-            var r = n;
-            i.options.pageSize == e.PAGE_SIZE.DOUBLEINTERNAL && n > 2 && (r = Math.ceil((n - 1) / 2) + 1), a.getPage(r).then((function (e) {
-              if (null != s && s.length > 0) {
-                var t = e.getViewport({scale: 1});
-                t = e.getViewport({scale: i.normalViewport.height / t.height * i.viewport.height / t.height}), i.setupAnnotations(e, t, s, n)
-              }
-            }))
+      }, i.prototype.initOutline = function () {
+        var e = this, n = t("<div>").addClass("df-outline-container df-sidemenu"),
+          i = t("<div>").addClass("df-outline-wrapper"), o = t(m.div, {class: "df-ui-btn df-ui-sidemenu-close ti-close"});
+
+        function a(t) {
+          if (1 == e.options.overwritePDFOutline && (t = []), t = t || [], e.outline) for (var n = 0; n < e.outline.length; n++) e.outline[n].custom = !0, t && t.push(e.outline[n]);
+          0 === t.length && null != e.targetObject.ui.outline ? e.targetObject.ui.outline.hide() : 1 == e.options.autoEnableOutline && e.targetObject.ui.outline.trigger("click"), e.outlineViewer.render({outline: t})
+        }
+
+        n.append(o).append(i), e.targetObject.container.append(n), e.targetObject.outlineContainer = n, e.outlineViewer = new BookMarkViewer({
+          container: i[0],
+          linkService: e.linkService,
+          outlineItemClass: "df-outline-item",
+          outlineToggleClass: "df-outline-toggle",
+          outlineToggleHiddenClass: "df-outlines-hidden"
+        }), e.pdfDocument ? e.pdfDocument.getOutline().then((function (e) {
+          a(e)
+        })) : a([]), 1 == e.options.autoEnableThumbnail && e.targetObject.ui.thumbnail.trigger("click")
+      }, i.prototype.checkViewportSize = function (e, t, n) {
+        var i = this, o = i.targetObject, a = e * n, r = t * n, l = i.cacheIndex;
+        if (i.contentSourceType == p.PDF) {
+          if (i.cacheIndex = Math.ceil(Math.max(a, r)), i.cacheIndex = Math.floor(Math.max(a, r)), i.cacheIndex = C(i.cacheIndex * options.pixelRatio, i.minDimension, i.maxDimension), null == i.cache[i.cacheIndex] && (i.cache[i.cacheIndex] = []), l !== i.cacheIndex) {
+            for (var c = 0; c < o.children.length; c++) o.children[c];
+            o.refresh()
           }
-          if (null != i.links && null != i.links[n]) for (var l = i.links[n], c = 0; c < l.length; c++) {
-            var d, u = l[c];
-            u.dest && u.dest.indexOf && 0 == u.dest.indexOf("[html]") ? ((d = document.createElement("div")).innerHTML = u.dest.substr(6), d.className = "customHtmlAnnotation") : ((d = document.createElement("a")).setAttribute("dest", u.dest), d.className = "customLinkAnnotation", d.href = "#" + u.dest, d.onclick = function () {
-              var e = this.getAttribute("dest");
-              return e && i.linkService.customNavigateTo(e), !1
-            }), d.style.left = u.x + "%", d.style.top = u.y + "%", d.style.width = u.w + "%", d.style.height = u.h + "%", s[0].appendChild(d)
+          i.imageViewport = i.refPage.getViewport({scale: r / i.normalViewport.height}), i.viewport = "css" == o.mode ? i.imageViewport : i.refPage.getViewport({scale: i.bookSize.height / i.normalViewport.height}), E(i.cacheIndex), i.annotedPage = void 0, i.review()
+        } else null == i.cache[i.cacheIndex] && (i.cache[i.cacheIndex] = [])
+      }, i.prototype.getCache = function (e, t) {
+        return 1 == t ? null == this.cache[this.thumbsize] ? null : this.cache[this.thumbsize][e] : null == this.cache[this.cacheIndex] ? null : this.cache[this.cacheIndex][e]
+      }, i.prototype.setCache = function (e, t, n, i) {
+        if (1 == n) null != this.cache[this.thumbsize] && (this.cache[this.thumbsize][e] = t); else {
+          var o = null == i ? this.cacheIndex : i;
+          null != this.cache[o] && (this.cache[o][e] = t)
+        }
+      }, i.prototype.setTarget = function (e) {
+        var t = this;
+        if (null == e) return this.targetObject;
+        this.targetObject = e, e.contentProvider = this, e.container.removeClass("df-loading df-init"), null != t.linkService && (t.linkService.setViewer(e), t.initOutline()), e.processPage = function (e, n) {
+          e > 0 && e <= t.pageCount ? t.getPage(e, n) : t.setPage(e, options.textureLoadFallback, n)
+        }, e.requestPage = function () {
+          t.review("Request")
+        }, null != e.resize && e.resize()
+      }, i.prototype.review = function (e) {
+        var t = this;
+        e = e || "timer review", clearTimeout(t.textureLoadTimeOut), t.textureLoadTimeOut = setTimeout((function () {
+          t.textureLoadTimeOut = setTimeout(t.reviewPages, t.waitPeriod / 2, t, e)
+        }), t.waitPeriod)
+      }, i.prototype.reviewPages = function (e, n) {
+        var i = (e = e || this).targetObject;
+        if (null != i) {
+          var o = M(i);
+          null != n && E(n);
+          var a, s = !1;
+          for (a = 0; a < e.targetObject.children.length; a++) if (1 == i.children[a].isFlipping) {
+            s = !0;
+            break
           }
-          if (null != i.html && null != i.html[n]) {
-            var h = i.html[n];
-            s.append(t("<div class='customHTMLAnnotation'>").html(h))
+          if (0 == s) {
+            var r = i.children.length > 3 ? 3 : i.children.length, l = o ? i._activePage : O(i._activePage);
+            for (e.baseNumber = l, e.zoomScale > 1 && (r = 1), a = 0; a < r; a++) {
+              var c = Math.floor(a / 2), d = a % 2 == 0 ? -c * (o ? 1 : 2) : (0 == c ? 1 : c) * (o ? 1 : 2), u = l + d,
+                h = l + d + 1, p = i.getPageByNumber(u), g = i.getPageByNumber(h), f = u + "|" + e.cacheIndex,
+                m = h + "|" + e.cacheIndex, v = 0;
+              if (null != p && p.frontPageStamp != f && 1 == p.visible && (p.frontTextureLoaded = !1, i.processPage(u, (function () {
+                e.review("Batch Call")
+              })), p.frontPageStamp = f, v++), null == g || g.backPageStamp == m || 1 != g.visible || o || (g.backTextureLoaded = !1, i.processPage(h, (function () {
+                e.review("Batch Call")
+              })), g.backPageStamp = m, v++), 0 == d && e.annotedPage !== l && (e.getAnnotations(u), o || e.getAnnotations(h), e.annotedPage = l), v > 0) break
+            }
+            0 == v && "css" !== i.mode && e.setLoading(l)
+          } else if (e.review("Revisit request"), null != e.annotedPage && "css" !== i.mode) {
+            var b = O(i._activePage);
+            t(i.getContentLayer(b)).html(""), t(i.getContentLayer(b + 1)).html(""), e.annotedPage = null
           }
         }
-      }
-    }, i.prototype.setPage = function (e, t, n, i) {
-      var o = this, a = o.targetObject, r = N(a), l = M(a);
-      if (1 == i) {
-        o.targetObject.container.find("#df-thumb" + e).css({backgroundImage: y(t)})
-      } else {
-        t == s.textureLoadFallback && E("Fallback on " + e);
-        var c = a.getPageByNumber(e);
-        null != c ? e % 2 != 0 && !r || e % 2 != 1 && r && !l || l && !r ? (E(e + "rendered to back of " + c.color), c.backImage(t, (function (t, i) {
-          c.backTextureLoaded = !0, o.setLoading(e), o.requiresImageTextureScaling && i && 1 != e && e != o.pageCount && (i.repeat.x = .5, i.offset.x = .5), null != n && n()
-        }))) : (E(e + "rendered to front of " + c.color), c.frontImage(t, (function (t, i) {
-          c.frontTextureLoaded = !0, o.setLoading(e), o.requiresImageTextureScaling && i && 1 != e && e != o.pageCount && (i.repeat.x = .5), null != n && n()
-        }))) : E("Invalid set request on Page " + e)
-      }
-    }, i.prototype.setupAnnotations = function (n, i, o, a) {
-      if (null != o && 0 != t(o).length) {
-        var r = this, l = N(this.targetObject);
-        return n.getAnnotations().then((function (c) {
-          if (i = i.clone({dontFlip: !0}), r.options.pageSize, e.PAGE_SIZE.DOUBLEINTERNAL, null != o) {
-            0 == (o = t(o)).find(".annotationDiv").length && o.append(t("<div class='annotationDiv'>"));
-            var d = o.find(".annotationDiv");
-            d.empty(), r.options.pageSize == e.PAGE_SIZE.DOUBLEINTERNAL && a > 1 && a < r.pageCount && (!l && a % 2 == 1 || l && a % 2 == 0) ? d.css({left: "-100%"}) : 1 == a && d.css({left: ""});
-            var u = {
-              annotations: c,
-              div: d[0],
-              page: n,
-              viewport: i,
-              imageResourcesPath: s.imageResourcesPath,
-              linkService: r.linkService
-            };
-            if (pdfjsLib.AnnotationLayer.hasOwnProperty("render")) pdfjsLib.AnnotationLayer.render(u); else {
-              new pdfjsLib.AnnotationLayer(u).render(u)
-            }
-            if (r.options.annotationClass && "" !== r.options.annotationClass && d.find(" > section").addClass(r.options.annotationClass), 1 == r.options.search) {
-              0 == o.find(".textLayerDiv").length && o.append(t("<div class='textLayerDiv'>"));
-              var h = o.find(".textLayerDiv");
-              n.getTextContent().then((function (t) {
-                var n = new e.TextLayerBuilder({
-                  textLayerDiv: h[0],
-                  pageIndex: null,
-                  viewport: i.clone({dontFlip: !1})
-                });
-                n.setTextContent(t), n.render()
+      }, i.prototype.getPage = function (n, i, o) {
+        var a = this, r = n = parseInt(n, 10), l = a.contentSource;
+        n <= 0 && n >= a.pageCount ? a.setPage(n, options.textureLoadFallback, i, o) : a.contentSourceType == p.PDF ? null != a.getCache(n, o) ? (a.setPage(n, a.getCache(n, o), i, o), E("Page " + n + " loaded from cache")) : (!0 !== o && a.setLoading(n, !0), a.options.pageSize == e.PAGE_SIZE.DOUBLEINTERNAL && n > 2 && (r = Math.ceil((n - 1) / 2) + 1), l.getPage(r, o).then((function (t) {
+          !function (t, n, i, o) {
+            var s = a.options.forceFit, r = a.options.pageSize == e.PAGE_SIZE.DOUBLEINTERNAL && n > 1 && n < a.pageCount,
+              l = r && s ? 2 : 1, c = s ? t.getViewport({scale: 1}) : a.normalViewport,
+              d = a.cacheIndex / Math.max(c.width / l, c.height);
+            1 == a.webgl && (d = k(a.cacheIndex) / (a.pageRatio > 1 ? c.width / l : c.height));
+            var u = document.createElement("canvas"), h = performance.now(), p = a.cacheIndex,
+              g = u.getContext("2d", {willReadFrequently: !0});
+            1 == o && (d = a.thumbsize / a.normalViewport.height);
+            u.height = Math.round(c.height * d), u.width = Math.round(c.width / l * d), "css" == a.targetObject.mode && Math.abs(a.targetObject.zoomHeight - u.height) < 2 && Math.abs(a.targetObject.zoomWidth - u.width) < 2 && (u.height = a.targetObject.zoomHeight + 0, u.width = a.targetObject.zoomWidth + 0);
+            c = t.getViewport({scale: d}), E("rendering " + n + " at " + u.width + "x" + u.height), r && (N(a.targetObject) ? n % 2 == 0 && (c.transform[4] = -u.width) : n % 2 == 1 && (c.transform[4] = -u.width));
+            var f = {canvasContext: g, viewport: c};
+            t.cleanupAfterRender = !0, t.render(f).promise.then((function () {
+              E(performance.now() - h), h = performance.now(), 1 == o || 1 == a.options.canvasToBlob && !0 !== a.webgl ? u.toBlob((function (t) {
+                var s = e.createObjectURL(t, "image/jpeg");
+                E(performance.now() - h), a.setCache(n, s, o, p), a.setPage(n, s, i, o)
+              }), "image/jpeg", a.pdfRenderQuality) : (E("Setting Page " + n), a.setPage(n, u, i, o)), f = null
+            }))
+          }(t, n, i, o)
+        }))) : a.contentSourceType != p.IMAGE && a.contentSourceType != p.HTML || (null != a.getCache(n, o) ? (a.setPage(n, a.getCache(n, o), i, o), E("Page " + n + " loaded from cache")) : (!0 !== o && a.setLoading(n, !0), a.options.pageSize == e.PAGE_SIZE.DOUBLEINTERNAL && n > 2 && (r = Math.ceil((n - 1) / 2) + 1), function (e, n, i) {
+          t("<img/>").attr("src", e).on("load", (function () {
+            t(this).off(), null != n && n(e), E(this.height + ":" + this.width)
+          }))
+        }(l[r - 1], (function (e) {
+          a.setCache(n, e, o, a.cacheIndex), a.setPage(n, e, i, o), null != i && i()
+        }), a.isCrossOrigin)))
+      }, i.prototype.getTargetPage = function (e) {
+      }, i.prototype.setLoading = function (e, n) {
+        if (null != this.targetObject) if (1 == this.webgl) {
+          var i = this.targetObject.container;
+          1 == n ? !0 !== i.isLoading && (i.addClass("df-loading"), i.isLoading = !0, E("Loading icon at " + e + " as " + n)) : null != i.isLoading && (i.removeClass("df-loading"), i.isLoading = null, E("Loading icon at " + e + " as " + n))
+        } else {
+          var o = t(this.targetObject.getContentLayer(e));
+          null != o && (1 == n ? o.addClass("df-page-loading") : o.removeClass("df-page-loading"), E("Loading icon at " + e + " as " + n))
+        }
+      }, i.prototype.getAnnotations = function (n) {
+        var i = this;
+        if (0 != i.options.enableAnnotation) {
+          var o = i.targetObject;
+          n = parseInt(n, 10);
+          var a = i.contentSource, s = t(o.getContentLayer(n));
+          if (s.empty(), n > 0 && n <= i.pageCount) {
+            if (i.contentSourceType == p.PDF) {
+              O(n);
+              var r = n;
+              i.options.pageSize == e.PAGE_SIZE.DOUBLEINTERNAL && n > 2 && (r = Math.ceil((n - 1) / 2) + 1), a.getPage(r).then((function (e) {
+                if (null != s && s.length > 0) {
+                  var t = e.getViewport({scale: 1});
+                  t = e.getViewport({scale: i.normalViewport.height / t.height * i.viewport.height / t.height}), i.setupAnnotations(e, t, s, n)
+                }
               }))
             }
+            if (null != i.links && null != i.links[n]) for (var l = i.links[n], c = 0; c < l.length; c++) {
+              var d, u = l[c];
+              u.dest && u.dest.indexOf && 0 == u.dest.indexOf("[html]") ? ((d = document.createElement("div")).innerHTML = u.dest.substr(6), d.className = "customHtmlAnnotation") : ((d = document.createElement("a")).setAttribute("dest", u.dest), d.className = "customLinkAnnotation", d.href = "#" + u.dest, d.onclick = function () {
+                var e = this.getAttribute("dest");
+                return e && i.linkService.customNavigateTo(e), !1
+              }), d.style.left = u.x + "%", d.style.top = u.y + "%", d.style.width = u.w + "%", d.style.height = u.h + "%", s[0].appendChild(d)
+            }
+            if (null != i.html && null != i.html[n]) {
+              var h = i.html[n];
+              s.append(t("<div class='customHTMLAnnotation'>").html(h))
+            }
           }
-        }))
+        }
+      }, i.prototype.setPage = function (e, t, n, i) {
+        var o = this, a = o.targetObject, r = N(a), l = M(a);
+        if (1 == i) {
+          o.targetObject.container.find("#df-thumb" + e).css({backgroundImage: y(t)})
+        } else {
+          t == options.textureLoadFallback && E("Fallback on " + e);
+          var c = a.getPageByNumber(e);
+          null != c ? e % 2 != 0 && !r || e % 2 != 1 && r && !l || l && !r ? (E(e + "rendered to back of " + c.color), c.backImage(t, (function (t, i) {
+            c.backTextureLoaded = !0, o.setLoading(e), o.requiresImageTextureScaling && i && 1 != e && e != o.pageCount && (i.repeat.x = .5, i.offset.x = .5), null != n && n()
+          }))) : (E(e + "rendered to front of " + c.color), c.frontImage(t, (function (t, i) {
+            c.frontTextureLoaded = !0, o.setLoading(e), o.requiresImageTextureScaling && i && 1 != e && e != o.pageCount && (i.repeat.x = .5), null != n && n()
+          }))) : E("Invalid set request on Page " + e)
+        }
+      }, i.prototype.setupAnnotations = function (n, i, o, a) {
+        if (null != o && 0 != t(o).length) {
+          var r = this, l = N(this.targetObject);
+          return n.getAnnotations().then((function (c) {
+            if (i = i.clone({dontFlip: !0}), r.options.pageSize, e.PAGE_SIZE.DOUBLEINTERNAL, null != o) {
+              0 == (o = t(o)).find(".annotationDiv").length && o.append(t("<div class='annotationDiv'>"));
+              var d = o.find(".annotationDiv");
+              d.empty(), r.options.pageSize == e.PAGE_SIZE.DOUBLEINTERNAL && a > 1 && a < r.pageCount && (!l && a % 2 == 1 || l && a % 2 == 0) ? d.css({left: "-100%"}) : 1 == a && d.css({left: ""});
+              var u = {
+                annotations: c,
+                div: d[0],
+                page: n,
+                viewport: i,
+                imageResourcesPath: options.imageResourcesPath,
+                linkService: r.linkService
+              };
+              if (pdfjsLib.AnnotationLayer.hasOwnProperty("render")) pdfjsLib.AnnotationLayer.render(u); else {
+                new pdfjsLib.AnnotationLayer(u).render(u)
+              }
+              if (r.options.annotationClass && "" !== r.options.annotationClass && d.find(" > section").addClass(r.options.annotationClass), 1 == r.options.search) {
+                0 == o.find(".textLayerDiv").length && o.append(t("<div class='textLayerDiv'>"));
+                var h = o.find(".textLayerDiv");
+                n.getTextContent().then((function (t) {
+                  var n = new e.TextLayerBuilder({
+                    textLayerDiv: h[0],
+                    pageIndex: null,
+                    viewport: i.clone({dontFlip: !1})
+                  });
+                  n.setTextContent(t), n.render()
+                }))
+              }
+            }
+          }))
+        }
+      }, i
+    }(), q = function () {
+      function n(e) {
+        this.angles = e.angles || [0, 0, 0, 0, 0, 0], this.stiffness = e.angles || .1, this.segments = e.segments || 1, this.canvasMode = e.contentSourceType !== p.IMAGE && 0 == e.canvasToBlob, this.initDOM()
       }
-    }, i
-  }(), q = function () {
-    function n(e) {
-      this.angles = e.angles || [0, 0, 0, 0, 0, 0], this.stiffness = e.angles || .1, this.segments = e.segments || 1, this.canvasMode = e.contentSourceType !== p.IMAGE && 0 == e.canvasToBlob, this.initDOM()
-    }
 
-    function i(e) {
-      var n = e.contentLayer = t(m.div, {class: "df-page-content"});
-      e.append(n)
-    }
+      function i(e) {
+        var n = e.contentLayer = t(m.div, {class: "df-page-content"});
+        e.append(n)
+      }
 
-    return n.prototype = {
-      initDOM: function () {
-        var e = this.element = t(m.div, {class: "df-book-page"}),
-          n = this.wrapper = t(m.div, {class: "df-page-wrapper"}), o = this.front = t(m.div, {class: "df-page-front"}),
-          a = this.back = t(m.div, {class: "df-page-back"}),
-          s = this.foldInnerShadow = t(m.div, {class: "df-page-fold-inner-shadow"}),
-          r = this.foldOuterShadow = t(m.div, {class: "df-page-fold-outer-shadow"});
-        this.frontIMG = new Image, this.backIMG = new Image, i(o, this.segments), i(a, this.segments), e.append(n).append(r), n.append(o).append(a).append(s)
-      }, updatePoint: function (t) {
-        if (null != t) {
-          var n = null != this.parent.dragPage ? this.parent.dragPage : null != t.page ? t.page : this,
-            i = n.element.width(), o = n.element.height(),
-            a = null != this.parent.corner ? this.parent.corner : t.corner, s = e.CORNERS, r = n.side == g.right,
-            l = a == s.BL || a == s.BR;
-          t.rx = 1 == r ? 2 * i - t.x : t.x, t.ry = 1 == l ? o - t.y : t.y;
-          var c = Math.atan2(t.ry, t.rx);
-          c = Math.PI / 2 - C(c, 0, b(90));
-          var d = r ? t.x / 2 : i - t.x / 2, u = t.ry / 2, h = Math.max(0, Math.sin(c - Math.atan2(u, d)) * L(d, u)),
-            p = .5 * L(t.rx, t.ry), f = Math.round(i - h * Math.sin(c)), m = Math.round(h * Math.cos(c)), v = w(c),
-            y = l ? r ? 90 - v + 180 : 180 + v : r ? v : 90 - v, I = l ? r ? 90 - v + 180 : v : r ? v + 180 : y,
-            S = l ? r ? 90 - v : v + 90 : r ? y - 90 : y + 180, E = r ? i - f : f, k = l ? o + m : -m,
-            T = r ? -f : f - i, O = l ? -o - m : m, R = C(.5 * t.distance / i, 0, .5),
-            F = C(.5 * (2 * i - t.rx) / i, .05, .3);
-          n.element.addClass("df-folding");
-          var M = r ? n.back : n.front, N = r ? n.front : n.back, A = n.foldOuterShadow, _ = n.foldInnerShadow;
-          n.wrapper.css({transform: P(E, k) + x(y)}), M.css({transform: x(-y) + P(-E, -k)}), N.css({
-            transform: x(I) + P(T, O),
-            boxShadow: "rgba(0, 0, 0, " + R + ") 0px 0px 20px"
-          }), _.css({
-            transform: x(I) + P(T, O),
-            opacity: F / 2,
-            backgroundImage: D.css + "linear-gradient( " + S + "deg, rgba(0, 0, 0, 0.25) , rgb(0, 0, 0) " + .7 * p + "px, rgb(255, 255, 255) " + p + "px)"
-          }), A.css({
-            opacity: F / 2,
-            left: r ? "auto" : 0,
-            right: r ? 0 : "auto",
-            backgroundImage: D.css + "linear-gradient( " + (180 - S) + "deg, rgba(0, 0, 0,0) " + p / 3 + "px, rgb(0, 0, 0) " + p + "px)"
+      return n.prototype = {
+        initDOM: function () {
+          var e = this.element = t(m.div, {class: "df-book-page"}),
+            n = this.wrapper = t(m.div, {class: "df-page-wrapper"}), o = this.front = t(m.div, {class: "df-page-front"}),
+            a = this.back = t(m.div, {class: "df-page-back"}),
+            s = this.foldInnerShadow = t(m.div, {class: "df-page-fold-inner-shadow"}),
+            r = this.foldOuterShadow = t(m.div, {class: "df-page-fold-outer-shadow"});
+          this.frontIMG = new Image, this.backIMG = new Image, i(o, this.segments), i(a, this.segments), e.append(n).append(r), n.append(o).append(a).append(s)
+        }, updatePoint: function (t) {
+          if (null != t) {
+            var n = null != this.parent.dragPage ? this.parent.dragPage : null != t.page ? t.page : this,
+              i = n.element.width(), o = n.element.height(),
+              a = null != this.parent.corner ? this.parent.corner : t.corner, s = e.CORNERS, r = n.side == g.right,
+              l = a == s.BL || a == s.BR;
+            t.rx = 1 == r ? 2 * i - t.x : t.x, t.ry = 1 == l ? o - t.y : t.y;
+            var c = Math.atan2(t.ry, t.rx);
+            c = Math.PI / 2 - C(c, 0, b(90));
+            var d = r ? t.x / 2 : i - t.x / 2, u = t.ry / 2, h = Math.max(0, Math.sin(c - Math.atan2(u, d)) * L(d, u)),
+              p = .5 * L(t.rx, t.ry), f = Math.round(i - h * Math.sin(c)), m = Math.round(h * Math.cos(c)), v = w(c),
+              y = l ? r ? 90 - v + 180 : 180 + v : r ? v : 90 - v, I = l ? r ? 90 - v + 180 : v : r ? v + 180 : y,
+              S = l ? r ? 90 - v : v + 90 : r ? y - 90 : y + 180, E = r ? i - f : f, k = l ? o + m : -m,
+              T = r ? -f : f - i, O = l ? -o - m : m, R = C(.5 * t.distance / i, 0, .5),
+              F = C(.5 * (2 * i - t.rx) / i, .05, .3);
+            n.element.addClass("df-folding");
+            var M = r ? n.back : n.front, N = r ? n.front : n.back, A = n.foldOuterShadow, _ = n.foldInnerShadow;
+            n.wrapper.css({transform: P(E, k) + x(y)}), M.css({transform: x(-y) + P(-E, -k)}), N.css({
+              transform: x(I) + P(T, O),
+              boxShadow: "rgba(0, 0, 0, " + R + ") 0px 0px 20px"
+            }), _.css({
+              transform: x(I) + P(T, O),
+              opacity: F / 2,
+              backgroundImage: D.css + "linear-gradient( " + S + "deg, rgba(0, 0, 0, 0.25) , rgb(0, 0, 0) " + .7 * p + "px, rgb(255, 255, 255) " + p + "px)"
+            }), A.css({
+              opacity: F / 2,
+              left: r ? "auto" : 0,
+              right: r ? 0 : "auto",
+              backgroundImage: D.css + "linear-gradient( " + (180 - S) + "deg, rgba(0, 0, 0,0) " + p / 3 + "px, rgb(0, 0, 0) " + p + "px)"
+            })
+          }
+        }, updateAngle: function (e, t) {
+          var n = 5 * this.element.width();
+          this.wrapper.css({
+            perspective: n,
+            perspectiveOrigin: 1 == t ? "0% 50%" : "100% 50%"
+          }), this.front.css({
+            display: 1 == t ? e <= -90 ? "block" : "none" : e < 90 ? "block" : "none",
+            transform: ("MfS" !== D.dom ? "" : "perspective(" + n + "px) ") + (1 == t ? "translateX(-100%) " : "") + "rotateY(" + ((1 == t ? 180 : 0) + e) + "deg)"
+          }), this.back.css({
+            display: 1 == t ? e > -90 ? "block" : "none" : e >= 90 ? "block" : "none",
+            transform: ("MSd" !== D.dom ? "" : "perspective(" + n + "px) ") + (0 == t ? "translateX(100%) " : "") + "rotateY(" + ((0 == t ? -180 : 0) + e) + "deg)"
           })
+        }, tween: function (t) {
+          var n = this;
+          if (null != n && null != n.parent) {
+            var i, o = M(n.parent), a = n.side == g.right, s = n.parent.direction == e.DIRECTION.RTL,
+              r = n.parent.corner == e.CORNERS.BL || n.parent.corner == e.CORNERS.BR, l = 1 == n.magnetic,
+              c = r ? n.parent.height : 0, d = 0, u = n.end = n && 1 == n.animateToReset ? {
+                x: a ? n.parent.fullWidth : 0,
+                y: c
+              } : {x: a ? 0 : n.parent.fullWidth, y: c};
+            n.ease = n.isHard ? TWEEN.Easing.Quadratic.InOut : TWEEN.Easing.Linear.None;
+            var h = n.parent.duration;
+            1 == n.isHard ? (null != t && (d = S(t.distance, t.fullWidth)), i = n.init = {angle: d * (a ? -1 : 1)}, u = n.end = n && 1 == n.animateToReset ? {angle: a ? 0 : -0} : {angle: a ? -180 : 180}) : null == t ? (i = n.init = n && 1 == n.animateToReset ? {
+              x: a ? 0 : n.parent.fullWidth,
+              y: 0
+            } : {x: a ? n.parent.fullWidth : 0, y: 0}, n.first = {
+              x: (a ? 3 : 1) * n.parent.fullWidth / 4,
+              y: 0
+            }, n.mid = {x: (a ? 1 : 3) * n.parent.fullWidth / 4, y: 0}) : (i = n.init = {
+              x: t.x,
+              y: t.y,
+              opacity: 1
+            }, n.first = {x: 3 * t.x / 4, y: 3 * t.y / 4, opacity: 1}, n.mid = {
+              x: t.x / 4,
+              y: t.y / 4,
+              opacity: 1
+            }, h = n.parent.duration * I(i.x, i.y, u.x, u.y) / n.parent.fullWidth, h = C(h, n.parent.duration / 3, n.parent.duration)), i.index = 0, u.index = 1, n.isFlipping = !0;
+            var p = function (e) {
+              1 == n.isHard ? (n.updateAngle(e.angle, a), n.angle = e.angle) : (n.updatePoint({
+                x: e.x,
+                y: e.y
+              }), n.x = e.x, n.y = e.y), o && !l && (n.element[0].style.opacity = a && !s || !a && s ? e.index > .5 ? 2 * (1 - e.index) : 1 : e.index < .5 ? 2 * e.index : 1)
+            };
+            o && (!a && !s || a && s) && (n.element[0].style.opacity = 0);
+            n.completeTween = n.completeTween || function (t) {
+              n.isFlipping = !1, 1 == n.isHard ? (n.updateAngle(n.end.angle), n.back.css({display: "block"}), n.front.css({display: "block"})) : n.updatePoint({
+                x: n.end.x,
+                y: n.end.y
+              }), n.element[0].style.opacity = 1, !0 !== n.animateToReset ? n.side = n.side == g.right ? g.left : g.right : n.animateToReset = null, n.currentTween = null, n.pendingPoint = null, n.magnetic = !1, n.parent.dragPage = null, n.parent.corner = e.CORNERS.NONE, 1 != t && n.parent.refresh()
+            };
+            1 == n.isHard ? n.currentTween = new TWEEN.Tween(i).delay(0).to(u, n.parent.duration).onUpdate((function () {
+              p(this)
+            })).easing(n.ease).onComplete(n.completeTween).start() : null == t ? n.currentTween = new TWEEN.Tween(i).delay(0).to(u, n.parent.duration).onUpdate((function () {
+              p(this)
+            })).easing(TWEEN.Easing.Sinusoidal.Out).onComplete(n.completeTween).start() : (n.currentTween = new TWEEN.Tween(i).delay(0).to(u, h).onUpdate((function () {
+              p(this)
+            })).easing(TWEEN.Easing.Sinusoidal.Out).onComplete(n.completeTween), n.currentTween.start())
+          }
+        }, frontImage: function (e, n) {
+          var i = this;
+
+          function o() {
+            i.front.css({backgroundImage: y(e)}), null != n && n()
+          }
+
+          1 == i.canvasMode ? (i.front.find(">canvas").remove(), e !== options.textureLoadFallback && i.front.append(t(e)), null != n && n()) : e == options.textureLoadFallback ? o() : (i.frontIMG.onload = o, i.frontIMG.src = e)
+        }, backImage: function (e, n) {
+          var i = this;
+
+          function o() {
+            i.back.css({backgroundImage: y(e)}), null != n && n()
+          }
+
+          1 == i.canvasMode ? (i.back.find(">canvas").remove(), e !== options.textureLoadFallback && i.back.append(t(e)), null != n && n()) : e == options.textureLoadFallback ? o() : (i.backIMG.onload = o, i.backIMG.src = e)
+        }, updateCSS: function (e) {
+          this.element.css(e)
+        }, resetCSS: function () {
+          this.wrapper.css({transform: ""}), this.front.css({transform: "", boxShadow: ""}), this.back.css({
+            transform: "",
+            boxShadow: ""
+          })
+        }, clearTween: function (e) {
+          this.currentTween.stop(), this.completeTween(1 == e), this.resetCSS()
         }
-      }, updateAngle: function (e, t) {
-        var n = 5 * this.element.width();
-        this.wrapper.css({
-          perspective: n,
-          perspectiveOrigin: 1 == t ? "0% 50%" : "100% 50%"
-        }), this.front.css({
-          display: 1 == t ? e <= -90 ? "block" : "none" : e < 90 ? "block" : "none",
-          transform: ("MfS" !== D.dom ? "" : "perspective(" + n + "px) ") + (1 == t ? "translateX(-100%) " : "") + "rotateY(" + ((1 == t ? 180 : 0) + e) + "deg)"
-        }), this.back.css({
-          display: 1 == t ? e > -90 ? "block" : "none" : e >= 90 ? "block" : "none",
-          transform: ("MSd" !== D.dom ? "" : "perspective(" + n + "px) ") + (0 == t ? "translateX(100%) " : "") + "rotateY(" + ((0 == t ? -180 : 0) + e) + "deg)"
-        })
-      }, tween: function (t) {
-        var n = this;
-        if (null != n && null != n.parent) {
-          var i, o = M(n.parent), a = n.side == g.right, s = n.parent.direction == e.DIRECTION.RTL,
-            r = n.parent.corner == e.CORNERS.BL || n.parent.corner == e.CORNERS.BR, l = 1 == n.magnetic,
-            c = r ? n.parent.height : 0, d = 0, u = n.end = n && 1 == n.animateToReset ? {
-              x: a ? n.parent.fullWidth : 0,
-              y: c
-            } : {x: a ? 0 : n.parent.fullWidth, y: c};
-          n.ease = n.isHard ? TWEEN.Easing.Quadratic.InOut : TWEEN.Easing.Linear.None;
-          var h = n.parent.duration;
-          1 == n.isHard ? (null != t && (d = S(t.distance, t.fullWidth)), i = n.init = {angle: d * (a ? -1 : 1)}, u = n.end = n && 1 == n.animateToReset ? {angle: a ? 0 : -0} : {angle: a ? -180 : 180}) : null == t ? (i = n.init = n && 1 == n.animateToReset ? {
-            x: a ? 0 : n.parent.fullWidth,
-            y: 0
-          } : {x: a ? n.parent.fullWidth : 0, y: 0}, n.first = {
-            x: (a ? 3 : 1) * n.parent.fullWidth / 4,
-            y: 0
-          }, n.mid = {x: (a ? 1 : 3) * n.parent.fullWidth / 4, y: 0}) : (i = n.init = {
-            x: t.x,
-            y: t.y,
-            opacity: 1
-          }, n.first = {x: 3 * t.x / 4, y: 3 * t.y / 4, opacity: 1}, n.mid = {
-            x: t.x / 4,
-            y: t.y / 4,
-            opacity: 1
-          }, h = n.parent.duration * I(i.x, i.y, u.x, u.y) / n.parent.fullWidth, h = C(h, n.parent.duration / 3, n.parent.duration)), i.index = 0, u.index = 1, n.isFlipping = !0;
-          var p = function (e) {
-            1 == n.isHard ? (n.updateAngle(e.angle, a), n.angle = e.angle) : (n.updatePoint({
-              x: e.x,
-              y: e.y
-            }), n.x = e.x, n.y = e.y), o && !l && (n.element[0].style.opacity = a && !s || !a && s ? e.index > .5 ? 2 * (1 - e.index) : 1 : e.index < .5 ? 2 * e.index : 1)
-          };
-          o && (!a && !s || a && s) && (n.element[0].style.opacity = 0);
-          n.completeTween = n.completeTween || function (t) {
-            n.isFlipping = !1, 1 == n.isHard ? (n.updateAngle(n.end.angle), n.back.css({display: "block"}), n.front.css({display: "block"})) : n.updatePoint({
-              x: n.end.x,
-              y: n.end.y
-            }), n.element[0].style.opacity = 1, !0 !== n.animateToReset ? n.side = n.side == g.right ? g.left : g.right : n.animateToReset = null, n.currentTween = null, n.pendingPoint = null, n.magnetic = !1, n.parent.dragPage = null, n.parent.corner = e.CORNERS.NONE, 1 != t && n.parent.refresh()
-          };
-          1 == n.isHard ? n.currentTween = new TWEEN.Tween(i).delay(0).to(u, n.parent.duration).onUpdate((function () {
-            p(this)
-          })).easing(n.ease).onComplete(n.completeTween).start() : null == t ? n.currentTween = new TWEEN.Tween(i).delay(0).to(u, n.parent.duration).onUpdate((function () {
-            p(this)
-          })).easing(TWEEN.Easing.Sinusoidal.Out).onComplete(n.completeTween).start() : (n.currentTween = new TWEEN.Tween(i).delay(0).to(u, h).onUpdate((function () {
-            p(this)
-          })).easing(TWEEN.Easing.Sinusoidal.Out).onComplete(n.completeTween), n.currentTween.start())
-        }
-      }, frontImage: function (e, n) {
-        var i = this;
-
-        function o() {
-          i.front.css({backgroundImage: y(e)}), null != n && n()
-        }
-
-        1 == i.canvasMode ? (i.front.find(">canvas").remove(), e !== s.textureLoadFallback && i.front.append(t(e)), null != n && n()) : e == s.textureLoadFallback ? o() : (i.frontIMG.onload = o, i.frontIMG.src = e)
-      }, backImage: function (e, n) {
-        var i = this;
-
-        function o() {
-          i.back.css({backgroundImage: y(e)}), null != n && n()
-        }
-
-        1 == i.canvasMode ? (i.back.find(">canvas").remove(), e !== s.textureLoadFallback && i.back.append(t(e)), null != n && n()) : e == s.textureLoadFallback ? o() : (i.backIMG.onload = o, i.backIMG.src = e)
-      }, updateCSS: function (e) {
-        this.element.css(e)
-      }, resetCSS: function () {
-        this.wrapper.css({transform: ""}), this.front.css({transform: "", boxShadow: ""}), this.back.css({
-          transform: "",
-          boxShadow: ""
-        })
-      }, clearTween: function (e) {
-        this.currentTween.stop(), this.completeTween(1 == e), this.resetCSS()
-      }
-    }, n
-  }(), Z = function (n) {
-    function i(e) {
-      for (var t = !1, n = 0; n < e.pages.length; n++) {
-        if (1 == e.pages[n].isFlipping) {
-          t = !0;
-          break
-        }
-      }
-      return t
-    }
-
-    function o(n, o) {
-      var a = this;
-
-      function s(e) {
-        a.dragPage != e.page && 1 == e.page.visible && (a.dragPage.clearTween(!0), a.dragPage = e.page, a.corner = e.corner, a.dragPage.pendingPoint = e)
-      }
-
-      a.type = "BookCSS", a.images = n.images || [], a.pageCount = n.pageCount || 1, a.foldSense = 50, a.stackCount = 4, a.mode = "css", a.pages = [], a.duration = n.duration, a.container = t(o), a.options = n, a.drag = g.none, a.pageMode = n.pageMode || (A || a.pageCount <= 2 ? e.PAGE_MODE.SINGLE : e.PAGE_MODE.DOUBLE), a.singlePageMode = n.singlePageMode || (A ? e.SINGLE_PAGE_MODE.BOOKLET : e.SINGLE_PAGE_MODE.ZOOM), a.swipe_threshold = A ? 15 : 50, a.direction = n.direction || e.DIRECTION.LTR, a.startPage = 1, a.endPage = a.pageCount, a._activePage = n.openPage || a.startPage, a.hardConfig = n.hard, r = "WebKitCSSMatrix" in window || document.body && "MozPerspective" in document.body.style, a.animateF = function () {
-        TWEEN.getAll().length > 0 ? TWEEN.update() : clearInterval(a.animate)
-      }, a.init(n), a.skipDrag = !1;
-      var l = function (t) {
-        var n = a.eventToPoint(t);
-        if (null != t.touches && 2 == t.touches.length && null != a.startTouches) {
-          a.zoomDirty = !0;
-          var o = d.getVectorAvg(d.getTouches(t, a.container.offset())),
-            s = d.calculateScale(a.startTouches, d.getTouches(t));
-          a.lastScale, a.contentProvider.zoomScale, o.x, o.y;
-          a.stage.css({transform: "translate3d(" + a.left + "px," + a.top + "px,0) scale3d(" + s + "," + s + ",1)"}), a.lastScale = s, a.lastZoomCenter = o, t.preventDefault()
-        }
-        if (!(null != t.touches && t.touches.length > 1 || null == a.startPoint || null != a.startTouches)) {
-          var r = a.dragPage || n.page;
-          if (1 !== a.contentProvider.zoomScale) null == t.touches && 1 != a.isPanning || (a.pan(n), t.preventDefault()); else if (!0 !== a.skipDrag) {
-            n.distance;
-            if (!i(a)) {
-              if (null != a.dragPage || 1 == n.isInside) {
-                null != a.dragPage ? E("set mouse down move") : (n.y = C(n.y, 1, a.height - 1), n.x = C(n.x, 1, n.fullWidth - 1));
-                var l = a.corner || n.corner;
-                if (r.isHard) {
-                  var c = l == e.CORNERS.BR || l == e.CORNERS.TR, u = S(n.distance, n.fullWidth);
-                  r.updateAngle(u * (c ? -1 : 1), c)
-                } else r.updatePoint(n, a);
-                r.magnetic = !0, r.magneticCorner = n.corner, t.preventDefault()
-              }
-              if (null == a.dragPage && null != r && 0 == n.isInside && 1 == r.magnetic && (r.pendingPoint = n, r.animateToReset = !0, a.corner = r.magneticCorner, a.animatePage(r), r.pendingPoint = null, r.magnetic = !1, r.magneticCorner = null), 1 == a.isPanning && null == a.dragPage && 1 == a.contentProvider.zoomScale) {
-                var h = n.x - a.lastPos;
-                performance.now(), a.lastTime;
-                Math.abs(h) > a.swipe_threshold && (h < 0 ? a.next() : a.prev(), a.drag = g.none, a.isPanning = !1, t.preventDefault()), a.lastPos = n.x, a.lastTime = performance.now()
-              }
-            }
+      }, n
+    }(), Z = function (n) {
+      function i(e) {
+        for (var t = !1, n = 0; n < e.pages.length; n++) {
+          if (1 == e.pages[n].isFlipping) {
+            t = !0;
+            break
           }
         }
-      }, c = function (t) {
-        if (null != t.touches && 0 == t.touches.length) {
-          a.contentProvider.zoomScale;
-          1 == a.zoomDirty && (a.previewObject.contentProvider.zoomScale = d.limitAt(a.previewObject.contentProvider.zoomScale * a.lastScale, 1, a.previewObject.contentProvider.maxZoom), a.previewObject.zoomValue = 1 * a.previewObject.contentProvider.zoomScale, a.previewObject.resize(), a.zoomDirty = !1), a.wrapper.css({transform: ""}), a.lastScale = null, a.startTouches = null
-        }
-        if (a.isPanning = !1, !(null != t.touches && t.touches.length > 1) && !0 !== a.skipDrag) {
-          var n = a.eventToPoint(t);
-          a.dragPage && (t.preventDefault(), a.dragPage.pendingPoint = n, n.x == a.startPoint.x && n.y == a.startPoint.y && 1 == n.isInside ? a.corner == e.CORNERS.BR || a.corner == e.CORNERS.TR ? (s(n), !0 !== a.dragPage.isFlipping && a.next()) : a.corner != e.CORNERS.BL && a.corner != e.CORNERS.TL || (s(n), !0 !== a.dragPage.isFlipping && a.prev()) : !0 !== a.dragPage.isFlipping && (n.distance > n.fullWidth / 2 ? n.x > n.fullWidth / 2 ? a.prev() : a.next() : (a.dragPage.animateToReset = !0, a.animatePage(a.dragPage))), a.dragPage && (a.dragPage.pendingPoint = null, a.dragPage.magnetic = !1)), a.drag = g.none
-        }
-      }, u = function (t) {
-        var n = a.eventToPoint(t), i = t.srcElement || t.originalTarget;
-        a.dragPage && a.dragPage.magnetic || a.wrapper[0].contains(t.target) && 1 == a.contentProvider.zoomScale && n.x == a.startPoint.x && n.y == a.startPoint.y && n.isInsidePage && a.startPoint.page == n.page && !n.page.isFlipping && "A" !== i.nodeName && (0 == a.startPoint.page.side ? (a.corner = e.CORNERS.TL, a.prev(), a.startPoint.page = null) : (a.corner = e.CORNERS.TR, a.next(), a.startPoint.page = null), a.isPanning = !1)
-      }, h = function (t) {
-        if (null != t.touches && 2 == t.touches.length && null == a.startTouches && (a.startTouches = d.getTouches(t), a.lastScale = 1), !(null != t.touches && t.touches.length > 1 || null == t.touches && 0 !== t.button)) {
-          var n, o = a.eventToPoint(t);
-          a.startPoint = o, a.left = a.left || 0, a.top = a.top || 0, a.isPanning = !0, a.lastPos = o.x, a.lastTime = performance.now(), !0 !== a.skipDrag && (1 != o.isInside || i(a) || (a.startPoint = o, a.drag = o.drag, a.dragPage = o.page, a.corner = o.corner, E(a.corner), (n = a.dragPage).parent.container.find(".df-folding").removeClass("df-folding"), n.element.addClass("df-folding"), o.page.isHard || o.page.updatePoint(o, a), "0" == o.page.name ? a.shadow.css({
-            width: "50%",
-            left: a.direction == e.DIRECTION.RTL ? 0 : "50%",
-            transitionDelay: ""
-          }) : o.page.name == Math.ceil(a.pageCount / 2) - 1 && a.shadow.css({
-            width: "50%",
-            left: a.direction == e.DIRECTION.RTL ? "50%" : 0,
-            transitionDelay: ""
-          })))
-        }
-      }, p = function (e) {
-        if (!0 === a.previewObject.options.isLightBox || !0 === a.previewObject.ui.isFullscreen) {
-          var t = 0;
-          null != e.wheelDelta ? t = e.wheelDelta / 120 : null != e.detail && (t = -e.detail / 3);
-          var n = a.contentProvider.zoomScale, i = a.contentProvider.maxZoom;
-          if (t && (t > 0 && n < i || t < 0 && n > 1)) {
-            e.stopPropagation(), e.preventDefault();
-            var o = a.eventToPoint(e), s = a.eventToPoint(e),
-              r = {x: a.container.width() / 2, y: a.container.height() / 2 - 23};
-            a.previewObject.zoom(t);
-            var l = a.contentProvider.zoomScale;
-            if (n !== l) {
-              var c = l / n;
-              1 == l ? (a.left = 0, a.top = 0) : (a.left *= c, a.top *= c);
-              var d = (o.raw.x - r.x) * c, u = (o.raw.y - r.y) * c;
-              s.raw.x = r.x + d, s.raw.y = r.y + u, a.startPoint = s, a.pan(o);
-              var h = a.dragPage || o.page;
-              null == a.dragPage && null != h && 1 == o.isInside && 1 == h.magnetic && (h.pendingPoint = o, h.animateToReset = !0, a.corner = h.magneticCorner, a.animatePage(h), h.pendingPoint = null, h.magnetic = !1, h.magneticCorner = null)
-            }
-          }
-        }
-      }, f = a.container[0], m = a.stage[0];
-      f && (m.addEventListener("mousemove", l, !1), m.addEventListener("touchmove", l, !1), m.addEventListener("mousedown", h, !1), m.addEventListener("click", u, !1), m.addEventListener("mouseup", c, !1), m.addEventListener("touchend", c, !1), m.addEventListener("touchstart", h, !1), 1 == a.options.scrollWheel && (m.addEventListener("mousewheel", p, !1), m.addEventListener("DOMMouseScroll", p, !1))), this.dispose = function () {
-        m.removeEventListener("mousemove", l, !1), m.removeEventListener("touchmove", l, !1), m.removeEventListener("mousedown", h, !1), m.removeEventListener("click", u, !1), m.removeEventListener("mouseup", c, !1), m.removeEventListener("touchend", c, !1), m.removeEventListener("touchstart", h, !1), 1 == a.options.scrollWheel && (m.removeEventListener("mousewheel", p, !1), m.removeEventListener("DOMMouseScroll", p, !1)), a.updatePageCallback = null, a.flipCallback = null, a.animateF = null, a.stage.remove()
-      }
-    }
-
-    return j(o, {}), o.prototype = {
-      add: function (e) {
-        e instanceof q ? this.container.append(t(e.element)) : this.container.append(t(e))
-      }, pan: function (e) {
-        var t = this.startPoint, n = this.contentProvider.zoomScale, i = this.left + (e.raw.x - t.raw.x),
-          o = this.top + (e.raw.y - t.raw.y);
-        this.left = Math.round(C(i, -this.shiftWidth, this.shiftWidth)), this.top = Math.round(C(o, -this.shiftHeight, this.shiftHeight)), 1 == n && (this.left = 0, this.top = 0), this.startPoint = e, this.stage.css({transform: "translate3d(" + this.left + "px," + this.top + "px,0)"})
-      }, getPageByNumber: function (e) {
-        for (var t, n = M(this) ? N(this) ? e + 1 : e : Math.floor((e - 1) / 2), i = 0; i < this.pages.length; i++) n == parseInt(this.pages[i].name, 10) && (t = this.pages[i]);
         return t
-      }, getPageSide: function (t) {
-        var n = this.direction == e.DIRECTION.RTL, i = this.getPageByNumber(t);
-        if (null != i) return M(this) ? n ? i.front : i.back : t % 2 == 0 ? n ? i.back : i.front : n ? i.front : i.back
-      }, getContentLayer: function (e) {
-        var t = this.getPageSide(e);
-        return null == t ? null : t.contentLayer
       }
-    }, o.prototype.init = function (e) {
-      var n = this;
-      n.stage = t(m.div, {class: "df-book-stage"}), n.wrapper = t(m.div, {class: "df-book-wrapper"}), n.shadow = t(m.div, {class: "df-book-shadow"}), n.container.append(n.stage), n.stage.append(n.wrapper), n.wrapper.append(n.shadow), n.createStack(e)
-    }, o.prototype.createStack = function (e) {
-      for (var t = "red,green,blue,yellow,orange,black".split(","), n = 0; n < this.stackCount; n++) {
-        e.angles = [, this.stackCount - n], e.stiffness = (this.stackCount - n) / 100;
-        var i = new q(e);
-        i.angles[1] = 180, i.index = n, i.parent = this, i.textureReady = !1, i.textureRequested = !1, this.wrapper.append(i.element), i.isFlipping = !1, this.pages.push(i), i.color = t[n]
-      }
-      this.children = this.pages
-    }, o.prototype.isPageHard = function (e) {
-      return d.isHardPage(this.hardConfig, e, this.pageCount, M(this))
-    }, o.prototype.setDuration = function (e) {
-      this.duration = e
-    }, o.prototype.moveBy = function (e) {
-      var t = this._activePage + e;
-      t = C(t, this.startPage, this.endPage), 1 != this.firstFlipped && (this.previewObject.analytics({
-        eventAction: "First Page Flip",
-        options: this.previewObject.options
-      }), this.firstFlipped = !0), this.gotoPage(t)
-    }, o.prototype.next = function (t) {
-      null == t && (t = this.direction == e.DIRECTION.RTL ? -this.pageMode : this.pageMode), this.moveBy(t)
-    }, o.prototype.prev = function (t) {
-      null == t && (t = this.direction == e.DIRECTION.RTL ? this.pageMode : -this.pageMode), this.moveBy(t)
-    }, o.prototype.eventToPoint = function (n) {
-      n = F(n);
-      var i = this.wrapper, o = this.pages, a = this.pageWidth, s = this.fullWidth, r = this.height,
-        l = (t(window), {x: n.clientX, y: n.clientY}), c = l.x - i[0].getBoundingClientRect().left,
-        d = l.y - i[0].getBoundingClientRect().top;
-      l.x = l.x - this.container[0].getBoundingClientRect().left, l.y = l.y - this.container[0].getBoundingClientRect().top;
-      var u, h = this.drag == g.none ? c < a ? c : s - c : this.drag == g.left ? c : s - c,
-        p = c < a ? o[this.stackCount / 2 - 1] : o[this.stackCount / 2],
-        f = c < this.foldSense ? g.left : c > s - this.foldSense ? g.right : g.none, m = c, v = d, b = r, w = s,
-        P = this.foldSense, x = e.CORNERS;
-      return {
-        isInsidePage: m >= 0 && m <= w && v >= 0 && v <= b,
-        isInside: (u = m >= 0 && m < P ? v >= 0 && v <= P ? x.TL : v >= b - P && v <= b ? x.BL : v > P && v < b - P ? x.L : x.NONE : m >= w - P && m <= w ? v >= 0 && v <= P ? x.TR : v >= b - P && v <= b ? x.BR : v > P && v < b - P ? x.R : x.NONE : x.NONE) !== x.NONE && u !== x.L && u !== x.R,
-        x: c,
-        y: d,
-        fullWidth: s,
-        rawDistance: s - c,
-        distance: h,
-        page: p,
-        drag: f,
-        foldSense: this.foldSense,
-        event: n,
-        raw: l,
-        corner: u
-      }
-    }, o.prototype.gotoPage = function (e) {
-      e = parseInt(e, 10), this._activePage = e, 1 == this.autoPlay && this.previewObject.setAutoPlay(this.autoPlay), this.updatePage(e), this && this.thumblist && this.thumblist.review && this.thumblist.review()
-    }, o.prototype.refresh = function () {
-      this.updatePage(this._activePage), null != this.flipCallback && this.flipCallback()
-    }, o.prototype.updatePage = function (n) {
-      var i = this.direction == e.DIRECTION.RTL, o = M(this), a = (O(n), o ? 1 : 2);
-      n = Math.floor(n / a), i && (n = Math.ceil(this.pageCount / a) - n);
-      var r = this.oldBaseNumber || 0, l = this.pageCount / a, c = this.stackCount, d = Math.floor(c / 2);
-      r > n ? (this.children[c - 1].skipFlip = !0, this.children.unshift(this.children.pop())) : r < n && (this.children[0].skipFlip = !0, this.children.push(this.children.shift()));
-      for (var u = 0; u < c; u++) {
-        var h = this.children[u];
-        r !== n && null != h.currentTween && h.clearTween(!0);
-        var p, f = h.side, m = n - d + u;
-        i && (m = o ? this.pageCount - m : Math.ceil(this.pageCount / 2) - m - 1);
-        var v = h.name;
-        h.isHard = this.isPageHard(m), h.isHard ? h.element.addClass("df-hard-page") : (h.element.removeClass("df-hard-page"), h.front.css({display: "block"}), h.back.css({display: "block"})), 0 == m || m == l ? h.element.addClass("df-cover-page") : h.element.removeClass("df-cover-page"), t(h.element).attr("pageNumber") != m && (h.front.contentLayer.empty(), h.back.contentLayer.empty()), t(h.element).attr("pageNumber", m), h.isEdge = !1, 0 == u || u == c - 1 || (h.isEdge = !1), p = u < d ? g.left : g.right, 0 == h.isFlipping && (p !== f && 0 == h.skipFlip ? (this.animatePage(h), null != this.preFlipCallback && this.preFlipCallback()) : (h.skipFlip = !1, h.element.removeClass("df-flipping df-quick-turn df-folding df-left-side df-right-side"), h.element.addClass(u < d ? "df-left-side" : "df-right-side"), h.side = p)), h.visible = o ? i ? u < d || h.isFlipping : u >= d || h.isFlipping : m >= 0 && m < l || o && m == l, null != this.requestPage && 1 == h.visible && (h.name = m.toString(), h.name != v && (h.backTextureLoaded = !1, h.frontTextureLoaded = !1, h.backPageStamp = "-1", h.frontPageStamp = "-1", h.thumbLoaded = !1, h.front.contentLayer.html(""), h.back.contentLayer.html(""), h.frontImage(s.textureLoadFallback), h.backImage(s.textureLoadFallback), this.requestPage())), h.oldDepth = h.depth, h.updateCSS({
-          display: 1 == h.visible ? "block" : "none",
-          zIndex: 6 + (u < d ? u - d : d - u),
-          transform: ""
-        }), null == h.pendingPoint && 0 == h.isFlipping && h.resetCSS()
-      }
-      0 == TWEEN.getAll().length && clearInterval(this.animate), t(".quick-hint").html(n), this.oldBaseNumber = n, this.updatePageCallback && this.updatePageCallback()
-    }, o.prototype.animatePage = function (e) {
-      e.element.addClass("df-flipping"), e.isFlipping = !0, null != this.animate && clearInterval(this.animate), this.animate = setInterval(this.animateF, 30), e.tween(e.pendingPoint)
-    }, o
-  }(), K = function (n) {
-    function i(i, o, a) {
-      n.call(this, a);
-      var s = this;
-      s.type = "FlipBook", s.container = i, s.options = a, s.options.source = o, s.contentSource = o, null != a.height && a.height.toString().indexOf("%") < 0 ? s.container.height(Math.min(a.height, t(window).height())) : s.container.height(a.height), s.options.isLightBox && window.dfLightBox.closeButton.addClass(s.options.icons.close), s.options.pageSize == e.PAGE_SIZE.DOUBLEINTERNAL && ((Array === s.contentSource.constructor || Array.isArray(s.contentSource) || s.contentSource instanceof Array) && (s.options.singlePageMode = e.SINGLE_PAGE_MODE.ZOOM), s.container.addClass("df-double-internal")), s.options.isLightBox || null == s.container.attr("id") || (s.options.id = s.container.attr("id")), !0 !== s.options.parsed && null != s.options.links && e.parseLinks(s.options.links);
-      var r = s.webgl = 1 == a.webgl && 1 == _ && d.canSupport3D();
-      if (i.addClass("df-container df-loading df-init df-floating df-controls-" + s.options.controlsPosition), s.commentPopup = t('<div class="df-comment-popup">').appendTo(i), 1 == s.options.transparent && i.addClass("df-transparent"), s.options.direction == e.DIRECTION.RTL && i.addClass("df-rtl"), s.container.info = t(m.div, {class: "loading-info"}).appendTo(s.container).html(s.options.text.loading + "..."), c.match(/msie\s[5-9]/i)) return s.container.info.html("Your browser (Internet Explorer) is out of date to run DFlip Flipbook Plugin. <br><a href='http://browsehappy.com/'>Upgrade to a new one</a>").addClass("df-old-browser"), i.removeClass("df-loading"), s;
-      var l = null == a.backgroundImage || "" == a.backgroundImage ? "" : "url('" + a.backgroundImage + "')";
-      return s.container.css({
-        position: "relative",
-        overflow: "hidden",
-        backgroundColor: a.backgroundColor,
-        backgroundImage: l
-      }), 1 == s.options.isLightBox && s.analytics({
-        eventAction: "Open Book",
-        options: s.options
-      }), s.init(r, o), null != s.options.onCreate && s.options.onCreate(s), s
-    }
 
-    return j(i, n), i.prototype.init = function (n) {
-      var i, o, a = this, r = a.target, l = a.options;
-      if (1 == n) {
-        i = function () {
-          a.container.css({
-            minHeight: 300,
-            minWidth: 300
-          }), a.stage = new H(T(a.options, {container: a.container})), a.stage.previewObject = a, a.contentProvider = new G(a.contentSource, (function (i) {
-            var o = {
-              pageCount: i.pageCount,
-              stackCount: 6,
-              segments: 20,
-              width: i.bookSize.width,
-              height: i.bookSize.height
-            };
-            a.target = r = a.stage.target = new MOCKUP.Book(T(a.options, o), a.stage), a.extendtarget(), U(a.container, a), r.ui = a.ui, r.container = a.container, i.webgl = n, i.setTarget(a.target), r.getContentLayer = function (t) {
-              var n = r.direction == e.DIRECTION.RTL, i = a.stage.cssScene.divLeft.element,
-                o = a.stage.cssScene.divRight.element;
-              return O(r._activePage), M(r) ? n ? i : o : t % 2 == 0 ? n ? o : i : n ? i : o
-            }, r.stage = a.stage, r.flipCallback = function () {
-              if (a.contentProvider) {
-                a.contentProvider.review("flipCallback");
-                var n, i, o = O(r._activePage), s = r.getPageByNumber(o), l = r.getPageByNumber(o + 1),
-                  c = r.parent.cssScene.divLeft, d = r.parent.cssScene.divRight;
-                r.pageMode, e.PAGE_MODE.SINGLE, r.direction, e.DIRECTION.RTL, null != s && null != c && (n = Math.abs(s.geometry.boundingBox.max.x - s.geometry.boundingBox.min.x), i = Math.abs(s.geometry.boundingBox.max.z - s.geometry.boundingBox.min.z), c.rotation.y = .9 * -Math.atan2(i, n), c.position.z = .8 * i, c.position.x = i / 2.5, t(c.element).css({
-                  width: n,
-                  left: -n / 2
-                })), null != l && null != d && (n = Math.abs(l.geometry.boundingBox.max.x - l.geometry.boundingBox.min.x), i = Math.abs(l.geometry.boundingBox.max.z - l.geometry.boundingBox.min.z), d.rotation.y = .9 * Math.atan2(i, n), d.position.z = .8 * i, d.position.x = -i / 2.5, t(d.element).css({
-                  width: n,
-                  left: n / 2
-                })), null != a.options.onFlip && a.options.onFlip(a)
-              }
-            }, r.resize = void a.resize(), r.updatePageCallback = function () {
-              a.ui.update(), a.checkCenter(), a.stage.renderRequestPending = !0
-            };
-            var s = t(a.stage.cssScene.divLeft.element), l = t(a.stage.cssScene.divRight.element);
-            r.preFlipCallback = function () {
-              s.empty(), l.empty(), null != a.options.beforeFlip && a.options.beforeFlip(a), a.playSound()
-            }, t(window).trigger("resize"), s.css({
-              width: i.bookSize.width,
-              height: i.bookSize.height,
-              left: -i.bookSize.width / 2
-            }), l.css({
-              width: i.bookSize.width,
-              height: i.bookSize.height,
-              left: i.bookSize.width / 2
-            }), r.ease = TWEEN.Easing.Cubic.InOut, r.contentProvider = i, r.duration = a.options.duration, r.gotoPage(r._activePage), r.flipCallback(), 1 == a.options.isLightBox && a.analytics({
-              eventAction: "Book Ready",
-              options: a.options
-            }), null != a.options.onReady && a.options.onReady(a)
-          }), l, a)
-        }, o = function () {
-          MOCKUP.defaults.anisotropy = 0, MOCKUP.defaults.groundTexture = "blank", THREE.skipPowerOfTwo = !0, W(), null != i && i()
-        }, null == window.MOCKUP ? (a.updateInfo(l.text.loading + " WEBGL 3D ..."), "function" == typeof define && define.amd && window.requirejs ? (requirejs.config({
-          paths: {three: s.threejsSrc.replace(".js", "")},
-          shim: {three: {exports: "THREE"}}
-        }), require(["three"], (function (t) {
-          return window.THREE = t, R(s.mockupjsSrc + "?ver=" + e.version, (function () {
-            o()
-          })), t
-        }))) : "function" == typeof define && define.amd ? require(["three", s.threejsSrc.replace(".js", "")], (function (e, t) {
-          e((function () {
-          }))
-        })) : R(s.threejsSrc + "?ver=" + e.version, (function () {
-          R(s.mockupjsSrc + "?ver=" + e.version, (function () {
-            o()
-          }))
-        }))) : o()
-      } else a.contentProvider = new G(a.contentSource, (function (e) {
-        var i = {pageCount: e.pageCount, contentSourceType: e.contentSourceType};
-        a.target = r = new Z(T(a.options, i), a.container), a.target.previewObject = a, a.extendtarget(), U(a.container, a), e.webgl = n, e.setTarget(a.target), e.waitPeriod = 2, r.ease = TWEEN.Easing.Quadratic.InOut, r.duration = a.options.duration, r.container = a.container, r.updatePageCallback = function () {
-          a.ui.update(), a.checkCenter()
-        }, r.resize = void a.resize(), t(window).trigger("resize"), r.flipCallback = function () {
-          a.contentProvider && (a.contentProvider.review("flipCallback"), null != a.options.onFlip && a.options.onFlip(a))
-        }, r.preFlipCallback = function () {
-          null != a.options.beforeFlip && a.options.beforeFlip(a), a.playSound()
-        }, r.gotoPage(r._activePage), r.flipCallback(), null != a.options.onReady && a.options.onReady(a), a.analytics({
-          eventAction: "Book Ready",
-          options: a.options
-        })
-      }), l, a)
-    }, i.prototype.extendtarget = function () {
-      var e = this;
-      e.target.previewObject = e, e.target.reset = function () {
-        for (var t = 0; t < e.target.children.length; t++) {
-          var n = e.target.children[t];
-          n.skipFlip = !0, n.name = "-2"
+      function o(n, o) {
+        var a = this;
+
+        function s(e) {
+          a.dragPage != e.page && 1 == e.page.visible && (a.dragPage.clearTween(!0), a.dragPage = e.page, a.corner = e.corner, a.dragPage.pendingPoint = e)
         }
-        e.contentProvider.annotedPage = "-2", e.target.refresh()
+
+        a.type = "BookCSS", a.images = n.images || [], a.pageCount = n.pageCount || 1, a.foldSense = 50, a.stackCount = 4, a.mode = "css", a.pages = [], a.duration = n.duration, a.container = t(o), a.options = n, a.drag = g.none, a.pageMode = n.pageMode || (A || a.pageCount <= 2 ? e.PAGE_MODE.SINGLE : e.PAGE_MODE.DOUBLE), a.singlePageMode = n.singlePageMode || (A ? e.SINGLE_PAGE_MODE.BOOKLET : e.SINGLE_PAGE_MODE.ZOOM), a.swipe_threshold = A ? 15 : 50, a.direction = n.direction || e.DIRECTION.LTR, a.startPage = 1, a.endPage = a.pageCount, a._activePage = n.openPage || a.startPage, a.hardConfig = n.hard, r = "WebKitCSSMatrix" in window || document.body && "MozPerspective" in document.body.style, a.animateF = function () {
+          TWEEN.getAll().length > 0 ? TWEEN.update() : clearInterval(a.animate)
+        }, a.init(n), a.skipDrag = !1;
+        var l = function (t) {
+          var n = a.eventToPoint(t);
+          if (null != t.touches && 2 == t.touches.length && null != a.startTouches) {
+            a.zoomDirty = !0;
+            var o = d.getVectorAvg(d.getTouches(t, a.container.offset())),
+              s = d.calculateScale(a.startTouches, d.getTouches(t));
+            a.lastScale, a.contentProvider.zoomScale, o.x, o.y;
+            a.stage.css({transform: "translate3d(" + a.left + "px," + a.top + "px,0) scale3d(" + s + "," + s + ",1)"}), a.lastScale = s, a.lastZoomCenter = o, t.preventDefault()
+          }
+          if (!(null != t.touches && t.touches.length > 1 || null == a.startPoint || null != a.startTouches)) {
+            var r = a.dragPage || n.page;
+            if (1 !== a.contentProvider.zoomScale) null == t.touches && 1 != a.isPanning || (a.pan(n), t.preventDefault()); else if (!0 !== a.skipDrag) {
+              n.distance;
+              if (!i(a)) {
+                if (null != a.dragPage || 1 == n.isInside) {
+                  null != a.dragPage ? E("set mouse down move") : (n.y = C(n.y, 1, a.height - 1), n.x = C(n.x, 1, n.fullWidth - 1));
+                  var l = a.corner || n.corner;
+                  if (r.isHard) {
+                    var c = l == e.CORNERS.BR || l == e.CORNERS.TR, u = S(n.distance, n.fullWidth);
+                    r.updateAngle(u * (c ? -1 : 1), c)
+                  } else r.updatePoint(n, a);
+                  r.magnetic = !0, r.magneticCorner = n.corner, t.preventDefault()
+                }
+                if (null == a.dragPage && null != r && 0 == n.isInside && 1 == r.magnetic && (r.pendingPoint = n, r.animateToReset = !0, a.corner = r.magneticCorner, a.animatePage(r), r.pendingPoint = null, r.magnetic = !1, r.magneticCorner = null), 1 == a.isPanning && null == a.dragPage && 1 == a.contentProvider.zoomScale) {
+                  var h = n.x - a.lastPos;
+                  performance.now(), a.lastTime;
+                  Math.abs(h) > a.swipe_threshold && (h < 0 ? a.next() : a.prev(), a.drag = g.none, a.isPanning = !1, t.preventDefault()), a.lastPos = n.x, a.lastTime = performance.now()
+                }
+              }
+            }
+          }
+        }, c = function (t) {
+          if (null != t.touches && 0 == t.touches.length) {
+            a.contentProvider.zoomScale;
+            1 == a.zoomDirty && (a.previewObject.contentProvider.zoomScale = d.limitAt(a.previewObject.contentProvider.zoomScale * a.lastScale, 1, a.previewObject.contentProvider.maxZoom), a.previewObject.zoomValue = 1 * a.previewObject.contentProvider.zoomScale, a.previewObject.resize(), a.zoomDirty = !1), a.wrapper.css({transform: ""}), a.lastScale = null, a.startTouches = null
+          }
+          if (a.isPanning = !1, !(null != t.touches && t.touches.length > 1) && !0 !== a.skipDrag) {
+            var n = a.eventToPoint(t);
+            a.dragPage && (t.preventDefault(), a.dragPage.pendingPoint = n, n.x == a.startPoint.x && n.y == a.startPoint.y && 1 == n.isInside ? a.corner == e.CORNERS.BR || a.corner == e.CORNERS.TR ? (s(n), !0 !== a.dragPage.isFlipping && a.next()) : a.corner != e.CORNERS.BL && a.corner != e.CORNERS.TL || (s(n), !0 !== a.dragPage.isFlipping && a.prev()) : !0 !== a.dragPage.isFlipping && (n.distance > n.fullWidth / 2 ? n.x > n.fullWidth / 2 ? a.prev() : a.next() : (a.dragPage.animateToReset = !0, a.animatePage(a.dragPage))), a.dragPage && (a.dragPage.pendingPoint = null, a.dragPage.magnetic = !1)), a.drag = g.none
+          }
+        }, u = function (t) {
+          var n = a.eventToPoint(t), i = t.srcElement || t.originalTarget;
+          a.dragPage && a.dragPage.magnetic || a.wrapper[0].contains(t.target) && 1 == a.contentProvider.zoomScale && n.x == a.startPoint.x && n.y == a.startPoint.y && n.isInsidePage && a.startPoint.page == n.page && !n.page.isFlipping && "A" !== i.nodeName && (0 == a.startPoint.page.side ? (a.corner = e.CORNERS.TL, a.prev(), a.startPoint.page = null) : (a.corner = e.CORNERS.TR, a.next(), a.startPoint.page = null), a.isPanning = !1)
+        }, h = function (t) {
+          if (null != t.touches && 2 == t.touches.length && null == a.startTouches && (a.startTouches = d.getTouches(t), a.lastScale = 1), !(null != t.touches && t.touches.length > 1 || null == t.touches && 0 !== t.button)) {
+            var n, o = a.eventToPoint(t);
+            a.startPoint = o, a.left = a.left || 0, a.top = a.top || 0, a.isPanning = !0, a.lastPos = o.x, a.lastTime = performance.now(), !0 !== a.skipDrag && (1 != o.isInside || i(a) || (a.startPoint = o, a.drag = o.drag, a.dragPage = o.page, a.corner = o.corner, E(a.corner), (n = a.dragPage).parent.container.find(".df-folding").removeClass("df-folding"), n.element.addClass("df-folding"), o.page.isHard || o.page.updatePoint(o, a), "0" == o.page.name ? a.shadow.css({
+              width: "50%",
+              left: a.direction == e.DIRECTION.RTL ? 0 : "50%",
+              transitionDelay: ""
+            }) : o.page.name == Math.ceil(a.pageCount / 2) - 1 && a.shadow.css({
+              width: "50%",
+              left: a.direction == e.DIRECTION.RTL ? "50%" : 0,
+              transitionDelay: ""
+            })))
+          }
+        }, p = function (e) {
+          if (!0 === a.previewObject.options.isLightBox || !0 === a.previewObject.ui.isFullscreen) {
+            var t = 0;
+            null != e.wheelDelta ? t = e.wheelDelta / 120 : null != e.detail && (t = -e.detail / 3);
+            var n = a.contentProvider.zoomScale, i = a.contentProvider.maxZoom;
+            if (t && (t > 0 && n < i || t < 0 && n > 1)) {
+              e.stopPropagation(), e.preventDefault();
+              var o = a.eventToPoint(e), s = a.eventToPoint(e),
+                r = {x: a.container.width() / 2, y: a.container.height() / 2 - 23};
+              a.previewObject.zoom(t);
+              var l = a.contentProvider.zoomScale;
+              if (n !== l) {
+                var c = l / n;
+                1 == l ? (a.left = 0, a.top = 0) : (a.left *= c, a.top *= c);
+                var d = (o.raw.x - r.x) * c, u = (o.raw.y - r.y) * c;
+                s.raw.x = r.x + d, s.raw.y = r.y + u, a.startPoint = s, a.pan(o);
+                var h = a.dragPage || o.page;
+                null == a.dragPage && null != h && 1 == o.isInside && 1 == h.magnetic && (h.pendingPoint = o, h.animateToReset = !0, a.corner = h.magneticCorner, a.animatePage(h), h.pendingPoint = null, h.magnetic = !1, h.magneticCorner = null)
+              }
+            }
+          }
+        }, f = a.container[0], m = a.stage[0];
+        f && (m.addEventListener("mousemove", l, !1), m.addEventListener("touchmove", l, !1), m.addEventListener("mousedown", h, !1), m.addEventListener("click", u, !1), m.addEventListener("mouseup", c, !1), m.addEventListener("touchend", c, !1), m.addEventListener("touchstart", h, !1), 1 == a.options.scrollWheel && (m.addEventListener("mousewheel", p, !1), m.addEventListener("DOMMouseScroll", p, !1))), this.dispose = function () {
+          m.removeEventListener("mousemove", l, !1), m.removeEventListener("touchmove", l, !1), m.removeEventListener("mousedown", h, !1), m.removeEventListener("click", u, !1), m.removeEventListener("mouseup", c, !1), m.removeEventListener("touchend", c, !1), m.removeEventListener("touchstart", h, !1), 1 == a.options.scrollWheel && (m.removeEventListener("mousewheel", p, !1), m.removeEventListener("DOMMouseScroll", p, !1)), a.updatePageCallback = null, a.flipCallback = null, a.animateF = null, a.stage.remove()
+        }
       }
-    }, i.prototype.getURLHash = function () {
-      if (null != this.options.id) {
-        var e = d.getSharePrefix() + (null != this.options.slug ? this.options.slug : this.options.id) + "/";
-        null != this.target && null != this.target._activePage && (e += this.target._activePage + "/"), window.location.hash = e
+
+      return j(o, {}), o.prototype = {
+        add: function (e) {
+          e instanceof q ? this.container.append(t(e.element)) : this.container.append(t(e))
+        }, pan: function (e) {
+          var t = this.startPoint, n = this.contentProvider.zoomScale, i = this.left + (e.raw.x - t.raw.x),
+            o = this.top + (e.raw.y - t.raw.y);
+          this.left = Math.round(C(i, -this.shiftWidth, this.shiftWidth)), this.top = Math.round(C(o, -this.shiftHeight, this.shiftHeight)), 1 == n && (this.left = 0, this.top = 0), this.startPoint = e, this.stage.css({transform: "translate3d(" + this.left + "px," + this.top + "px,0)"})
+        }, getPageByNumber: function (e) {
+          for (var t, n = M(this) ? N(this) ? e + 1 : e : Math.floor((e - 1) / 2), i = 0; i < this.pages.length; i++) n == parseInt(this.pages[i].name, 10) && (t = this.pages[i]);
+          return t
+        }, getPageSide: function (t) {
+          var n = this.direction == e.DIRECTION.RTL, i = this.getPageByNumber(t);
+          if (null != i) return M(this) ? n ? i.front : i.back : t % 2 == 0 ? n ? i.back : i.front : n ? i.front : i.back
+        }, getContentLayer: function (e) {
+          var t = this.getPageSide(e);
+          return null == t ? null : t.contentLayer
+        }
+      }, o.prototype.init = function (e) {
+        var n = this;
+        n.stage = t(m.div, {class: "df-book-stage"}), n.wrapper = t(m.div, {class: "df-book-wrapper"}), n.shadow = t(m.div, {class: "df-book-shadow"}), n.container.append(n.stage), n.stage.append(n.wrapper), n.wrapper.append(n.shadow), n.createStack(e)
+      }, o.prototype.createStack = function (e) {
+        for (var t = "red,green,blue,yellow,orange,black".split(","), n = 0; n < this.stackCount; n++) {
+          e.angles = [, this.stackCount - n], e.stiffness = (this.stackCount - n) / 100;
+          var i = new q(e);
+          i.angles[1] = 180, i.index = n, i.parent = this, i.textureReady = !1, i.textureRequested = !1, this.wrapper.append(i.element), i.isFlipping = !1, this.pages.push(i), i.color = t[n]
+        }
+        this.children = this.pages
+      }, o.prototype.isPageHard = function (e) {
+        return d.isHardPage(this.hardConfig, e, this.pageCount, M(this))
+      }, o.prototype.setDuration = function (e) {
+        this.duration = e
+      }, o.prototype.moveBy = function (e) {
+        var t = this._activePage + e;
+        t = C(t, this.startPage, this.endPage), 1 != this.firstFlipped && (this.previewObject.analytics({
+          eventAction: "First Page Flip",
+          options: this.previewObject.options
+        }), this.firstFlipped = !0), this.gotoPage(t)
+      }, o.prototype.next = function (t) {
+        null == t && (t = this.direction == e.DIRECTION.RTL ? -this.pageMode : this.pageMode), this.moveBy(t)
+      }, o.prototype.prev = function (t) {
+        null == t && (t = this.direction == e.DIRECTION.RTL ? this.pageMode : -this.pageMode), this.moveBy(t)
+      }, o.prototype.eventToPoint = function (n) {
+        n = F(n);
+        var i = this.wrapper, o = this.pages, a = this.pageWidth, s = this.fullWidth, r = this.height,
+          l = (t(window), {x: n.clientX, y: n.clientY}), c = l.x - i[0].getBoundingClientRect().left,
+          d = l.y - i[0].getBoundingClientRect().top;
+        l.x = l.x - this.container[0].getBoundingClientRect().left, l.y = l.y - this.container[0].getBoundingClientRect().top;
+        var u, h = this.drag == g.none ? c < a ? c : s - c : this.drag == g.left ? c : s - c,
+          p = c < a ? o[this.stackCount / 2 - 1] : o[this.stackCount / 2],
+          f = c < this.foldSense ? g.left : c > s - this.foldSense ? g.right : g.none, m = c, v = d, b = r, w = s,
+          P = this.foldSense, x = e.CORNERS;
+        return {
+          isInsidePage: m >= 0 && m <= w && v >= 0 && v <= b,
+          isInside: (u = m >= 0 && m < P ? v >= 0 && v <= P ? x.TL : v >= b - P && v <= b ? x.BL : v > P && v < b - P ? x.L : x.NONE : m >= w - P && m <= w ? v >= 0 && v <= P ? x.TR : v >= b - P && v <= b ? x.BR : v > P && v < b - P ? x.R : x.NONE : x.NONE) !== x.NONE && u !== x.L && u !== x.R,
+          x: c,
+          y: d,
+          fullWidth: s,
+          rawDistance: s - c,
+          distance: h,
+          page: p,
+          drag: f,
+          foldSense: this.foldSense,
+          event: n,
+          raw: l,
+          corner: u
+        }
+      }, o.prototype.gotoPage = function (e) {
+        e = parseInt(e, 10), this._activePage = e, 1 == this.autoPlay && this.previewObject.setAutoPlay(this.autoPlay), this.updatePage(e), this && this.thumblist && this.thumblist.review && this.thumblist.review()
+      }, o.prototype.refresh = function () {
+        this.updatePage(this._activePage), null != this.flipCallback && this.flipCallback()
+      }, o.prototype.updatePage = function (n) {
+        var i = this.direction == e.DIRECTION.RTL, o = M(this), a = (O(n), o ? 1 : 2);
+        n = Math.floor(n / a), i && (n = Math.ceil(this.pageCount / a) - n);
+        var r = this.oldBaseNumber || 0, l = this.pageCount / a, c = this.stackCount, d = Math.floor(c / 2);
+        r > n ? (this.children[c - 1].skipFlip = !0, this.children.unshift(this.children.pop())) : r < n && (this.children[0].skipFlip = !0, this.children.push(this.children.shift()));
+        for (var u = 0; u < c; u++) {
+          var h = this.children[u];
+          r !== n && null != h.currentTween && h.clearTween(!0);
+          var p, f = h.side, m = n - d + u;
+          i && (m = o ? this.pageCount - m : Math.ceil(this.pageCount / 2) - m - 1);
+          var v = h.name;
+          h.isHard = this.isPageHard(m), h.isHard ? h.element.addClass("df-hard-page") : (h.element.removeClass("df-hard-page"), h.front.css({display: "block"}), h.back.css({display: "block"})), 0 == m || m == l ? h.element.addClass("df-cover-page") : h.element.removeClass("df-cover-page"), t(h.element).attr("pageNumber") != m && (h.front.contentLayer.empty(), h.back.contentLayer.empty()), t(h.element).attr("pageNumber", m), h.isEdge = !1, 0 == u || u == c - 1 || (h.isEdge = !1), p = u < d ? g.left : g.right, 0 == h.isFlipping && (p !== f && 0 == h.skipFlip ? (this.animatePage(h), null != this.preFlipCallback && this.preFlipCallback()) : (h.skipFlip = !1, h.element.removeClass("df-flipping df-quick-turn df-folding df-left-side df-right-side"), h.element.addClass(u < d ? "df-left-side" : "df-right-side"), h.side = p)), h.visible = o ? i ? u < d || h.isFlipping : u >= d || h.isFlipping : m >= 0 && m < l || o && m == l, null != this.requestPage && 1 == h.visible && (h.name = m.toString(), h.name != v && (h.backTextureLoaded = !1, h.frontTextureLoaded = !1, h.backPageStamp = "-1", h.frontPageStamp = "-1", h.thumbLoaded = !1, h.front.contentLayer.html(""), h.back.contentLayer.html(""), h.frontImage(options.textureLoadFallback), h.backImage(options.textureLoadFallback), this.requestPage())), h.oldDepth = h.depth, h.updateCSS({
+            display: 1 == h.visible ? "block" : "none",
+            zIndex: 6 + (u < d ? u - d : d - u),
+            transform: ""
+          }), null == h.pendingPoint && 0 == h.isFlipping && h.resetCSS()
+        }
+        0 == TWEEN.getAll().length && clearInterval(this.animate), t(".quick-hint").html(n), this.oldBaseNumber = n, this.updatePageCallback && this.updatePageCallback()
+      }, o.prototype.animatePage = function (e) {
+        e.element.addClass("df-flipping"), e.isFlipping = !0, null != this.animate && clearInterval(this.animate), this.animate = setInterval(this.animateF, 30), e.tween(e.pendingPoint)
+      }, o
+    }(),
+    K = function (n) {
+      function i(i, o, a) {
+        n.call(this, a);
+        var s = this;
+        s.type = "FlipBook",
+          s.container = i,
+          s.options = a,
+          s.options.source = o,
+          s.contentSource = o, null != a.height && a.height.toString().indexOf("%") < 0 ?
+          s.container.height(Math.min(a.height, t(window).height())) : s.container.height(a.height),
+        s.options.isLightBox && window.dfLightBox.closeButton.addClass(s.options.icons.close),
+        s.options.pageSize == e.PAGE_SIZE.DOUBLEINTERNAL && ((Array === s.contentSource.constructor || Array.isArray(s.contentSource) || s.contentSource instanceof Array) && (s.options.singlePageMode = e.SINGLE_PAGE_MODE.ZOOM), s.container.addClass("df-double-internal")), s.options.isLightBox || null == s.container.attr("id") || (s.options.id = s.container.attr("id")), !0 !== s.options.parsed && null != s.options.links && e.parseLinks(s.options.links);
+        var r = s.webgl = 1 == a.webgl && 1 == _ && d.canSupport3D();
+        if (i.addClass("df-container df-loading df-init df-floating df-controls-" + s.options.controlsPosition), s.commentPopup = t('<div class="df-comment-popup">').appendTo(i), 1 == s.options.transparent && i.addClass("df-transparent"), s.options.direction == e.DIRECTION.RTL && i.addClass("df-rtl"), s.container.info = t(m.div, {class: "loading-info"}).appendTo(s.container).html(s.options.text.loading + "..."), c.match(/msie\s[5-9]/i)) return s.container.info.html("Your browser (Internet Explorer) is out of date to run DFlip Flipbook Plugin. <br><a href='http://browsehappy.com/'>Upgrade to a new one</a>").addClass("df-old-browser"), i.removeClass("df-loading"), s;
+        var l = null == a.backgroundImage || "" == a.backgroundImage ? "" : "url('" + a.backgroundImage + "')";
+        return s.container.css({
+          position: "relative",
+          overflow: "hidden",
+          backgroundColor: a.backgroundColor,
+          backgroundImage: l
+        }), 1 == s.options.isLightBox && s.analytics({
+          eventAction: "Open Book",
+          options: s.options
+        }),
+          s.init(r, o), null != s.options.onCreate && s.options.onCreate(s), s
       }
-      return window.location.href
-    }, i.prototype.end = function () {
-      this.target.gotoPage(this.target.endPage)
-    }, i.prototype.gotoPage = function (e) {
-      this.target.gotoPage(e), null != this.ui && this.ui.update()
-    }, i.prototype.prev = function () {
-      this.target.prev()
-    }, i.prototype.next = function () {
-      this.target.next()
-    }, i.prototype.updateInfo = function (e) {
-      this.container && this.container.info && this.container.info.html && this.container.info.html(e)
-    }, i.prototype.analytics = function (e) {
-      if (1 == this.options.enableAnalytics) try {
-        var t = e.options, n = void 0;
-        t && (n = t.bookTitle || t.slug || t.id);
-        var i = window.gtag;
-        if (i) i("event", e.eventAction, {
-          event_category: "Flipbook",
-          event_label: n
-        }); else (window.ga || window.__gaTracker)("send", {
-          hitType: "event",
-          eventCategory: "Flipbook",
-          eventAction: e.eventAction,
-          eventLabel: n
-        })
-      } catch (e) {
-      }
-    }, i
-  }(V);
+
+      return j(i, n), i.prototype.init = function (n) {
+        var i, o, a = this, r = a.target, l = a.options;
+        if (1 == n) {
+          i = function () {
+            a.container.css({
+              minHeight: 300,
+              minWidth: 300
+            }), a.stage = new H(T(a.options, {container: a.container})), a.stage.previewObject = a, a.contentProvider = new G(a.contentSource, (function (i) {
+              var o = {
+                pageCount: i.pageCount,
+                stackCount: 6,
+                segments: 20,
+                width: i.bookSize.width,
+                height: i.bookSize.height
+              };
+              a.target = r = a.stage.target = new MOCKUP.Book(T(a.options, o), a.stage), a.extendtarget(), U(a.container, a), r.ui = a.ui, r.container = a.container, i.webgl = n, i.setTarget(a.target), r.getContentLayer = function (t) {
+                var n = r.direction == e.DIRECTION.RTL, i = a.stage.cssScene.divLeft.element,
+                  o = a.stage.cssScene.divRight.element;
+                return O(r._activePage), M(r) ? n ? i : o : t % 2 == 0 ? n ? o : i : n ? i : o
+              }, r.stage = a.stage, r.flipCallback = function () {
+                if (a.contentProvider) {
+                  a.contentProvider.review("flipCallback");
+                  var n, i, o = O(r._activePage), s = r.getPageByNumber(o), l = r.getPageByNumber(o + 1),
+                    c = r.parent.cssScene.divLeft, d = r.parent.cssScene.divRight;
+                  r.pageMode, e.PAGE_MODE.SINGLE, r.direction, e.DIRECTION.RTL, null != s && null != c && (n = Math.abs(s.geometry.boundingBox.max.x - s.geometry.boundingBox.min.x), i = Math.abs(s.geometry.boundingBox.max.z - s.geometry.boundingBox.min.z), c.rotation.y = .9 * -Math.atan2(i, n), c.position.z = .8 * i, c.position.x = i / 2.5, t(c.element).css({
+                    width: n,
+                    left: -n / 2
+                  })), null != l && null != d && (n = Math.abs(l.geometry.boundingBox.max.x - l.geometry.boundingBox.min.x), i = Math.abs(l.geometry.boundingBox.max.z - l.geometry.boundingBox.min.z), d.rotation.y = .9 * Math.atan2(i, n), d.position.z = .8 * i, d.position.x = -i / 2.5, t(d.element).css({
+                    width: n,
+                    left: n / 2
+                  })), null != a.options.onFlip && a.options.onFlip(a)
+                }
+              }, r.resize = void a.resize(), r.updatePageCallback = function () {
+                a.ui.update(), a.checkCenter(), a.stage.renderRequestPending = !0
+              };
+              var s = t(a.stage.cssScene.divLeft.element), l = t(a.stage.cssScene.divRight.element);
+              r.preFlipCallback = function () {
+                s.empty(), l.empty(), null != a.options.beforeFlip && a.options.beforeFlip(a), a.playSound()
+              }, t(window).trigger("resize"), s.css({
+                width: i.bookSize.width,
+                height: i.bookSize.height,
+                left: -i.bookSize.width / 2
+              }), l.css({
+                width: i.bookSize.width,
+                height: i.bookSize.height,
+                left: i.bookSize.width / 2
+              }), r.ease = TWEEN.Easing.Cubic.InOut, r.contentProvider = i, r.duration = a.options.duration, r.gotoPage(r._activePage), r.flipCallback(), 1 == a.options.isLightBox && a.analytics({
+                eventAction: "Book Ready",
+                options: a.options
+              }), null != a.options.onReady && a.options.onReady(a)
+            }), l, a)
+          }, o = function () {
+            MOCKUP.defaults.anisotropy = 0, MOCKUP.defaults.groundTexture = "blank", THREE.skipPowerOfTwo = !0, W(), null != i && i()
+          }, null == window.MOCKUP ? (a.updateInfo(l.text.loading + " WEBGL 3D ..."), "function" == typeof define && define.amd && window.requirejs ? (requirejs.config({
+            paths: {three: options.threejsSrc.replace(".js", "")},
+            shim: {three: {exports: "THREE"}}
+          }), require(["three"], (function (t) {
+            return window.THREE = t, R(options.mockupjsSrc + "?ver=" + e.version, (function () {
+              o()
+            })), t
+          }))) : "function" == typeof define && define.amd ? require(["three", options.threejsSrc.replace(".js", "")], (function (e, t) {
+            e((function () {
+            }))
+          })) : R(options.threejsSrc + "?ver=" + e.version, (function () {
+            R(options.mockupjsSrc + "?ver=" + e.version, (function () {
+              o()
+            }))
+          }))) : o()
+        } else a.contentProvider = new G(a.contentSource, (function (e) {
+          var i = {pageCount: e.pageCount, contentSourceType: e.contentSourceType};
+          a.target = r = new Z(T(a.options, i), a.container), a.target.previewObject = a, a.extendtarget(), U(a.container, a), e.webgl = n, e.setTarget(a.target), e.waitPeriod = 2, r.ease = TWEEN.Easing.Quadratic.InOut, r.duration = a.options.duration, r.container = a.container, r.updatePageCallback = function () {
+            a.ui.update(), a.checkCenter()
+          }, r.resize = void a.resize(), t(window).trigger("resize"), r.flipCallback = function () {
+            a.contentProvider && (a.contentProvider.review("flipCallback"), null != a.options.onFlip && a.options.onFlip(a))
+          }, r.preFlipCallback = function () {
+            null != a.options.beforeFlip && a.options.beforeFlip(a), a.playSound()
+          }, r.gotoPage(r._activePage), r.flipCallback(), null != a.options.onReady && a.options.onReady(a), a.analytics({
+            eventAction: "Book Ready",
+            options: a.options
+          })
+        }), l, a)
+      }, i.prototype.extendtarget = function () {
+        var e = this;
+        e.target.previewObject = e, e.target.reset = function () {
+          for (var t = 0; t < e.target.children.length; t++) {
+            var n = e.target.children[t];
+            n.skipFlip = !0, n.name = "-2"
+          }
+          e.contentProvider.annotedPage = "-2", e.target.refresh()
+        }
+      }, i.prototype.getURLHash = function () {
+        if (null != this.options.id) {
+          var e = d.getSharePrefix() + (null != this.options.slug ? this.options.slug : this.options.id) + "/";
+          null != this.target && null != this.target._activePage && (e += this.target._activePage + "/"), window.location.hash = e
+        }
+        return window.location.href
+      }, i.prototype.end = function () {
+        this.target.gotoPage(this.target.endPage)
+      }, i.prototype.gotoPage = function (e) {
+        this.target.gotoPage(e), null != this.ui && this.ui.update()
+      }, i.prototype.prev = function () {
+        this.target.prev()
+      }, i.prototype.next = function () {
+        this.target.next()
+      }, i.prototype.updateInfo = function (e) {
+        this.container && this.container.info && this.container.info.html && this.container.info.html(e)
+      }, i.prototype.analytics = function (e) {
+        if (1 == this.options.enableAnalytics) try {
+          var t = e.options, n = void 0;
+          t && (n = t.bookTitle || t.slug || t.id);
+          var i = window.gtag;
+          if (i) i("event", e.eventAction, {
+            event_category: "Flipbook",
+            event_label: n
+          }); else (window.ga || window.__gaTracker)("send", {
+            hitType: "event",
+            eventCategory: "Flipbook",
+            eventAction: e.eventAction,
+            eventLabel: n
+          })
+        } catch (e) {
+        }
+      }, i
+    }(V);
   t.fn.extend({
     shelf: function () {
     }, flipBook: function (e, n) {
       return new K(t(this), e, function (e) {
-        return t.extend(!0, {}, s, e)
+        return t.extend(!0, {}, options, e)
       }(n))
     }
   })
@@ -2237,24 +2290,28 @@ DFLIP.Share = function (e) {
   }, t.prototype.update = function (e) {
     this.shareUrl = e
   }, t
-}(jQuery), DFLIP.Popup = function (e) {
-  function t(t, n) {
-    var i = this;
-    i.isOpen = !1, i.wrapper = e('<div class="df-popup-wrapper" style="display: none;">').on("click", (function (e) {
-      i.close()
-    })), i.box = e('<div class="df-popup-box">').on("click", (function (e) {
-      e.preventDefault(), e.stopPropagation()
-    })).appendTo(i.wrapper), e(t).append(i.wrapper)
-  }
+}(jQuery),
 
-  return t.prototype.show = function () {
-    this.wrapper.fadeIn(300), this.isOpen = !0
-  }, t.prototype.dispose = function () {
-    this.box.off(), this.wrapper.off().remove()
-  }, t.prototype.close = function () {
-    this.wrapper.fadeOut(300), this.isOpen = !1
-  }, t
-}(jQuery);
+  DFLIP.Popup = function (e) {
+    function t(t, n) {
+      var i = this;
+      i.isOpen = !1, i.wrapper = e('<div class="df-popup-wrapper" style="display: none;">').on("click", (function (e) {
+        i.close()
+      })), i.box = e('<div class="df-popup-box">').on("click", (function (e) {
+        e.preventDefault(), e.stopPropagation()
+      })).appendTo(i.wrapper), e(t).append(i.wrapper)
+    }
+
+    return t.prototype.show = function () {
+      this.wrapper.fadeIn(300), this.isOpen = !0
+    }, t.prototype.dispose = function () {
+      this.box.off(), this.wrapper.off().remove()
+    }, t.prototype.close = function () {
+      this.wrapper.fadeOut(300), this.isOpen = !1
+    }, t
+  }(jQuery);
+
+
 var PDFLinkService = function () {
     function e() {
       this.baseUrl = null, this.pdfDocument = null, this.pdfViewer = null, this.pdfHistory = null, this.externalLinkRel = null, this.externalLinkEnabled = !0, this._pagesRefCache = null
@@ -2394,6 +2451,8 @@ var PDFLinkService = function () {
     "½": "1/2",
     "¾": "3/4"
   };
+
+
 DFLIP.PDFFindController = function () {
   function e(e) {
     this.pdfViewer = e.pdfViewer || null, this.onUpdateResultsCount = null, this.onUpdateState = null, this.reset();
@@ -2520,274 +2579,323 @@ DFLIP.PDFFindController = function () {
       this.onUpdateState && this.onUpdateState(e, t, this.matchCount)
     }
   }, e
-}(), DFLIP.TextLayerBuilder = function () {
-  function e(e) {
-    this.textLayerDiv = e.textLayerDiv, this.renderingDone = !1, this.divContentDone = !1, this.pageIdx = e.pageIndex, this.pageNumber = this.pageIdx + 1, this.matches = [], this.viewport = e.viewport, this.textDivs = [], this.findController = e.findController || null, this.textLayerRenderTask = null, this.enhanceTextSelection = e.enhanceTextSelection, this._bindMouse()
-  }
+}(),
 
-  return e.prototype = {
-    _finishRendering: function () {
-      if (this.renderingDone = !0, !this.enhanceTextSelection) {
-        var e = document.createElement("div");
-        e.className = "endOfContent", this.textLayerDiv.appendChild(e)
-      }
-    }, render: function (e) {
-      if (this.divContentDone && !this.renderingDone) {
-        this.textLayerRenderTask && (this.textLayerRenderTask.cancel(), this.textLayerRenderTask = null), this.textDivs = [];
-        var t = document.createDocumentFragment();
-        this.textLayerRenderTask = pdfjsLib.renderTextLayer({
-          textContent: this.textContent,
-          container: t,
-          viewport: this.viewport,
-          textDivs: this.textDivs,
-          timeout: e,
-          enhanceTextSelection: this.enhanceTextSelection
-        }), this.textLayerRenderTask.promise.then(function () {
-          this.textLayerDiv.appendChild(t), this._finishRendering(), this.updateMatches()
-        }.bind(this), (function (e) {
+  DFLIP.TextLayerBuilder = function () {
+    function e(e) {
+      this.textLayerDiv = e.textLayerDiv, this.renderingDone = !1, this.divContentDone = !1, this.pageIdx = e.pageIndex, this.pageNumber = this.pageIdx + 1, this.matches = [], this.viewport = e.viewport, this.textDivs = [], this.findController = e.findController || null, this.textLayerRenderTask = null, this.enhanceTextSelection = e.enhanceTextSelection, this._bindMouse()
+    }
+
+    return e.prototype = {
+      _finishRendering: function () {
+        if (this.renderingDone = !0, !this.enhanceTextSelection) {
+          var e = document.createElement("div");
+          e.className = "endOfContent", this.textLayerDiv.appendChild(e)
+        }
+      }, render: function (e) {
+        if (this.divContentDone && !this.renderingDone) {
+          this.textLayerRenderTask && (this.textLayerRenderTask.cancel(), this.textLayerRenderTask = null), this.textDivs = [];
+          var t = document.createDocumentFragment();
+          this.textLayerRenderTask = pdfjsLib.renderTextLayer({
+            textContent: this.textContent,
+            container: t,
+            viewport: this.viewport,
+            textDivs: this.textDivs,
+            timeout: e,
+            enhanceTextSelection: this.enhanceTextSelection
+          }), this.textLayerRenderTask.promise.then(function () {
+            this.textLayerDiv.appendChild(t), this._finishRendering(), this.updateMatches()
+          }.bind(this), (function (e) {
+          }))
+        }
+      }, setTextContent: function (e) {
+        this.textLayerRenderTask && (this.textLayerRenderTask.cancel(), this.textLayerRenderTask = null), this.textContent = e, this.divContentDone = !0
+      }, convertMatches: function (e, t) {
+        var n = 0, i = 0, o = this.textContent.items, a = o.length - 1,
+          s = null === this.findController ? 0 : this.findController.state.query.length, r = [];
+        if (!e) return r;
+        for (var l = 0, c = e.length; l < c; l++) {
+          for (var d = e[l]; n !== a && d >= i + o[n].str.length;) i += o[n].str.length, n++;
+          n === o.length && console.error("Could not find a matching mapping");
+          var u = {begin: {divIdx: n, offset: d - i}};
+          for (d += t ? t[l] : s; n !== a && d > i + o[n].str.length;) i += o[n].str.length, n++;
+          u.end = {divIdx: n, offset: d - i}, r.push(u)
+        }
+        return r
+      }, renderMatches: function (e) {
+        if (0 !== e.length) {
+          var t = this.textContent.items, n = this.textDivs, i = null, o = this.pageIdx,
+            a = null !== this.findController && o === this.findController.selected.pageIdx,
+            s = null === this.findController ? -1 : this.findController.selected.matchIdx,
+            r = {divIdx: -1, offset: void 0}, l = s, c = l + 1;
+          if (null !== this.findController && this.findController.state.highlightAll) l = 0, c = e.length; else if (!a) return;
+          for (var d = l; d < c; d++) {
+            var u = e[d], h = u.begin, p = u.end, g = a && d === s ? " selected" : "";
+            if (this.findController && this.findController.updateMatchPosition(o, d, n, h.divIdx), i && h.divIdx === i.divIdx ? b(i.divIdx, i.offset, h.offset) : (null !== i && b(i.divIdx, i.offset, r.offset), v(h)), h.divIdx === p.divIdx) b(h.divIdx, h.offset, p.offset, "highlight" + g); else {
+              b(h.divIdx, h.offset, r.offset, "highlight begin" + g);
+              for (var f = h.divIdx + 1, m = p.divIdx; f < m; f++) n[f].className = "highlight middle" + g;
+              v(p, "highlight end" + g)
+            }
+            i = p
+          }
+          i && b(i.divIdx, i.offset, r.offset)
+        }
+
+        function v(e, t) {
+          var i = e.divIdx;
+          n[i].textContent = "", b(i, 0, e.offset, t)
+        }
+
+        function b(e, i, o, a) {
+          var s = n[e], r = t[e].str.substring(i, o), l = document.createTextNode(r);
+          if (a) {
+            var c = document.createElement("span");
+            return c.className = a, c.appendChild(l), void s.appendChild(c)
+          }
+          s.appendChild(l)
+        }
+      }, updateMatches: function () {
+        if (this.renderingDone) {
+          for (var e, t, n = this.matches, i = this.textDivs, o = this.textContent.items, a = -1, s = 0, r = n.length; s < r; s++) {
+            for (var l = n[s], c = Math.max(a, l.begin.divIdx), d = l.end.divIdx; c <= d; c++) {
+              var u = i[c];
+              u.textContent = o[c].str, u.className = ""
+            }
+            a = l.end.divIdx + 1
+          }
+          if (null !== this.findController && this.findController.active) null !== this.findController && (e = this.findController.pageMatches[this.pageIdx] || null, t = this.findController.pageMatchesLength && this.findController.pageMatchesLength[this.pageIdx] || null), this.matches = this.convertMatches(e, t), this.renderMatches(this.matches)
+        }
+      }, _bindMouse: function () {
+        var e = this.textLayerDiv, t = this;
+        e.addEventListener("mousedown", (function (n) {
+          if (t.enhanceTextSelection && t.textLayerRenderTask) t.textLayerRenderTask.expandTextDivs(!0); else {
+            var i = e.querySelector(".endOfContent");
+            if (i) {
+              var o = n.target !== e;
+              if (o = o && "none" !== window.getComputedStyle(i).getPropertyValue("-moz-user-select")) {
+                var a = e.getBoundingClientRect(), s = Math.max(0, (n.pageY - a.top) / a.height);
+                i.style.top = (100 * s).toFixed(2) + "%"
+              }
+              i.classList.add("active")
+            }
+          }
+        })), e.addEventListener("mouseup", (function (n) {
+          if (t.enhanceTextSelection && t.textLayerRenderTask) t.textLayerRenderTask.expandTextDivs(!1); else {
+            var i = e.querySelector(".endOfContent");
+            i && (i.style.top = "", i.classList.remove("active"))
+          }
         }))
       }
-    }, setTextContent: function (e) {
-      this.textLayerRenderTask && (this.textLayerRenderTask.cancel(), this.textLayerRenderTask = null), this.textContent = e, this.divContentDone = !0
-    }, convertMatches: function (e, t) {
-      var n = 0, i = 0, o = this.textContent.items, a = o.length - 1,
-        s = null === this.findController ? 0 : this.findController.state.query.length, r = [];
-      if (!e) return r;
-      for (var l = 0, c = e.length; l < c; l++) {
-        for (var d = e[l]; n !== a && d >= i + o[n].str.length;) i += o[n].str.length, n++;
-        n === o.length && console.error("Could not find a matching mapping");
-        var u = {begin: {divIdx: n, offset: d - i}};
-        for (d += t ? t[l] : s; n !== a && d > i + o[n].str.length;) i += o[n].str.length, n++;
-        u.end = {divIdx: n, offset: d - i}, r.push(u)
-      }
-      return r
-    }, renderMatches: function (e) {
-      if (0 !== e.length) {
-        var t = this.textContent.items, n = this.textDivs, i = null, o = this.pageIdx,
-          a = null !== this.findController && o === this.findController.selected.pageIdx,
-          s = null === this.findController ? -1 : this.findController.selected.matchIdx,
-          r = {divIdx: -1, offset: void 0}, l = s, c = l + 1;
-        if (null !== this.findController && this.findController.state.highlightAll) l = 0, c = e.length; else if (!a) return;
-        for (var d = l; d < c; d++) {
-          var u = e[d], h = u.begin, p = u.end, g = a && d === s ? " selected" : "";
-          if (this.findController && this.findController.updateMatchPosition(o, d, n, h.divIdx), i && h.divIdx === i.divIdx ? b(i.divIdx, i.offset, h.offset) : (null !== i && b(i.divIdx, i.offset, r.offset), v(h)), h.divIdx === p.divIdx) b(h.divIdx, h.offset, p.offset, "highlight" + g); else {
-            b(h.divIdx, h.offset, r.offset, "highlight begin" + g);
-            for (var f = h.divIdx + 1, m = p.divIdx; f < m; f++) n[f].className = "highlight middle" + g;
-            v(p, "highlight end" + g)
-          }
-          i = p
-        }
-        i && b(i.divIdx, i.offset, r.offset)
-      }
-
-      function v(e, t) {
-        var i = e.divIdx;
-        n[i].textContent = "", b(i, 0, e.offset, t)
-      }
-
-      function b(e, i, o, a) {
-        var s = n[e], r = t[e].str.substring(i, o), l = document.createTextNode(r);
-        if (a) {
-          var c = document.createElement("span");
-          return c.className = a, c.appendChild(l), void s.appendChild(c)
-        }
-        s.appendChild(l)
-      }
-    }, updateMatches: function () {
-      if (this.renderingDone) {
-        for (var e, t, n = this.matches, i = this.textDivs, o = this.textContent.items, a = -1, s = 0, r = n.length; s < r; s++) {
-          for (var l = n[s], c = Math.max(a, l.begin.divIdx), d = l.end.divIdx; c <= d; c++) {
-            var u = i[c];
-            u.textContent = o[c].str, u.className = ""
-          }
-          a = l.end.divIdx + 1
-        }
-        if (null !== this.findController && this.findController.active) null !== this.findController && (e = this.findController.pageMatches[this.pageIdx] || null, t = this.findController.pageMatchesLength && this.findController.pageMatchesLength[this.pageIdx] || null), this.matches = this.convertMatches(e, t), this.renderMatches(this.matches)
-      }
-    }, _bindMouse: function () {
-      var e = this.textLayerDiv, t = this;
-      e.addEventListener("mousedown", (function (n) {
-        if (t.enhanceTextSelection && t.textLayerRenderTask) t.textLayerRenderTask.expandTextDivs(!0); else {
-          var i = e.querySelector(".endOfContent");
-          if (i) {
-            var o = n.target !== e;
-            if (o = o && "none" !== window.getComputedStyle(i).getPropertyValue("-moz-user-select")) {
-              var a = e.getBoundingClientRect(), s = Math.max(0, (n.pageY - a.top) / a.height);
-              i.style.top = (100 * s).toFixed(2) + "%"
-            }
-            i.classList.add("active")
-          }
-        }
-      })), e.addEventListener("mouseup", (function (n) {
-        if (t.enhanceTextSelection && t.textLayerRenderTask) t.textLayerRenderTask.expandTextDivs(!1); else {
-          var i = e.querySelector(".endOfContent");
-          i && (i.style.top = "", i.classList.remove("active"))
-        }
-      }))
-    }
-  }, e
-}(), DFLIP.ConvertPageLinks = function () {
+    }, e
+  }(), DFLIP.ConvertPageLinks = function () {
   for (var e, t = arguments[0] / 100, n = arguments[1] / 100, i = function (e, i, o, a, s) {
     return {x: e / t, y: i / n, w: o / t, h: a / n, dest: s}
   }, o = [], a = 2; a < arguments.length; a++) e = arguments[a], o[a - 2] = i.apply(this, e);
   return o
-}, DFLIP.parseLinks = function (e) {
-  var t;
-  if (null != e && e.length > 0) for (var n = 0; n < e.length; n++) null != (t = e[n]) && null != t[0] && null == t[0].dest && (t = DFLIP.ConvertPageLinks.apply(this, t), e[n] = t);
-  return e
-}, function (e) {
-  function t(e) {
-    return "true" == e || 1 == e
-  }
+},
+  DFLIP.parseLinks = function (links) {
+    var t;
+    if (null != links && links.length > 0) for (var n = 0; n < links.length; n++) null != (t = links[n]) && null != t[0] && null == t[0].dest && (t = DFLIP.ConvertPageLinks.apply(this, t), links[n] = t);
+    return links
+  },
+  function (e) {
+    function isBool(e) {
+      return "true" == e || 1 == e
+    }
 
-  function n(e) {
-    null != e.webgl && (e.webgl = t(e.webgl)), null != e.enableDownload && (e.enableDownload = t(e.enableDownload)), null != e.search && (e.search = t(e.search)), null != e.enableAnalytics && (e.enableAnalytics = t(e.enableAnalytics)), null != e.scrollWheel && (e.scrollWheel = t(e.scrollWheel)), null != e.autoEnableOutline && (e.autoEnableOutline = t(e.autoEnableOutline)), null != e.autoEnableThumbnail && (e.autoEnableThumbnail = t(e.autoEnableThumbnail)), null != e.transparent && (e.transparent = t(e.transparent)), null != e.overwritePDFOutline && (e.overwritePDFOutline = t(e.overwritePDFOutline)), null != e.soundEnable && (e.soundEnable = t(e.soundEnable)), null != e.forceFit && (e.forceFit = t(e.forceFit)), null != e.enableAnnotation && (e.enableAnnotation = t(e.enableAnnotation)), null != e.webglShadow && (e.webglShadow = t(e.webglShadow)), null != e.autoPlay && (e.autoPlay = t(e.autoPlay)), null != e.autoPlayStart && (e.autoPlayStart = t(e.autoPlayStart)), null != e.paddingTop && (e.paddingTop = parseInt(e.paddingTop, 10)), null != e.paddingRight && (e.paddingRight = parseInt(e.paddingRight, 10)), null != e.paddingBottom && (e.paddingBottom = parseInt(e.paddingBottom, 10)), null != e.paddingLeft && (e.paddingLeft = parseInt(e.paddingLeft, 10)), null != e.zoomRatio && (e.zoomRatio = parseFloat(e.zoomRatio, 10)), null != e.stiffness && (e.stiffness = parseFloat(e.stiffness, 10)), null != e.autoPlayDuration && (e.autoPlayDuration = parseInt(e.autoPlayDuration, 10)), null != e.linkTarget && (e.linkTarget = parseInt(e.linkTarget, 10)), 0 != e.pageMode && "0" != e.pageMode || (e.pageMode = null), 0 != e.singlePageMode && "0" != e.singlePageMode || (e.singlePageMode = null)
-  }
+    function n(e) {
+      null != e.nonce,
+      null != e.webgl && (e.webgl = isBool(e.webgl)),
+      null != e.enableDownload && (e.enableDownload = isBool(e.enableDownload)),
+      null != e.search && (e.search = isBool(e.search)),
+      null != e.enableAnalytics && (e.enableAnalytics = isBool(e.enableAnalytics)),
+      null != e.scrollWheel && (e.scrollWheel = isBool(e.scrollWheel)),
+      null != e.autoEnableOutline && (e.autoEnableOutline = isBool(e.autoEnableOutline)),
+      null != e.autoEnableThumbnail && (e.autoEnableThumbnail = isBool(e.autoEnableThumbnail)),
+      null != e.transparent && (e.transparent = isBool(e.transparent)),
+      null != e.overwritePDFOutline && (e.overwritePDFOutline = isBool(e.overwritePDFOutline)),
+      null != e.soundEnable && (e.soundEnable = isBool(e.soundEnable)),
+      null != e.forceFit && (e.forceFit = isBool(e.forceFit)),
+      null != e.enableAnnotation && (e.enableAnnotation = isBool(e.enableAnnotation)),
+      null != e.webglShadow && (e.webglShadow = isBool(e.webglShadow)),
+      null != e.autoPlay && (e.autoPlay = isBool(e.autoPlay)),
+      null != e.autoPlayStart && (e.autoPlayStart = isBool(e.autoPlayStart)),
+      null != e.paddingTop && (e.paddingTop = parseInt(e.paddingTop, 10)),
+      null != e.paddingRight && (e.paddingRight = parseInt(e.paddingRight, 10)),
+      null != e.paddingBottom && (e.paddingBottom = parseInt(e.paddingBottom, 10)),
+      null != e.paddingLeft && (e.paddingLeft = parseInt(e.paddingLeft, 10)),
+      null != e.zoomRatio && (e.zoomRatio = parseFloat(e.zoomRatio, 10)),
+      null != e.stiffness && (e.stiffness = parseFloat(e.stiffness, 10)),
+      null != e.autoPlayDuration && (e.autoPlayDuration = parseInt(e.autoPlayDuration, 10)),
+      null != e.linkTarget && (e.linkTarget = parseInt(e.linkTarget, 10)),
+      0 != e.pageMode && "0" != e.pageMode || (e.pageMode = null),
+      0 != e.singlePageMode && "0" != e.singlePageMode || (e.singlePageMode = null)
+    }
 
-  DFLIP.getOptions = function (t) {
-    var i = "option_" + (t = e(t)).attr("id"), o = t.attr("source") || t.attr("df-source");
-    (i = null == i || "" == i || null == window[i] ? {} : window[i]).source = null == o || "" == o ? i.source : o;
-    var a = {
-      webgl: t.attr("webgl"),
-      height: t.attr("height"),
-      soundEnable: t.attr("sound"),
-      bookTitle: t.data("title"),
-      transparent: t.attr("transparent"),
-      enableDownload: t.attr("download"),
-      search: t.attr("search"),
-      duration: t.attr("duration"),
-      hard: t.attr("hard"),
-      openPage: t.data("page"),
-      pageMode: t.attr("pagemode"),
-      direction: t.attr("direction"),
-      backgroundColor: t.attr("backgroundcolor"),
-      scrollWheel: t.attr("scrollwheel"),
-      backgroundImage: t.attr("backgroundimage"),
-      paddingTop: t.attr("paddingtop"),
-      paddingRight: t.attr("paddingright"),
-      paddingBottom: t.attr("paddingbottom"),
-      paddingLeft: t.attr("paddingleft"),
-      wpOptions: t.attr("wpoptions")
-    };
-    return function (e) {
-      if (1 != e.parsed) {
-        e.parsed = !0;
-        var t = [];
-        if (n(e), "undefined" != typeof dFlipWPGlobal && "true" == e.wpOptions) {
-          try {
-            for (var i in e.links) {
-              for (var o = e.links[i], a = [100, 100], s = 0; s < o.length; s++) {
-                for (var r = o[s].substr(1).slice(0, -1).split(","), l = [], c = 0; c < 5; c++) l[c] = r[c];
-                a.push(l)
+    DFLIP.getOptions = function (options) {
+      var i = "option_" + (options = e(options)).attr("id"),
+        source = options.attr("source") || options.attr("df-source");
+      (i = null == i || "" == i || null == window[i] ? {} : window[i]).source = null == source || "" == source ? i.source : source;
+      var elementAttributeOptions = {
+        nonce: options.attr("nonce"),
+        webgl: options.attr("webgl"),
+        height: options.attr("height"),
+        soundEnable: options.attr("sound"),
+        bookTitle: options.data("title"),
+        transparent: options.attr("transparent"),
+        enableDownload: options.attr("download"),
+        search: options.attr("search"),
+        duration: options.attr("duration"),
+        hard: options.attr("hard"),
+        openPage: options.data("page"),
+        pageMode: options.attr("pagemode"),
+        direction: options.attr("direction"),
+        backgroundColor: options.attr("backgroundcolor"),
+        scrollWheel: options.attr("scrollwheel"),
+        backgroundImage: options.attr("backgroundimage"),
+        paddingTop: options.attr("paddingtop"),
+        paddingRight: options.attr("paddingright"),
+        paddingBottom: options.attr("paddingbottom"),
+        paddingLeft: options.attr("paddingleft"),
+        wpOptions: options.attr("wpoptions")
+      };
+      return function (e) {
+        if (1 != e.parsed) {
+          e.parsed = !0;
+          var t = [];
+          if (n(e), "undefined" != typeof dFlipWPGlobal && "true" == e.wpOptions) {
+            try {
+              for (var i in e.links) {
+                for (var o = e.links[i], a = [100, 100], s = 0; s < o.length; s++) {
+                  for (var r = o[s].substr(1).slice(0, -1).split(","), l = [], c = 0; c < 5; c++) l[c] = r[c];
+                  a.push(l)
+                }
+                t[parseInt(i, 10) + 1] = a
               }
-              t[parseInt(i, 10) + 1] = a
+            } catch (e) {
+              console.error(e.stack)
             }
-          } catch (e) {
-            console.error(e.stack)
-          }
-          e.links = DFLIP.parseLinks(t)
-        } else e.links = DFLIP.parseLinks(e.links)
-      }
-    }(i = e.extend(!0, {}, i, a)), i
-  }, DFLIP.parseBooks = function () {
-    e(".dflip-books").each((function () {
-      if (!1 !== DFLIP.defaults.loadMoreCount) {
-        var t = e(this);
-        if ("true" !== (t.attr("parsed") || t.attr("df-parsed"))) {
-          t.attr("df-parsed", "true");
-          var n = 0, i = t.find("._df_button, ._df_thumb, ._df_custom, ._df_book"), o = i.length;
-          i.each((function () {
-            ++n > DFLIP.defaults.loadMoreCount && e(this).attr("skip-parse", "true")
-          })), o > DFLIP.defaults.loadMoreCount && t.append("<div class='df-more-button-wrapper'><div class='df-more-button'>Load More..</div></div>")
+            e.links = DFLIP.parseLinks(t)
+          } else e.links = DFLIP.parseLinks(e.links)
         }
-      }
-    })), e("._df_button, ._df_thumb, ._df_custom, ._df_book").each((function () {
-      var t = e(this);
-      if ("true" !== t.attr("skip-parse") && "true" !== (t.attr("parsed") || t.attr("df-parsed"))) if (t.attr("df-parsed", "true"), t.hasClass("_df_book")) {
-        var n = t.attr("id"), i = t.attr("slug"), o = DFLIP.getOptions(t);
-        o.id = n, null != i && (o.slug = i), n ? window[n.toString()] = e(t).flipBook(o.source, o) : e(t).flipBook(o.source, o)
-      } else if (t.hasClass("_df_thumb")) {
-        var a = e("<div class='_df_book-cover'>"), s = t.html().trim();
-        t.html("");
-        e("<span class='_df_book-title'>").html(s).appendTo(a);
-        var r = t.attr("thumb") || t.attr("df-thumb"), l = t.attr("thumbtype") || DFLIP.defaults.thumbElement || "div",
-          c = t.attr("tags") || t.attr("df-tags");
-        if (c && (c = c.split(",")).length > 0) for (var d = 0; d < c.length; d++) t.append("<span class='_df_book-tag'>" + c[d] + "</span>");
-        null != r && "" != r.toString().trim() ? "img" == l ? (a.append('<img src="' + r + '" alt="' + s + '"/>'), t.attr("thumb-type", "img")) : a.css({backgroundImage: "url('" + r + "')"}) : a.addClass("_df_thumb-not-found"), t.append(a)
-      }
-    }))
-  }, e(document).ready((function () {
-    var t = e("body");
-    if ("undefined" == typeof dFlipLocation && 0 != DFLIP.autoDetectLocation && e("script").each((function () {
-      var t = e(this)[0].src;
-      if ((t.indexOf("/dflip.js") > -1 || t.indexOf("/dflip.min.js") > -1) && (t.indexOf("https://") > -1 || t.indexOf("http://") > -1) && t.indexOf("js/dflip.") > -1) {
-        var n = t.split("/");
-        window.dFlipLocation = n.slice(0, -2).join("/")
-      }
-    })), "undefined" != typeof dFlipLocation && (dFlipLocation.length > 2 && "/" !== dFlipLocation.slice(-1) && (window.dFlipLocation += "/"), DFLIP.defaults.mockupjsSrc = dFlipLocation + "js/libs/mockup.min.js", DFLIP.defaults.pdfjsSrc = dFlipLocation + "js/libs/pdf.min.js", DFLIP.defaults.pdfjsCompatibilitySrc = dFlipLocation + "js/libs/compatibility.js", DFLIP.defaults.threejsSrc = dFlipLocation + "js/libs/three.min.js", DFLIP.defaults.pdfjsWorkerSrc = dFlipLocation + "js/libs/pdf.worker.min.js", DFLIP.defaults.soundFile = dFlipLocation + "sound/turn2.mp3", DFLIP.defaults.imagesLocation = dFlipLocation + "images", DFLIP.defaults.imageResourcesPath = dFlipLocation + "images/pdfjs/", DFLIP.defaults.cMapUrl = dFlipLocation + "js/libs/cmaps/", "undefined" != typeof dFlipWPGlobal)) {
-      if (void 0 !== dFlipWPGlobal.pdfVersion) {
-        var i = dFlipWPGlobal.pdfVersion;
-        "beta" === i && (i = "2.12.313-legacy-dist"), "default" !== i && (DFLIP.defaults.pdfjsSrc = dFlipLocation + "js/libs/pdfjs/" + i + "/pdf.min.js", DFLIP.defaults.pdfjsWorkerSrc = dFlipLocation + "js/libs/pdfjs/" + i + "/pdf.worker.min.js")
-      }
-      n(dFlipWPGlobal), e.extend(!0, DFLIP.defaults, dFlipWPGlobal)
-    }
-    DFLIP.preParseHash = window.location.hash, t.on("click", "._df_button, ._df_thumb, ._df_custom", (function (t) {
-      t.preventDefault();
-      var n = e(this);
-      window.dfLightBox || (window.dfLightBox = new DFLightBox((function () {
-        Array.prototype.forEach.call(DFLIP.utils.getSharePrefixes(), (function (e) {
-          0 == window.location.hash.indexOf("#" + e) && (window.location.hash = "#_")
-        })), window.dfActiveLightBoxBook.analytics({
-          eventAction: "Book Closed",
-          options: window.dfActiveLightBoxBook.options
-        }), window.dfActiveLightBoxBook.dispose(), window.dfActiveLightBoxBook = null
-      }))), window.dfLightBox.duration = 500, window.dfActiveLightBoxBook && window.dfActiveLightBoxBook.dispose ? window.dfActiveLightBoxBook.dispose() : window.dfLightBox.show((function () {
-        var t = DFLIP.getOptions(n);
-        t.transparent = !1, t.height = "100%", t.id = n.attr("id");
-        var i = n.attr("slug");
-        null != i && (t.slug = i), t.isLightBox = !0, window.dfActiveLightBoxBook = e(window.dfLightBox.container).flipBook(t.source, t)
+      }(i = e.extend(!0, {}, i, elementAttributeOptions)), i
+    }, DFLIP.parseBooks = function () {
+      e(".dflip-books").each((function () {
+        if (!1 !== DFLIP.defaults.loadMoreCount) {
+          var t = e(this);
+          if ("true" !== (t.attr("parsed") || t.attr("df-parsed"))) {
+            t.attr("df-parsed", "true");
+            var n = 0, i = t.find("._df_button, ._df_thumb, ._df_custom, ._df_book"), o = i.length;
+            i.each((function () {
+              ++n > DFLIP.defaults.loadMoreCount && e(this).attr("skip-parse", "true")
+            })), o > DFLIP.defaults.loadMoreCount && t.append("<div class='df-more-button-wrapper'><div class='df-more-button'>Load More..</div></div>")
+          }
+        }
+      })), e("._df_button, ._df_thumb, ._df_custom, ._df_book").each((function () {
+        var t = e(this);
+        if ("true" !== t.attr("skip-parse") && "true" !== (t.attr("parsed") || t.attr("df-parsed"))) if (t.attr("df-parsed", "true"), t.hasClass("_df_book")) {
+          var n = t.attr("id"), i = t.attr("slug"), o = DFLIP.getOptions(t);
+          o.id = n, null != i && (o.slug = i), n ? window[n.toString()] = e(t).flipBook(o.source, o) : e(t).flipBook(o.source, o)
+        } else if (t.hasClass("_df_thumb")) {
+          var a = e("<div class='_df_book-cover'>"), s = t.html().trim();
+          t.html("");
+          e("<span class='_df_book-title'>").html(s).appendTo(a);
+          var r = t.attr("thumb") || t.attr("df-thumb"),
+            l = t.attr("thumbtype") || DFLIP.defaults.thumbElement || "div",
+            c = t.attr("tags") || t.attr("df-tags");
+          if (c && (c = c.split(",")).length > 0) for (var d = 0; d < c.length; d++) t.append("<span class='_df_book-tag'>" + c[d] + "</span>");
+          null != r && "" != r.toString().trim() ? "img" == l ? (a.append('<img src="' + r + '" alt="' + s + '"/>'), t.attr("thumb-type", "img")) : a.css({backgroundImage: "url('" + r + "')"}) : a.addClass("_df_thumb-not-found"), t.append(a)
+        }
       }))
-    })), (DFLIP.utils.isSafari || DFLIP.utils.isIOS) && e("body").addClass("df-webkit");
-    var o = !1;
-    if (Array.prototype.forEach.call(DFLIP.utils.getSharePrefixes(), (function (t) {
-      if (DFLIP.preParseHash && DFLIP.preParseHash.indexOf(t) >= 0 && !1 === o) {
-        var n, i = DFLIP.preParseHash.split(t)[1].split("/")[0], a = DFLIP.preParseHash.split(t)[1].split("/")[1];
-        null != a && (a = a.split("/")[0]), 0 === (n = e("[slug=" + i + "]")).length && (n = e("#" + i)), 0 === n.length && (n = e("[_slug=" + i + "]")), n.length > 0 && (null != a && n.data("page", a), n.is("._df_button, ._df_thumb, ._df_custom") && (n.trigger("click"), o = !0))
+    }, e(document).ready((function () {
+      var body = e("body");
+      if ("undefined" == typeof dFlipLocation && 0 != DFLIP.autoDetectLocation && e("script").each((function () {
+        var t = e(this)[0].src;
+        if ((t.indexOf("/dflip.js") > -1 || t.indexOf("/dflip.min.js") > -1) && (t.indexOf("https://") > -1 || t.indexOf("http://") > -1) && t.indexOf("js/dflip.") > -1) {
+          var n = t.split("/");
+          window.dFlipLocation = n.slice(0, -2).join("/")
+        }
+      })),
+      "undefined" != typeof dFlipLocation && (dFlipLocation.length > 2 && "/" !== dFlipLocation.slice(-1) && (window.dFlipLocation += "/"),
+        DFLIP.defaults.mockupjsSrc = dFlipLocation + "js/libs/mockup.min.js",
+        DFLIP.defaults.pdfjsSrc = dFlipLocation + "js/libs/pdf.min.js",
+        DFLIP.defaults.pdfjsCompatibilitySrc = dFlipLocation + "js/libs/compatibility.js",
+        DFLIP.defaults.threejsSrc = dFlipLocation + "js/libs/three.min.js",
+        DFLIP.defaults.pdfjsWorkerSrc = dFlipLocation + "js/libs/pdf.worker.min.js",
+        DFLIP.defaults.soundFile = dFlipLocation + "sound/turn2.mp3",
+        DFLIP.defaults.imagesLocation = dFlipLocation + "images",
+        DFLIP.defaults.imageResourcesPath = dFlipLocation + "images/pdfjs/",
+        DFLIP.defaults.cMapUrl = dFlipLocation + "js/libs/cmaps/",
+      "undefined" != typeof dFlipWPGlobal)) {
+        if (void 0 !== dFlipWPGlobal.pdfVersion) {
+          var i = dFlipWPGlobal.pdfVersion;
+          "beta" === i && (i = "2.12.313-legacy-dist"),
+          "default" !== i && (DFLIP.defaults.pdfjsSrc = dFlipLocation + "js/libs/pdfjs/" + i + "/pdf.min.js",
+            DFLIP.defaults.pdfjsWorkerSrc = dFlipLocation + "js/libs/pdfjs/" + i + "/pdf.worker.min.js")
+        }
+        n(dFlipWPGlobal), e.extend(!0, DFLIP.defaults, dFlipWPGlobal)
       }
-    })), DFLIP.parseBooks(), t.hasClass("attachment-pdf")) {
-      var a = e("[attachment_pdf_flipbook_lightbox]");
-      a.length > 0 && e(a[0]).trigger("click")
-    }
-    t.on("click", ".df-ui-sidemenu-close", (function () {
-      e(this).closest(".df-container").find(".df-ui-outline.df-active , .df-ui-thumbnail.df-active").trigger("click")
-    })), t.on("mouseout", ".annotationDiv section.squareAnnotation", (function () {
-      var t = e(this);
-      DFLIP.handlePopup(t, !1)
-    })), t.on("mouseover", ".annotationDiv section.squareAnnotation", (function () {
-      var t = e(this);
-      DFLIP.handlePopup(t, !0)
-    })), DFLIP.handlePopup = function (e, t) {
-      void 0 === t && (t = !0);
-      var n = e.closest(".df-container"), i = n.find(".df-comment-popup");
-      if (i.toggleClass("df-active", t), t) {
-        var o = e[0].getBoundingClientRect(), a = n[0].getBoundingClientRect(), s = e.find(".popupWrapper").first();
-        i.html(s.html());
-        var r = o.left - a.left;
-        r + 360 > a.width ? r = a.width - 360 - 10 : r < 10 && (r = 10);
-        var l = o.top - a.top + o.height + 5;
-        l + i.height() > a.height ? l = o.top - i.height() - o.height - 10 : l < 10 && (l = 10), i.css({
-          left: r,
-          top: l
-        })
+      DFLIP.preParseHash = window.location.hash,
+        body.on("click", "._df_button, ._df_thumb, ._df_custom", (function (t) {
+          t.preventDefault();
+          var n = e(this);
+          window.dfLightBox || (window.dfLightBox = new DFLightBox((function () {
+            Array.prototype.forEach.call(DFLIP.utils.getSharePrefixes(), (function (e) {
+              0 == window.location.hash.indexOf("#" + e) && (window.location.hash = "#_")
+            })), window.dfActiveLightBoxBook.analytics({
+              eventAction: "Book Closed",
+              options: window.dfActiveLightBoxBook.options
+            }), window.dfActiveLightBoxBook.dispose(), window.dfActiveLightBoxBook = null
+          }))), window.dfLightBox.duration = 500, window.dfActiveLightBoxBook && window.dfActiveLightBoxBook.dispose ? window.dfActiveLightBoxBook.dispose() : window.dfLightBox.show((function () {
+            var t = DFLIP.getOptions(n);
+            t.transparent = !1, t.height = "100%", t.id = n.attr("id");
+            var i = n.attr("slug");
+            null != i && (t.slug = i), t.isLightBox = !0, window.dfActiveLightBoxBook = e(window.dfLightBox.container).flipBook(t.source, t)
+          }))
+        })),
+      (DFLIP.utils.isSafari || DFLIP.utils.isIOS) && e("body").addClass("df-webkit");
+      var o = !1;
+      if (Array.prototype.forEach.call(DFLIP.utils.getSharePrefixes(), (function (t) {
+        if (DFLIP.preParseHash && DFLIP.preParseHash.indexOf(t) >= 0 && !1 === o) {
+          var n, i = DFLIP.preParseHash.split(t)[1].split("/")[0], a = DFLIP.preParseHash.split(t)[1].split("/")[1];
+          null != a && (a = a.split("/")[0]), 0 === (n = e("[slug=" + i + "]")).length && (n = e("#" + i)), 0 === n.length && (n = e("[_slug=" + i + "]")), n.length > 0 && (null != a && n.data("page", a), n.is("._df_button, ._df_thumb, ._df_custom") && (n.trigger("click"), o = !0))
+        }
+      })),
+        DFLIP.parseBooks(),
+        body.hasClass("attachment-pdf")) {
+        var a = e("[attachment_pdf_flipbook_lightbox]");
+        a.length > 0 && e(a[0]).trigger("click")
       }
-    }, t.on("click", ".dflip-books .df-more-button", (function () {
-      var t = e(this).closest(".dflip-books");
-      if (t.length > 0) {
-        var n = 0;
-        t.find("._df_button, ._df_thumb, ._df_custom, ._df_book").each((function () {
-          "true" === e(this).attr("skip-parse") && (n < DFLIP.defaults.loadMoreCount && e(this).removeAttr("skip-parse"), n++)
-        })), DFLIP.parseBooks()
-      }
+      body.on("click", ".df-ui-sidemenu-close", (function () {
+        e(this).closest(".df-container").find(".df-ui-outline.df-active , .df-ui-thumbnail.df-active").trigger("click")
+      })), body.on("mouseout", ".annotationDiv section.squareAnnotation", (function () {
+        var t = e(this);
+        DFLIP.handlePopup(t, !1)
+      })), body.on("mouseover", ".annotationDiv section.squareAnnotation", (function () {
+        var t = e(this);
+        DFLIP.handlePopup(t, !0)
+      })), DFLIP.handlePopup = function (e, t) {
+        void 0 === t && (t = !0);
+        var n = e.closest(".df-container"), i = n.find(".df-comment-popup");
+        if (i.toggleClass("df-active", t), t) {
+          var o = e[0].getBoundingClientRect(), a = n[0].getBoundingClientRect(), s = e.find(".popupWrapper").first();
+          i.html(s.html());
+          var r = o.left - a.left;
+          r + 360 > a.width ? r = a.width - 360 - 10 : r < 10 && (r = 10);
+          var l = o.top - a.top + o.height + 5;
+          l + i.height() > a.height ? l = o.top - i.height() - o.height - 10 : l < 10 && (l = 10), i.css({
+            left: r,
+            top: l
+          })
+        }
+      }, body.on("click", ".dflip-books .df-more-button", (function () {
+        var t = e(this).closest(".dflip-books");
+        if (t.length > 0) {
+          var n = 0;
+          t.find("._df_button, ._df_thumb, ._df_custom, ._df_book").each((function () {
+            "true" === e(this).attr("skip-parse") && (n < DFLIP.defaults.loadMoreCount && e(this).removeAttr("skip-parse"), n++)
+          })), DFLIP.parseBooks()
+        }
+      }))
     }))
-  }))
-}(jQuery);
+  }(jQuery);
