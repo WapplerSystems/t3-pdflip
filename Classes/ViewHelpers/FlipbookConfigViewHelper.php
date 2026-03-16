@@ -49,9 +49,4 @@ JS;
 
     }
 
-
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
-    }
 }

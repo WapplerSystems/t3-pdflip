@@ -5,6 +5,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 class FlipbookGlobalConfigViewHelper extends AbstractViewHelper
@@ -54,10 +55,8 @@ class FlipbookGlobalConfigViewHelper extends AbstractViewHelper
         ];
         $jsLabels = [];
 
-        $languageService = $this->getLanguageService();
-
         foreach ($labels as $label) {
-            $translation = $languageService->sL('LLL:EXT:pdflip/Resources/Private/Language/de.locallang.xlf:' . $label);
+            $translation = LocalizationUtility::translate('LLL:EXT:pdflip/Resources/Private/Language/de.locallang.xlf:' . $label);
             $jsLabels[$label] = $translation ?: $label;
         }
         $labels = json_encode($jsLabels, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) . '';
@@ -76,9 +75,4 @@ JS;
 
     }
 
-
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
-    }
 }
