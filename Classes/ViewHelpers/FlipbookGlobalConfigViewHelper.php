@@ -68,6 +68,7 @@ class FlipbookGlobalConfigViewHelper extends AbstractViewHelper
     DFLIP.defaults.soundFile = "{$pathPrefix}Sounds/turn2.mp3";
     DFLIP.defaults.imagesLocation = "{$pathPrefix}Images";
     DFLIP.defaults.text = {$labels};
+    DFLIP.defaults.webgl = false;
 
 JS;
 
