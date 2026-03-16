@@ -1297,8 +1297,9 @@ section.linkAnnotation a .annotationLayer > a {
 
 ._df_thumb {
     border: 0;
-    width: 140px;
-    height: 200px;
+    width: 222px;
+    aspect-ratio: 0.7;
+    height: auto;
     text-align: center
 }
 
