@@ -11,12 +11,24 @@
     <f:render partial="PdflipAssets" arguments="{assets: settings.assets}" />
     {pdflip:flipbookGlobalConfig(useNonce:settings.assets.useNonce)}
 
+    <f:if condition="{files.0}">
+        <f:then>
 
-    Embedded
+            <div
+                class="_df_book" id="pdflip-{data.uid}" height="{f:if(condition:data.imageheight, then:data.imageheight, else:'500')}"
+                source="{files.0.publicUrl}">
+            </div>
 
-    <div id="flipbookContainer-{data.uid}">
+        </f:then>
+        <f:else>
 
-    </div>
+            <div class="alert alert-info">No PDF selected</div>
+
+        </f:else>
+    </f:if>
+
+
+
 
 
 </f:section>
