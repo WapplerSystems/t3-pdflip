@@ -130,6 +130,7 @@ tt_content.pdflip-embedded {
     10 {
       references.fieldName = assets
     }
+    50 = TYPO3\CMS\Frontend\DataProcessing\FlexFormProcessor
   }
 
 }

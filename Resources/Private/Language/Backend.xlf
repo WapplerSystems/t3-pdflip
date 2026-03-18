@@ -10,6 +10,9 @@
 			<trans-unit id="pdflip-embedded">
 				<source>PDFlip embedded</source>
 			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.height">
+				<source>Height</source>
+			</trans-unit>
 
 
 		</body>

@@ -1,0 +1,27 @@
+<T3DataStructure>
+    <meta>
+        <langDisable>1</langDisable>
+    </meta>
+    <sheets>
+        <sDEF>
+            <ROOT>
+                <sheetTitle>LLL:EXT:pdflip/Resources/Private/Language/Backend.xlf:flexform.main</sheetTitle>
+                <type>array</type>
+                <el>
+
+                    <settings.height>
+                        <label>
+                            LLL:EXT:pdflip/Resources/Private/Language/Backend.xlf:tt_content.pi_flexform.height
+                        </label>
+                        <config>
+                            <type>number</type>
+                            <default>500</default>
+                        </config>
+                    </settings.height>
+
+                </el>
+            </ROOT>
+        </sDEF>
+
+    </sheets>
+</T3DataStructure>

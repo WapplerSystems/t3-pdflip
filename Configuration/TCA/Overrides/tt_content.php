@@ -51,7 +51,7 @@ defined('TYPO3') || die();
         --palette--;;headers,
     --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:media,
         assets,
-        imageheight,
+        pi_flexform,
     --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
         --palette--;;frames,
         --palette--;;appearanceLinks,
@@ -69,4 +69,8 @@ defined('TYPO3') || die();
     ]
 );
 
-
+ExtensionManagementUtility::addPiFlexFormValue(
+    '*',
+    'FILE:EXT:pdflip/Configuration/FlexForms/Embedded.xml',
+    'pdflip-embedded'
+);
