@@ -196,7 +196,7 @@ var DFLIP = DFLIP || {},
       sharePrefix: "flipbook-",
       loadMoreCount: !1,
     }),
-    r = // has3DTransform
+    has3DTransform =
       "WebKitCSSMatrix" in window ||
       (document.body && "MozPerspective" in document.body.style),
     hasMouseEvents = "onmousedown" in window,
@@ -274,7 +274,7 @@ var DFLIP = DFLIP || {},
         return translateStr(0, 0);
       },
       translateStr: function (e, t) {
-        return r
+        return has3DTransform
           ? " translate3d(" + e + "px," + t + "px, 0px) "
           : " translate(" + e + "px, " + t + "px) ";
       },
@@ -732,17 +732,17 @@ var DFLIP = DFLIP || {},
         zoomOutBtn.off();
         pageNumberBtn.off();
         soundBtn.off();
-        C.off();
+        moreBtn.off();
         fullScreenBtn.off();
         fitScreenBtn.off();
         shareBtn.off();
-        F.off();
-        D.off();
-        M.off();
-        _.off();
-        z.off();
-        j.off();
-        U.off();
+        startPageBtn.off();
+        endPageBtn.off();
+        pageModeBtn.off();
+        altPrevBtn.off();
+        altNextBtn.off();
+        thumbnailBtn.off();
+        outlineBtn.off();
         controlsWrapper.remove();
         sizeWrapper.remove();
         prevBtn.remove();
@@ -860,10 +860,10 @@ var DFLIP = DFLIP || {},
           uiElement.updateSound(),
         "string" == typeof opts.source && 1 == opts.search)
       ) {
-        var x = (uiElement.search = t(htmlTmpl.div, { // searchBtn
+        var searchBtn = (uiElement.search = t(htmlTmpl.div, {
           class: "df-ui-btn df-ui-search " + opts.icons.search,
         }).on("click", function (e) {
-          x.hasClass("df-active") ||
+          searchBtn.hasClass("df-active") ||
           (t(this).addClass("df-active"), e.stopPropagation());
         }));
         window.addEventListener(
@@ -873,27 +873,27 @@ var DFLIP = DFLIP || {},
           },
           !1,
         );
-        var y = t(htmlTmpl.div, { // searchContainer
+        var searchContainer = t(htmlTmpl.div, {
           class: "search-container",
         });
-        x.append(y);
+        searchBtn.append(searchContainer);
       }
-      var C = (uiElement.more = t(htmlTmpl.div, { // moreBtn
+      var moreBtn = (uiElement.more = t(htmlTmpl.div, {
         class: "df-ui-btn df-ui-more " + opts.icons.more,
       }).on("click", function (e) {
-        C.hasClass("df-active") ||
+        moreBtn.hasClass("df-active") ||
         (t(this).addClass("df-active"), e.stopPropagation());
       }));
 
       function closeMoreMenu(event) {
-        C.removeClass("df-active");
+        moreBtn.removeClass("df-active");
       }
 
       window.addEventListener("click", closeMoreMenu, !1);
       var moreContainer = t(htmlTmpl.div, {
         class: "more-container",
       });
-      if ((C.append(moreContainer), "string" == typeof opts.source && 1 == opts.enableDownload)) {
+      if ((moreBtn.append(moreContainer), "string" == typeof opts.source && 1 == opts.enableDownload)) {
         var downloadBtnClass = "df-ui-btn df-ui-download " + opts.icons.download;
         (uiElement.download = t(
           '<a download target="_blank" class="' +
@@ -959,21 +959,21 @@ var DFLIP = DFLIP || {},
                 ? uiElement.shareBox.close()
                 : (uiElement.shareBox.update(flipbook.getURLHash()), uiElement.shareBox.show());
             }))),
-        F = (uiElement.startPage = t(htmlTmpl.div, { // startPageBtn
+        startPageBtn = (uiElement.startPage = t(htmlTmpl.div, {
           class: "df-ui-btn df-ui-start " + (isRTL ? opts.icons.end : opts.icons.start),
           title: opts.text.gotoFirstPage,
           html: "<span>" + opts.text.gotoFirstPage + "</span>",
         }).on("click", function () {
           flipbook.start();
         })),
-        D = (uiElement.endPage = t(htmlTmpl.div, { // endPageBtn
+        endPageBtn = (uiElement.endPage = t(htmlTmpl.div, {
           class: "df-ui-btn df-ui-end " + (isRTL ? opts.icons.start : opts.icons.end),
           title: opts.text.gotoLastPage,
           html: "<span>" + opts.text.gotoLastPage + "</span>",
         }).on("click", function () {
           flipbook.end();
         })),
-        M = (uiElement.pageMode = t(htmlTmpl.div, { // pageModeBtn
+        pageModeBtn = (uiElement.pageMode = t(htmlTmpl.div, {
           class: "df-ui-btn df-ui-pagemode " + opts.icons.singlepage,
           html: "<span>" + opts.text.singlePageMode + "</span>",
         }).on("click", function () {
@@ -981,21 +981,21 @@ var DFLIP = DFLIP || {},
           flipbook.setPageMode(!e.hasClass(opts.icons.doublepage));
         }));
       flipbook.setPageMode(flipbook.target.pageMode == element.PAGE_MODE.SINGLE);
-      var _ = (uiElement.altPrev = t(htmlTmpl.div, { // altPrevBtn
+      var altPrevBtn = (uiElement.altPrev = t(htmlTmpl.div, {
           class: "df-ui-btn df-ui-prev df-ui-alt " + opts.icons.prev,
           title: isRTL ? opts.text.nextPage : opts.text.previousPage,
           html: "<span>" + opts.text.previousPage + "</span>",
         }).on("click", function () {
           flipbook.prev();
         })),
-        z = (uiElement.altNext = t(htmlTmpl.div, { // altNextBtn
+        altNextBtn = (uiElement.altNext = t(htmlTmpl.div, {
           class: "df-ui-btn df-ui-next df-ui-alt " + opts.icons.next,
           title: isRTL ? opts.text.previousPage : opts.text.nextPage,
           html: "<span>" + opts.text.nextPage + "</span>",
         }).on("click", function () {
           flipbook.next();
         })),
-        j = (uiElement.thumbnail = t(htmlTmpl.div, { // thumbnailBtn
+        thumbnailBtn = (uiElement.thumbnail = t(htmlTmpl.div, {
           class: "df-ui-btn df-ui-thumbnail " + opts.icons.thumbnail,
           title: opts.text.toggleThumbnails,
           html: "<span>" + opts.text.toggleThumbnails + "</span>",
@@ -1008,7 +1008,7 @@ var DFLIP = DFLIP || {},
           e.hasClass("df-active") && e.siblings(".df-active").trigger("click");
           uiElement.update(!0);
         })),
-        U = (uiElement.outline = t(htmlTmpl.div, { // outlineBtn
+        outlineBtn = (uiElement.outline = t(htmlTmpl.div, {
           class: "df-ui-btn df-ui-outline " + opts.icons.outline,
           title: opts.text.toggleOutline,
           html: "<span>" + opts.text.toggleOutline + "</span>",
@@ -1023,20 +1023,20 @@ var DFLIP = DFLIP || {},
             uiElement.update(!0);
           }
         })),
-        H = opts.allControls.replace(/ /g, "").split(","), // allControlsList
-        W = "," + opts.moreControls.replace(/ /g, "") + ",", // moreControlsStr
-        V = "," + opts.hideControls.replace(/ /g, "") + ","; // hideControlsStr
-      isIOS && isMobile && (V += ",fullScreen,");
-      W.split(",");
-      for (var G = 0; G < H.length; G++) { // G = controlIndex
-        var q = H[G]; // controlName
-        if (V.indexOf("," + q + ",") < 0) {
-          var Z = uiElement[q]; // controlElement
-          null != Z &&
-          "object" == typeof Z &&
-          (W.indexOf("," + q + ",") > -1 && "more" !== q && "pageNumber" !== q
-            ? moreContainer.append(Z)
-            : controlsWrapper.append(Z));
+        allControlsList = opts.allControls.replace(/ /g, "").split(","),
+        moreControlsStr = "," + opts.moreControls.replace(/ /g, "") + ",",
+        hideControlsStr = "," + opts.hideControls.replace(/ /g, "") + ",";
+      isIOS && isMobile && (hideControlsStr += ",fullScreen,");
+      moreControlsStr.split(",");
+      for (var controlIndex = 0; controlIndex < allControlsList.length; controlIndex++) {
+        var controlName = allControlsList[controlIndex];
+        if (hideControlsStr.indexOf("," + controlName + ",") < 0) {
+          var controlElement = uiElement[controlName];
+          null != controlElement &&
+          "object" == typeof controlElement &&
+          (moreControlsStr.indexOf("," + controlName + ",") > -1 && "more" !== controlName && "pageNumber" !== controlName
+            ? moreContainer.append(controlElement)
+            : controlsWrapper.append(controlElement));
         }
       }
       containerEl.append(controlsWrapper).append(prevBtn).append(nextBtn).append(zoomWrapper);
@@ -1151,50 +1151,50 @@ var DFLIP = DFLIP || {},
         i.orbitControl.center.set(0, 0, 0);
         i.orbitControl.update();
         i.swipe_threshold = isMobile ? 15 : 20;
-        var a = (i.cssRenderer = new THREE.CSS3DRenderer()); // cssRenderer
-        t(a.domElement)
+        var cssRenderer = (i.cssRenderer = new THREE.CSS3DRenderer());
+        t(cssRenderer.domElement)
           .css({
             position: "absolute",
             top: 0,
             pointerEvents: "none",
           })
           .addClass("df-3dcanvas df-csscanvas");
-        i.container[0].appendChild(a.domElement);
-        var cssScene = (i.cssScene = new THREE.Scene()), // cssScene
-          leftPageDiv = document.createElement("div"); // leftPageDiv
+        i.container[0].appendChild(cssRenderer.domElement);
+        var cssScene = (i.cssScene = new THREE.Scene()),
+          leftPageDiv = document.createElement("div");
         leftPageDiv.className = "df-page-content df-page-content-left";
-        var rightPageDiv = document.createElement("div"); // rightPageDiv
+        var rightPageDiv = document.createElement("div");
         rightPageDiv.className = "df-page-content df-page-content-right";
-        var divLeftObj = (cssScene.divLeft = new THREE.CSS3DObject(leftPageDiv)),  // divLeftObj (CSS3D)
-          divRightObj = (cssScene.divRight = new THREE.CSS3DObject(rightPageDiv));   // divRightObj (CSS3D)
-        function p() { // requestRender()
+        var divLeftObj = (cssScene.divLeft = new THREE.CSS3DObject(leftPageDiv)),
+          divRightObj = (cssScene.divRight = new THREE.CSS3DObject(rightPageDiv));
+        function requestRender() {
           i.renderRequestPending = !0;
         }
 
         cssScene.add(divLeftObj);
         cssScene.add(divRightObj);
         i.resizeCallback = function () {
-          a.setSize(i.canvas.width(), i.canvas.height());
+          cssRenderer.setSize(i.canvas.width(), i.canvas.height());
         };
-        window.addEventListener(mouseEvents.move, p, !1);
-        window.addEventListener("keyup", p, !1);
+        window.addEventListener(mouseEvents.move, requestRender, !1);
+        window.addEventListener("keyup", requestRender, !1);
         i.dispose = function () {
           i.clearChild();
           i.render();
-          window.removeEventListener(mouseEvents.move, p, !1);
+          window.removeEventListener(mouseEvents.move, requestRender, !1);
           1 == i.options.scrollWheel &&
-          (i.container[0].removeEventListener("mousewheel", g, !1),
-            i.container[0].removeEventListener("DOMMouseScroll", g, !1));
-          window.removeEventListener("keyup", p, !1);
-          i.renderer.domElement.removeEventListener("mousemove", m, !1);
-          i.renderer.domElement.removeEventListener("touchmove", m, !1);
-          i.renderer.domElement.removeEventListener("mousedown", b, !1);
-          i.renderer.domElement.removeEventListener("touchstart", b, !1);
-          i.renderer.domElement.removeEventListener("mouseup", w, !1);
-          i.renderer.domElement.removeEventListener("touchend", w, !1);
+          (i.container[0].removeEventListener("mousewheel", wheelHandler, !1),
+            i.container[0].removeEventListener("DOMMouseScroll", wheelHandler, !1));
+          window.removeEventListener("keyup", requestRender, !1);
+          i.renderer.domElement.removeEventListener("mousemove", mouseMoveHandler, !1);
+          i.renderer.domElement.removeEventListener("touchmove", mouseMoveHandler, !1);
+          i.renderer.domElement.removeEventListener("mousedown", mouseDownHandler, !1);
+          i.renderer.domElement.removeEventListener("touchstart", mouseDownHandler, !1);
+          i.renderer.domElement.removeEventListener("mouseup", mouseUpHandler, !1);
+          i.renderer.domElement.removeEventListener("touchend", mouseUpHandler, !1);
           i.canvas.remove();
-          a.domElement.parentNode.removeChild(a.domElement);
-          a = null;
+          cssRenderer.domElement.parentNode.removeChild(cssRenderer.domElement);
+          cssRenderer = null;
           i.renderCallback = null;
           i.renderCallback = null;
           i.orbitControl.dispose();
@@ -1205,9 +1205,9 @@ var DFLIP = DFLIP || {},
         i.renderCallback = function () {
           TWEEN.getAll().length > 0 && (i.renderRequestPending = !0);
           TWEEN.update();
-          a.render(cssScene, i.camera);
+          cssRenderer.render(cssScene, i.camera);
         };
-        var g = function (e) { // wheelHandler(event)
+        var wheelHandler = function (e) {
             if (
               !0 === i.previewObject.options.isLightBox ||
               !0 === i.previewObject.ui.isFullscreen
@@ -1223,10 +1223,10 @@ var DFLIP = DFLIP || {},
                 ((t > 0 && 1 == n) || (t < 0 && n > 1)) && e.preventDefault();
                 i.previewObject.zoom(t > 0 ? 1 : -1);
               }
-              p();
+              requestRender();
             }
           },
-          m = function (e) { // mouseMoveHandler(event)
+          mouseMoveHandler = function (e) {
             if (
               ((i.renderRequestPending = !0),
                 (e = fixMouseEvent(e)),
@@ -1267,7 +1267,7 @@ var DFLIP = DFLIP || {},
               i.lastTime = performance.now();
             }
           },
-          b = function (e) { // mouseDownHandler(event)
+          mouseDownHandler = function (e) {
             null != (e = fixMouseEvent(e)).touches &&
             2 == e.touches.length &&
             null == i.startTouches &&
@@ -1281,7 +1281,7 @@ var DFLIP = DFLIP || {},
             i.lastPos = e.pageX;
             i.lastTime = performance.now();
           },
-          w = function (e) { // mouseUpHandler(event)
+          mouseUpHandler = function (e) {
             if (null != (e = fixMouseEvent(e)).touches && 0 == e.touches.length) {
               i.previewObject.contentProvider.zoomScale;
               1 == i.zoomDirty &&
@@ -1336,16 +1336,17 @@ var DFLIP = DFLIP || {},
               }
             })(e);
           };
+
         return (
-          i.renderer.domElement.addEventListener("mousemove", m, !1),
-            i.renderer.domElement.addEventListener("touchmove", m, !1),
-            i.renderer.domElement.addEventListener("mousedown", b, !1),
-            i.renderer.domElement.addEventListener("touchstart", b, !1),
-            i.renderer.domElement.addEventListener("mouseup", w, !1),
-            i.renderer.domElement.addEventListener("touchend", w, !1),
+          i.renderer.domElement.addEventListener("mousemove", mouseMoveHandler, !1),
+            i.renderer.domElement.addEventListener("touchmove", mouseMoveHandler, !1),
+            i.renderer.domElement.addEventListener("mousedown", mouseDownHandler, !1),
+            i.renderer.domElement.addEventListener("touchstart", mouseDownHandler, !1),
+            i.renderer.domElement.addEventListener("mouseup", mouseUpHandler, !1),
+            i.renderer.domElement.addEventListener("touchend", mouseUpHandler, !1),
           1 == i.options.scrollWheel &&
-          (i.container[0].addEventListener("mousewheel", g, !1),
-            i.container[0].addEventListener("DOMMouseScroll", g, !1)),
+          (i.container[0].addEventListener("mousewheel", wheelHandler, !1),
+            i.container[0].addEventListener("DOMMouseScroll", wheelHandler, !1)),
             t(i.renderer.domElement).css({
               display: "block",
             }),
@@ -1745,7 +1746,7 @@ var DFLIP = DFLIP || {},
     MOCKUP.Book = Book;
   }
 
-  var V = (function (n) { // PreviewObject — Basisklasse für FlipBook (zoom, resize, sound)
+  var PreviewObject = (function (n) {
     function i(t) {
       t = t || {};
       this.type = "PreviewObject";
@@ -1962,9 +1963,9 @@ var DFLIP = DFLIP || {},
               (o = f.imageViewport.height / r));
             1 != f.zoomScale &&
             this.target.container.addClass("df-zoom-enabled");
-            var j = (c.zoomWidth = Math.floor(a * r)),  // zoomWidth
+            var zoomWidth = (c.zoomWidth = Math.floor(a * r)),
               U = (c.zoomHeight = Math.floor(o * r)), // zoomHeight
-              H = 2 * j; // doubleZoomWidth
+              H = 2 * zoomWidth; // doubleZoomWidth
             if (b) {
               var W = U / c.height, // scaleRatio3D
                 V = i // cameraDepth3D
@@ -2057,7 +2058,7 @@ var DFLIP = DFLIP || {},
                   ".df-book-page, .df-page-front , .df-page-back, .df-page-fold-inner-shadow",
                 )
                 .height(U)
-                .width(j);
+                .width(zoomWidth);
             }
             n.checkCenter({
               type: "resize",
@@ -2219,8 +2220,10 @@ var DFLIP = DFLIP || {},
         i
     );
   })();
-  element.PreviewObject = V;
-  var G = (function (n) { // TextureLibrary / ContentProvider — lädt und cached Seiten
+
+  element.PreviewObject = PreviewObject;
+
+  var TextureLibrary = (function (n) {
       function i(n, i, o, a) {
         o = o || {};
         var r = this;
@@ -2330,17 +2333,19 @@ var DFLIP = DFLIP || {},
                     r.options.docParameters = {
                       data: atob(e),
                     };
-                    u();
+                    initPDFJS();
                   },
                 })
-                : u();
+                : initPDFJS();
             },
-            u = function () { // initPDFJS()
+
+            initPDFJS = function () {
               if (r) {
                 pdfjsLib.GlobalWorkerOptions.workerSrc = options.pdfjsWorkerSrc;
                 r.contentSourceType = sourceType.PDF;
                 var t = r.options.disableFontFace;
                 isSafari || isIOS || r.options.disableFontFace;
+
                 var o = (r.loading = pdfjsLib.getDocument(
                   r.options.docParameters
                     ? r.options.docParameters
@@ -2441,7 +2446,7 @@ var DFLIP = DFLIP || {},
                 };
               }
             },
-            h = function () { // loadPDFWorker()
+            loadPDFWorker = function () {
               if (r) {
                 options.pdfjsWorkerSrc.indexOf("?ver") < 0 &&
                 (options.pdfjsWorkerSrc += "?ver=" + element.version);
@@ -2484,13 +2489,13 @@ var DFLIP = DFLIP || {},
                       }),
                       require(["pdfjs-dist/build/pdf"], function (e) {
                         window.pdfjsLib = e;
-                        h();
+                        loadPDFWorker();
                       }))
                     : "object" == typeof exports &&
                     null != exports["pdfjs-dist/build/pdf"]
                       ? ((window.pdfjsLib = exports["pdfjs-dist/build/pdf"]),
-                        h())
-                      : h();
+                        loadPDFWorker())
+                      : loadPDFWorker();
                 },
                 function () {
                   r.updateInfo("Unable to load PDF service..");
@@ -3587,7 +3592,7 @@ var DFLIP = DFLIP || {},
         a.endPage = a.pageCount;
         a._activePage = n.openPage || a.startPage;
         a.hardConfig = n.hard;
-        r =
+        has3DTransform =
           "WebKitCSSMatrix" in window ||
           (document.body && "MozPerspective" in document.body.style);
         a.animateF = function () {
@@ -4286,7 +4291,7 @@ var DFLIP = DFLIP || {},
                   }),
                 );
                 a.stage.previewObject = a;
-                a.contentProvider = new G(
+                a.contentProvider = new TextureLibrary(
                   a.contentSource,
                   function (i) {
                     var o = {
@@ -4461,7 +4466,7 @@ var DFLIP = DFLIP || {},
                       ))
                 : o();
             } else
-              a.contentProvider = new G(
+              a.contentProvider = new TextureLibrary(
                 a.contentSource,
                 function (e) {
                   var i = {
@@ -4576,7 +4581,7 @@ var DFLIP = DFLIP || {},
           }),
           i
       );
-    })(V);
+    })(PreviewObject);
   t.fn.extend({
     shelf: function () {
     },
