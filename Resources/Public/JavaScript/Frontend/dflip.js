@@ -61,10 +61,10 @@ var DFLIP = DFLIP || {},
     SINGLE: 1,
     DOUBLEINTERNAL: 2,
   };
-  var n,
-    i,
-    o,
-    a,
+  var cssStyleDeclaration, // cssStyleDeclaration (computed style for prefix detection)
+    cssVendorPrefix, // cssVendorPrefix (e.g. "webkit", "moz", "ms")
+    userAgentString, // userAgentString (used in isMobile detection)
+    isMobileResult, // isMobileResult (boolean result of mobile detection)
     options = (element.defaults = {
       nonce: null,
       webgl: !0,
@@ -188,18 +188,18 @@ var DFLIP = DFLIP || {},
       sharePrefix: "flipbook-",
       loadMoreCount: !1,
     }),
-    r =
+    r = // has3DTransform
       "WebKitCSSMatrix" in window ||
       (document.body && "MozPerspective" in document.body.style),
-    l = "onmousedown" in window,
-    c = (window, navigator.userAgent),
-    d = (element.utils = {
+    hasMouseEvents = "onmousedown" in window, // hasMouseEvents
+    userAgent = (window, navigator.userAgent), // userAgent
+    utils = (element.utils = { // utils
       drag: {
         left: 0,
         right: 1,
         none: -1,
       },
-      mouseEvents: l
+      mouseEvents: hasMouseEvents
         ? {
             type: "mouse",
             start: "mousedown",
@@ -219,7 +219,7 @@ var DFLIP = DFLIP || {},
         input: "<input type='text'/>",
       },
       getSharePrefix: function () {
-        return d.getSharePrefixes()[0];
+        return utils.getSharePrefixes()[0];
       },
       getSharePrefixes: function () {
         return (element.defaults.sharePrefix + ",dflip-,flipbook-,dearflip-")
@@ -263,7 +263,7 @@ var DFLIP = DFLIP || {},
         return e ? "block" : "none";
       },
       resetTranslate: function () {
-        return P(0, 0);
+        return translateStr(0, 0);
       },
       translateStr: function (e, t) {
         return r
@@ -289,7 +289,7 @@ var DFLIP = DFLIP || {},
         return " rotateZ(" + e + "deg) ";
       },
       bg: function (e) {
-        return "#fff" + y(e);
+        return "#fff" + bgImage(e);
       },
       bgImage: function (e) {
         return null == e || "blank" == e ? "" : ' url("' + e + '")';
@@ -307,8 +307,8 @@ var DFLIP = DFLIP || {},
         return Math.sqrt(Math.pow(n - e, 2) + Math.pow(i - t, 2));
       },
       calculateScale: function (e, t) {
-        var n = I(e[0].x, e[0].y, e[1].x, e[1].y);
-        return I(t[0].x, t[0].y, t[1].x, t[1].y) / n;
+        var n = distBetween(e[0].x, e[0].y, e[1].x, e[1].y);
+        return distBetween(t[0].x, t[0].y, t[1].x, t[1].y) / n;
       },
       getVectorAvg: function (e) {
         return {
@@ -317,13 +317,13 @@ var DFLIP = DFLIP || {},
               .map(function (e) {
                 return e.x;
               })
-              .reduce(d.sum) / e.length,
+              .reduce(utils.sum) / e.length,
           y:
             e
               .map(function (e) {
                 return e.y;
               })
-              .reduce(d.sum) / e.length,
+              .reduce(utils.sum) / e.length,
         };
       },
       sum: function (e, t) {
@@ -345,8 +345,8 @@ var DFLIP = DFLIP || {},
       },
       angleByDistance: function (e, t) {
         var n = t / 2,
-          i = C(e, 0, t);
-        return i < n ? w(Math.asin(i / n)) : 90 + w(Math.asin((i - n) / n));
+          i = clamp(e, 0, t);
+        return i < n ? toDegrees(Math.asin(i / n)) : 90 + toDegrees(Math.asin((i - n) / n));
       },
       log: function (e) {
         1 == options.enableDebugLog && window.console && console.log(e);
@@ -413,7 +413,7 @@ var DFLIP = DFLIP || {},
       getScriptCallbacks: [],
       getScript: function (e, n, i) {
         var o,
-          a = d.getScriptCallbacks[e];
+          a = utils.getScriptCallbacks[e];
         function s(e, t) {
           if (
             null != o &&
@@ -431,7 +431,7 @@ var DFLIP = DFLIP || {},
           }
         }
         if (0 === t("script[src='" + e + "']").length) {
-          (a = d.getScriptCallbacks[e] = []).push(n);
+          (a = utils.getScriptCallbacks[e] = []).push(n);
           o = document.createElement("script");
           var r = document.body.getElementsByTagName("script")[0];
           o.async = 1;
@@ -443,7 +443,7 @@ var DFLIP = DFLIP || {},
           o.addEventListener("readystatechange", s, !1);
           o.addEventListener("complete", s, !1);
           i && o.addEventListener("error", i, !1);
-          o.src = e + ("MS" == D.dom ? "?" + Math.random(1) : "");
+          o.src = e + ("MS" == cssPrefix.dom ? "?" + Math.random(1) : "");
         } else a.push(n);
       },
       isHardPage: function (e, t, n, i) {
@@ -507,47 +507,47 @@ var DFLIP = DFLIP || {},
         navigator.maxTouchPoints > 2 &&
         /MacIntel/.test(navigator.platform),
       isMobile:
-        ((a = !1),
-        (o = c || navigator.vendor || window.opera),
+        ((isMobileResult = !1),
+        (userAgentString = userAgent || navigator.vendor || window.opera),
         (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(
-          o,
+          userAgentString,
         ) ||
           /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(
-            o.substr(0, 4),
+            userAgentString.substr(0, 4),
           )) &&
-          (a = !0),
-        a),
-      isIOS: /(iPad|iPhone|iPod)/g.test(c),
+          (isMobileResult = !0),
+        isMobileResult),
+      isIOS: /(iPad|iPhone|iPod)/g.test(userAgent),
       isSafari:
         /constructor/i.test(window.HTMLElement) ||
         "[object SafariRemoteNotification]" ===
           (!window.safari || safari.pushNotification).toString(),
       prefix:
-        ((n = window.getComputedStyle(document.documentElement, "")),
-        (i = Array.prototype.slice
-          .call(n)
+        ((cssStyleDeclaration = window.getComputedStyle(document.documentElement, "")),
+        (cssVendorPrefix = Array.prototype.slice
+          .call(cssStyleDeclaration)
           .join("")
           .match(/-(moz|webkit|ms)-/)[1]),
         {
-          dom: "WebKit|Moz|MS".match(new RegExp("(" + i + ")", "i"))[1],
-          lowercase: i,
-          css: "-" + i + "-",
-          js: i[0].toUpperCase() + i.substr(1),
+          dom: "WebKit|Moz|MS".match(new RegExp("(" + cssVendorPrefix + ")", "i"))[1],
+          lowercase: cssVendorPrefix,
+          css: "-" + cssVendorPrefix + "-",
+          js: cssVendorPrefix[0].toUpperCase() + cssVendorPrefix.substr(1),
         }),
       canSupport3D: function () {
         var e = !0;
         try {
           if (
-            -1 !== c.indexOf("MSIE") ||
+            -1 !== userAgent.indexOf("MSIE") ||
             navigator.appVersion.indexOf("Trident/") > 0
           ) {
             e = !1;
             console.log("Proper Support for 3D not detected for IE!");
-          } else if (z && !B) {
+          } else if (isSafari && !isIOS) {
             e = !1;
             console.log("Proper Support for 3D not detected for IOS!");
           } else {
-            var t = c
+            var t = userAgent
               .toString()
               .toLowerCase()
               .match(/android\s([0-9\.]*)/i);
@@ -576,42 +576,42 @@ var DFLIP = DFLIP || {},
         );
       },
     }),
-    u = /\x00+/g,
-    h = /[\x01-\x1F]/g;
-  d.removeNullCharacters = function (e) {
+    nullCharRegex = /\x00+/g, // nullCharRegex
+    controlCharRegex = /[\x01-\x1F]/g; // controlCharRegex
+  utils.removeNullCharacters = function (e) {
     var t = arguments.length > 1 && void 0 !== arguments[1] && arguments[1];
     return "string" != typeof e
       ? (warn("The argument for removeNullCharacters must be a string."), e)
-      : (t && (e = e.replace(h, " ")), e.replace(u, ""));
+      : (t && (e = e.replace(controlCharRegex, " ")), e.replace(nullCharRegex, ""));
   };
-  var p = element.SOURCE_TYPE,
-    g = (element.DISPLAY_TYPE, d.drag),
-    f = d.mouseEvents,
-    m = d.html,
-    v = d.isset,
-    b = (d.isnull, d.toRad),
-    w = d.toDeg,
-    P = (d.transition, d.translateStr),
-    x = (d.resetBoxShadow, d.rotateStr),
-    y = (d.bg, d.bgImage),
-    C = (d.src, d.limitAt),
-    L = d.distOrigin,
-    I = d.distPoints,
-    S = d.angleByDistance,
-    E = d.log,
-    k = d.nearestPowerOfTwo,
-    T = d.extendOptions,
-    O = d.getBasePage,
-    R = d.getScript,
-    F = d.fixMouseEvent,
-    D = d.prefix,
-    M = d.isBookletMode,
-    N = d.isRTLMode,
-    A = d.isMobile,
-    _ = d.hasWebgl,
-    z = d.isSafari,
-    B = d.isIOS,
-    j = d.__extends;
+  var sourceType = element.SOURCE_TYPE,
+    dragDir = (element.DISPLAY_TYPE, utils.drag),
+    mouseEvents = utils.mouseEvents,
+    htmlTmpl = utils.html,
+    isset = utils.isset,
+    toRadians = (utils.isnull, utils.toRad),
+    toDegrees = utils.toDeg,
+    translateStr = (utils.transition, utils.translateStr),
+    rotateStr = (utils.resetBoxShadow, utils.rotateStr),
+    bgImage = (utils.bg, utils.bgImage),
+    clamp = (utils.src, utils.limitAt),
+    distFromOrigin = utils.distOrigin,
+    distBetween = utils.distPoints,
+    angleByDist = utils.angleByDistance,
+    debugLog = utils.log,
+    nearestPow2 = utils.nearestPowerOfTwo,
+    mergeOptions = utils.extendOptions,
+    getBasePage = utils.getBasePage,
+    loadScript = utils.getScript,
+    fixMouseEvent = utils.fixMouseEvent,
+    cssPrefix = utils.prefix,
+    isBookletMode = utils.isBookletMode,
+    isRTL = utils.isRTLMode,
+    isMobile = utils.isMobile,
+    hasWebGL = utils.hasWebgl,
+    isSafari = utils.isSafari,
+    isIOS = utils.isIOS,
+    inherits = utils.__extends;
   !(function () {
     if (window.CanvasPixelArray)
       "function" != typeof window.CanvasPixelArray.prototype.set &&
@@ -622,9 +622,9 @@ var DFLIP = DFLIP || {},
       var e,
         t = !1;
       if (
-        (z &&
+        (isSafari &&
           (t =
-            (e = c.match(/Version\/([0-9]+)\.([0-9]+)\.([0-9]+) Safari\//)) &&
+            (e = userAgent.match(/Version\/([0-9]+)\.([0-9]+)\.([0-9]+) Safari\//)) &&
             parseInt(e[1]) < 6),
         t)
       ) {
@@ -696,8 +696,8 @@ var DFLIP = DFLIP || {},
   })();
   var U = function (n, i) {
       var o = "df-ui",
-        a = N(i.target),
-        s = (i.ui = t(m.div, {
+        a = isRTL(i.target),
+        s = (i.ui = t(htmlTmpl.div, {
           class: o,
         })),
         r = i.options;
@@ -747,21 +747,21 @@ var DFLIP = DFLIP || {},
             e
           );
         },
-        c = (s.next = t(m.div, {
+        c = (s.next = t(htmlTmpl.div, {
           class: "df-ui-btn df-ui-next " + r.icons.next,
           title: a ? r.text.previousPage : r.text.nextPage,
           html: "<span>" + r.text.nextPage + "</span>",
         }).on("click", function () {
           i.next();
         })),
-        u = (s.prev = t(m.div, {
+        u = (s.prev = t(htmlTmpl.div, {
           class: "df-ui-btn df-ui-prev " + r.icons.prev,
           title: a ? r.text.nextPage : r.text.previousPage,
           html: "<span>" + r.text.previousPage + "</span>",
         }).on("click", function () {
           i.prev();
         })),
-        h = t(m.div, {
+        h = t(htmlTmpl.div, {
           class: "df-ui-btn df-ui-play " + r.icons.play,
           title: r.text.play,
           html: "<span>" + r.text.play + "</span>",
@@ -770,10 +770,10 @@ var DFLIP = DFLIP || {},
           i.setAutoPlay(!e.hasClass(r.icons.pause));
         });
       1 == r.autoPlay && ((s.play = h), i.setAutoPlay(r.autoPlayStart));
-      var p = t(m.div, {
+      var p = t(htmlTmpl.div, {
           class: "df-ui-wrapper df-ui-zoom",
         }),
-        g = (s.zoomIn = t(m.div, {
+        g = (s.zoomIn = t(htmlTmpl.div, {
           class: "df-ui-btn df-ui-zoomin " + r.icons.zoomin,
           title: r.text.zoomIn,
           html: "<span>" + r.text.zoomIn + "</span>",
@@ -784,7 +784,7 @@ var DFLIP = DFLIP || {},
             i.target.pan &&
             i.target.pan(i.target.startPoint);
         })),
-        f = (s.zoomOut = t(m.div, {
+        f = (s.zoomOut = t(htmlTmpl.div, {
           class: "df-ui-btn df-ui-zoomout " + r.icons.zoomout,
           title: r.text.zoomOut,
           html: "<span>" + r.text.zoomOut + "</span>",
@@ -796,7 +796,7 @@ var DFLIP = DFLIP || {},
             i.target.pan(i.target.startPoint);
         }));
       p.append(g).append(f);
-      var v = (s.pageNumber = t(m.div, {
+      var v = (s.pageNumber = t(htmlTmpl.div, {
         class: "df-ui-btn df-ui-page",
       })
         .on("change", function () {
@@ -815,15 +815,15 @@ var DFLIP = DFLIP || {},
         v,
       );
       s.pageLabel = t('<label for="df_book_page_number"/>').appendTo(v);
-      var b = t(m.div, {
+      var b = t(htmlTmpl.div, {
           class: "df-ui-wrapper df-ui-size",
         }),
-        w = t(m.div, {
+        w = t(htmlTmpl.div, {
           class: "df-ui-btn df-ui-help " + r.icons.help,
           title: r.text.toggleHelp,
           html: "<span>" + r.text.toggleHelp + "</span>",
         }).on("click", function () {}),
-        P = (s.sound = t(m.div, {
+        P = (s.sound = t(htmlTmpl.div, {
           class: "df-ui-btn df-ui-sound " + r.icons.sound,
           title: r.text.toggleSound,
           html: "<span>" + r.text.toggleSound + "</span>",
@@ -840,7 +840,7 @@ var DFLIP = DFLIP || {},
         s.updateSound(),
         "string" == typeof r.source && 1 == r.search)
       ) {
-        var x = (s.search = t(m.div, {
+        var x = (s.search = t(htmlTmpl.div, {
           class: "df-ui-btn df-ui-search " + r.icons.search,
         }).on("click", function (e) {
           x.hasClass("df-active") ||
@@ -853,12 +853,12 @@ var DFLIP = DFLIP || {},
           },
           !1,
         );
-        var y = t(m.div, {
+        var y = t(htmlTmpl.div, {
           class: "search-container",
         });
         x.append(y);
       }
-      var C = (s.more = t(m.div, {
+      var C = (s.more = t(htmlTmpl.div, {
         class: "df-ui-btn df-ui-more " + r.icons.more,
       }).on("click", function (e) {
         C.hasClass("df-active") ||
@@ -868,7 +868,7 @@ var DFLIP = DFLIP || {},
         C.removeClass("df-active");
       }
       window.addEventListener("click", L, !1);
-      var I = t(m.div, {
+      var I = t(htmlTmpl.div, {
         class: "more-container",
       });
       if ((C.append(I), "string" == typeof r.source && 1 == r.enableDownload)) {
@@ -883,9 +883,9 @@ var DFLIP = DFLIP || {},
           .attr("href", r.source)
           .attr("title", r.text.downloadPDFFile);
       }
-      d.hasFullscreenEnabled() || n.addClass("df-custom-fullscreen");
+      utils.hasFullscreenEnabled() || n.addClass("df-custom-fullscreen");
       s.switchFullscreen = function () {
-        d.getFullscreenElement();
+        utils.getFullscreenElement();
         var e = i.container[0];
         1 != s.isFullscreen
           ? (i.container.addClass("df-fullscreen"),
@@ -907,28 +907,28 @@ var DFLIP = DFLIP || {},
                   ? document.fullscreenElement && document.mozCancelFullScreen()
                   : document.webkitExitFullscreen &&
                     document.webkitExitFullscreen());
-        d.hasFullscreenEnabled() ||
+        utils.hasFullscreenEnabled() ||
           setTimeout(function () {
             i.resize();
           }, 50);
       };
-      var k = (s.fullScreen = t(m.div, {
+      var k = (s.fullScreen = t(htmlTmpl.div, {
           class: "df-ui-btn df-ui-fullscreen " + r.icons.fullscreen,
           title: r.text.toggleFullscreen,
           html: "<span>" + r.text.toggleFullscreen + "</span>",
         }).on("click", s.switchFullscreen)),
-        T = (s.fit = t(m.div, {
+        T = (s.fit = t(htmlTmpl.div, {
           class: "df-ui-btn df-ui-fit " + r.icons.fitscreen,
         }).on("click", function () {
           t(this).toggleClass("df-button-fit-active");
         }));
       b.append(k);
-      var O = t(m.div, {
+      var O = t(htmlTmpl.div, {
           class: "df-ui-wrapper df-ui-controls",
         }),
         R =
           ((s.shareBox = new element.Share(n, r)),
-          (s.share = t(m.div, {
+          (s.share = t(htmlTmpl.div, {
             class: "df-ui-btn df-ui-share " + r.icons.share,
             title: r.text.share,
             html: "<span>" + r.text.share + "</span>",
@@ -937,21 +937,21 @@ var DFLIP = DFLIP || {},
               ? s.shareBox.close()
               : (s.shareBox.update(i.getURLHash()), s.shareBox.show());
           }))),
-        F = (s.startPage = t(m.div, {
+        F = (s.startPage = t(htmlTmpl.div, {
           class: "df-ui-btn df-ui-start " + (a ? r.icons.end : r.icons.start),
           title: r.text.gotoFirstPage,
           html: "<span>" + r.text.gotoFirstPage + "</span>",
         }).on("click", function () {
           i.start();
         })),
-        D = (s.endPage = t(m.div, {
+        D = (s.endPage = t(htmlTmpl.div, {
           class: "df-ui-btn df-ui-end " + (a ? r.icons.start : r.icons.end),
           title: r.text.gotoLastPage,
           html: "<span>" + r.text.gotoLastPage + "</span>",
         }).on("click", function () {
           i.end();
         })),
-        M = (s.pageMode = t(m.div, {
+        M = (s.pageMode = t(htmlTmpl.div, {
           class: "df-ui-btn df-ui-pagemode " + r.icons.singlepage,
           html: "<span>" + r.text.singlePageMode + "</span>",
         }).on("click", function () {
@@ -959,21 +959,21 @@ var DFLIP = DFLIP || {},
           i.setPageMode(!e.hasClass(r.icons.doublepage));
         }));
       i.setPageMode(i.target.pageMode == element.PAGE_MODE.SINGLE);
-      var _ = (s.altPrev = t(m.div, {
+      var _ = (s.altPrev = t(htmlTmpl.div, {
           class: "df-ui-btn df-ui-prev df-ui-alt " + r.icons.prev,
           title: a ? r.text.nextPage : r.text.previousPage,
           html: "<span>" + r.text.previousPage + "</span>",
         }).on("click", function () {
           i.prev();
         })),
-        z = (s.altNext = t(m.div, {
+        z = (s.altNext = t(htmlTmpl.div, {
           class: "df-ui-btn df-ui-next df-ui-alt " + r.icons.next,
           title: a ? r.text.previousPage : r.text.nextPage,
           html: "<span>" + r.text.nextPage + "</span>",
         }).on("click", function () {
           i.next();
         })),
-        j = (s.thumbnail = t(m.div, {
+        j = (s.thumbnail = t(htmlTmpl.div, {
           class: "df-ui-btn df-ui-thumbnail " + r.icons.thumbnail,
           title: r.text.toggleThumbnails,
           html: "<span>" + r.text.toggleThumbnails + "</span>",
@@ -986,7 +986,7 @@ var DFLIP = DFLIP || {},
           e.hasClass("df-active") && e.siblings(".df-active").trigger("click");
           s.update(!0);
         })),
-        U = (s.outline = t(m.div, {
+        U = (s.outline = t(htmlTmpl.div, {
           class: "df-ui-btn df-ui-outline " + r.icons.outline,
           title: r.text.toggleOutline,
           html: "<span>" + r.text.toggleOutline + "</span>",
@@ -1004,7 +1004,7 @@ var DFLIP = DFLIP || {},
         H = r.allControls.replace(/ /g, "").split(","),
         W = "," + r.moreControls.replace(/ /g, "") + ",",
         V = "," + r.hideControls.replace(/ /g, "") + ",";
-      B && A && (V += ",fullScreen,");
+      isIOS && isMobile && (V += ",fullScreen,");
       W.split(",");
       for (var G = 0; G < H.length; G++) {
         var q = H[G];
@@ -1045,7 +1045,7 @@ var DFLIP = DFLIP || {},
       }
       document.addEventListener("keyup", K, !1);
       s.update = function (t) {
-        E("ui update");
+        debugLog("ui update");
         var o = i.target,
           a = l(o._activePage || i._activePage),
           r = o.pageCount || i.pageCount,
@@ -1093,21 +1093,21 @@ var DFLIP = DFLIP || {},
         i.camera.position.set(0, 20, 600);
         i.camera.lookAt(new THREE.Vector3(0, 0, 0));
         i.spotLight.position.set(-220, 330, 550);
-        i.spotLight.castShadow = !A && !d.isIPad && n.webglShadow;
+        i.spotLight.castShadow = !isMobile && !utils.isIPad && n.webglShadow;
         i.spotLight.shadow && (i.spotLight.shadow.bias = -8e-4);
-        i.spotLight.intensity = v(
+        i.spotLight.intensity = isset(
           n.spotLightIntensity,
           options.spotLightIntensity,
         );
         i.ambientLight.color = new THREE.Color(
-          v(n.ambientLightColor, options.ambientLightColor),
+          isset(n.ambientLightColor, options.ambientLightColor),
         );
-        i.ambientLight.intensity = v(
+        i.ambientLight.intensity = isset(
           n.ambientLightIntensity,
           options.ambientLightIntensity,
         );
         var o = new THREE.ShadowMaterial();
-        o.opacity = v(n.shadowOpacity, options.shadowOpacity);
+        o.opacity = isset(n.shadowOpacity, options.shadowOpacity);
         i.ground.material = o;
         i.ground.position.z = -2;
         i.orbitControl.maxAzimuthAngle = 0;
@@ -1124,7 +1124,7 @@ var DFLIP = DFLIP || {},
         i.orbitControl.keyPanSpeed = 0;
         i.orbitControl.center.set(0, 0, 0);
         i.orbitControl.update();
-        i.swipe_threshold = A ? 15 : 20;
+        i.swipe_threshold = isMobile ? 15 : 20;
         var a = (i.cssRenderer = new THREE.CSS3DRenderer());
         t(a.domElement)
           .css({
@@ -1149,12 +1149,12 @@ var DFLIP = DFLIP || {},
         i.resizeCallback = function () {
           a.setSize(i.canvas.width(), i.canvas.height());
         };
-        window.addEventListener(f.move, p, !1);
+        window.addEventListener(mouseEvents.move, p, !1);
         window.addEventListener("keyup", p, !1);
         i.dispose = function () {
           i.clearChild();
           i.render();
-          window.removeEventListener(f.move, p, !1);
+          window.removeEventListener(mouseEvents.move, p, !1);
           1 == i.options.scrollWheel &&
             (i.container[0].removeEventListener("mousewheel", g, !1),
             i.container[0].removeEventListener("DOMMouseScroll", g, !1));
@@ -1202,7 +1202,7 @@ var DFLIP = DFLIP || {},
           m = function (e) {
             if (
               ((i.renderRequestPending = !0),
-              (e = F(e)),
+              (e = fixMouseEvent(e)),
               i.isMouseDown &&
                 0 != e.movementX &&
                 0 != e.movementY &&
@@ -1212,8 +1212,8 @@ var DFLIP = DFLIP || {},
                 null != i.startTouches)
             ) {
               i.zoomDirty = !0;
-              var t = d.getVectorAvg(d.getTouches(e, i.container.offset())),
-                n = d.calculateScale(i.startTouches, d.getTouches(e));
+              var t = utils.getVectorAvg(utils.getTouches(e, i.container.offset())),
+                n = utils.calculateScale(i.startTouches, utils.getTouches(e));
               i.lastScale;
               i.previewObject.contentProvider.zoomScale;
               t.x;
@@ -1241,10 +1241,10 @@ var DFLIP = DFLIP || {},
             }
           },
           b = function (e) {
-            null != (e = F(e)).touches &&
+            null != (e = fixMouseEvent(e)).touches &&
               2 == e.touches.length &&
               null == i.startTouches &&
-              ((i.startTouches = d.getTouches(e)),
+              ((i.startTouches = utils.getTouches(e)),
               (i.lastScale = 1),
               (i.originalZ = 1 * i.camera.position.z));
             document.activeElement.blur();
@@ -1255,10 +1255,10 @@ var DFLIP = DFLIP || {},
             i.lastTime = performance.now();
           },
           w = function (e) {
-            if (null != (e = F(e)).touches && 0 == e.touches.length) {
+            if (null != (e = fixMouseEvent(e)).touches && 0 == e.touches.length) {
               i.previewObject.contentProvider.zoomScale;
               1 == i.zoomDirty &&
-                ((i.previewObject.contentProvider.zoomScale = d.limitAt(
+                ((i.previewObject.contentProvider.zoomScale = utils.limitAt(
                   i.previewObject.contentProvider.zoomScale * i.lastScale,
                   1,
                   i.previewObject.contentProvider.maxZoom,
@@ -1327,7 +1327,7 @@ var DFLIP = DFLIP || {},
         );
       }
       return (
-        j(n, e),
+        inherits(n, e),
         (n.prototype.width = function () {
           return this.container.width();
         }),
@@ -1349,13 +1349,13 @@ var DFLIP = DFLIP || {},
         this.type = "BookPaper";
       }
       return (
-        j(n, t),
+        inherits(n, t),
         (n.prototype.tween = function (t, n) {
           var i = this,
             o = 1e-5;
           i.originalStiff = i.stiffness;
           var a = i.newStiffness,
-            s = M(i.parent),
+            s = isBookletMode(i.parent),
             r = n - t,
             l = t > 90,
             c = i.parent.direction == element.DIRECTION.RTL;
@@ -1462,24 +1462,24 @@ var DFLIP = DFLIP || {},
         this.createStack(n);
         this.pageMode =
           n.pageMode ||
-          (A || this.pageCount <= 2
+          (isMobile || this.pageCount <= 2
             ? element.PAGE_MODE.SINGLE
             : element.PAGE_MODE.DOUBLE);
         this.singlePageMode =
           n.singlePageMode ||
-          (A
+          (isMobile
             ? element.SINGLE_PAGE_MODE.BOOKLET
             : element.SINGLE_PAGE_MODE.ZOOM);
         this.type = "Book";
       }
       return (
-        j(n, t),
+        inherits(n, t),
         (n.prototype.getPageByNumber = function (e) {
-          var t = M(this) ? (N(this) ? e + 1 : e) : Math.floor((e - 1) / 2);
+          var t = isBookletMode(this) ? (isRTL(this) ? e + 1 : e) : Math.floor((e - 1) / 2);
           return this.getObjectByName(t.toString());
         }),
         (n.prototype.isPageHard = function (e) {
-          return d.isHardPage(this.hardConfig, e, this.pageCount);
+          return utils.isHardPage(this.hardConfig, e, this.pageCount);
         }),
         (n.prototype.activePage = function (e) {
           if (null == e) return this._activePage;
@@ -1497,7 +1497,7 @@ var DFLIP = DFLIP || {},
         }),
         (n.prototype.moveBy = function (e) {
           var t = this._activePage + e;
-          t = C(t, this.startPage, this.endPage);
+          t = clamp(t, this.startPage, this.endPage);
           1 != this.firstFlipped &&
             (this.previewObject.analytics({
               eventAction: "First Page Flip",
@@ -1543,8 +1543,8 @@ var DFLIP = DFLIP || {},
         }),
         (n.prototype.updatePage = function (t) {
           var n = this.direction == element.DIRECTION.RTL,
-            i = M(this),
-            o = (O(t), i ? 1 : 2);
+            i = isBookletMode(this),
+            o = (getBasePage(t), i ? 1 : 2);
           t = Math.floor(t / o);
           n && (t = Math.ceil(this.pageCount / o) - t);
           var a = this.oldBaseNumber || 0,
@@ -1782,7 +1782,7 @@ var DFLIP = DFLIP || {},
             e._offsetParent !== e.container[0].offsetParent &&
             ((e._offsetParent = e.container[0].offsetParent),
             null !== e._offsetParent && e.resize(),
-            d.log("Visibility Resize Detected"));
+            utils.log("Visibility Resize Detected"));
         },
         start: function () {
           this.target.gotoPage(this.target.startPage);
@@ -1842,8 +1842,8 @@ var DFLIP = DFLIP || {},
           ) {
             this.ui &&
               1 == this.ui.isFullscreen &&
-              1 == d.hasFullscreenEnabled() &&
-              null == d.getFullscreenElement() &&
+              1 == utils.hasFullscreenEnabled() &&
+              null == utils.getFullscreenElement() &&
               this.ui.switchFullscreen();
             var i,
               o,
@@ -1857,7 +1857,7 @@ var DFLIP = DFLIP || {},
               g = c.stage,
               f = c.contentProvider,
               m = f.pageRatio,
-              v = (f.zoomViewport, N(c)),
+              v = (f.zoomViewport, isRTL(c)),
               b = "css" !== c.mode,
               w =
                 (f.pageRatio, 1 != this.ui.isFullscreen && "auto" === h.height),
@@ -1879,11 +1879,11 @@ var DFLIP = DFLIP || {},
                 (h.controlsPosition == element.CONTROLSPOSITION.BOTTOM ? I : 0),
               T = h.paddingLeft,
               O =
-                (S = isNaN(S) ? 0 : C(S, 0, S)) +
-                (k = isNaN(k) ? 0 : C(k, 0, k)),
+                (S = isNaN(S) ? 0 : clamp(S, 0, S)) +
+                (k = isNaN(k) ? 0 : clamp(k, 0, k)),
               R =
-                (T = isNaN(T) ? 0 : C(T, 0, T)) +
-                (E = isNaN(E) ? 0 : C(E, 0, E)),
+                (T = isNaN(T) ? 0 : clamp(T, 0, T)) +
+                (E = isNaN(E) ? 0 : clamp(E, 0, E)),
               F = y - P;
             u.height(h.height);
             var D = t(window).height(),
@@ -1910,14 +1910,14 @@ var DFLIP = DFLIP || {},
                 n.zoomDelta > 0
                   ? n.zoomValue * n.options.zoomRatio
                   : n.zoomValue / n.options.zoomRatio;
-              n.zoomValue = C(n.zoomValue, 1, l);
+              n.zoomValue = clamp(n.zoomValue, 1, l);
               1 == n.zoomValue
                 ? (f.zoomScale = 1)
-                : (f.zoomScale = C(n.zoomValue, 1, l));
+                : (f.zoomScale = clamp(n.zoomValue, 1, l));
             }
             r = f.zoomScale;
             f.checkViewportSize(a, o, r);
-            f.contentSourceType == p.PDF &&
+            f.contentSourceType == sourceType.PDF &&
               ((a = f.imageViewport.width / r),
               (o = f.imageViewport.height / r));
             1 != f.zoomScale &&
@@ -1990,8 +1990,8 @@ var DFLIP = DFLIP || {},
               c.pageWidth = Math.round(a);
               c.fullWidth = 2 * c.pageWidth;
               c.height = Math.round(o);
-              var Z = (c.shiftHeight = Math.round(C((U - _ + O) / 2, 0, U))),
-                K = (c.shiftWidth = Math.round(C((H - F + R) / 2, 0, H)));
+              var Z = (c.shiftHeight = Math.round(clamp((U - _ + O) / 2, 0, U))),
+                K = (c.shiftWidth = Math.round(clamp((H - F + R) / 2, 0, H)));
               1 == r && ((c.left = 0), (c.top = 0));
               c.stage.css({
                 top: -Z,
@@ -2010,7 +2010,7 @@ var DFLIP = DFLIP || {},
                 height: U,
                 marginTop: M - U - O > 0 ? (M - O - U) / 2 : 0,
               });
-              var Y = Math.floor(L(a, o) * r);
+              var Y = Math.floor(distFromOrigin(a, o) * r);
               c.stage.find(".df-page-wrapper").width(Y).height(Y);
               c.stage
                 .find(
@@ -2085,7 +2085,7 @@ var DFLIP = DFLIP || {},
             o = 0,
             a = 0,
             s = 0,
-            r = d.getBasePage(i._activePage),
+            r = utils.getBasePage(i._activePage),
             l = i._activePage % 2 == 0,
             c = i.direction == element.DIRECTION.RTL,
             u = i.pageMode == element.PAGE_MODE.SINGLE,
@@ -2236,10 +2236,10 @@ var DFLIP = DFLIP || {},
               Array.isArray(r.contentSource) ||
               r.contentSource instanceof Array))
         ) {
-          r.contentSourceType = p.IMAGE;
+          r.contentSourceType = sourceType.IMAGE;
           r.pageCount = r.contentSource.length;
           for (var l = 0; l < r.contentSource.length; l++)
-            r.contentSource[l] = d.httpsCorrection(
+            r.contentSource[l] = utils.httpsCorrection(
               r.contentSource[l].toString(),
             );
           t("<img/>")
@@ -2262,7 +2262,7 @@ var DFLIP = DFLIP || {},
                 ((r.pageCount = 2 * r.contentSource.length - 2),
                 1 == r.options.webgl && (r.requiresImageTextureScaling = !0));
               null != i && (i(r), (i = null));
-              E(this.height + ":" + this.width);
+              debugLog(this.height + ":" + this.width);
             });
         } else if (
           "string" == typeof r.contentSource ||
@@ -2297,14 +2297,14 @@ var DFLIP = DFLIP || {},
             u = function () {
               if (r) {
                 pdfjsLib.GlobalWorkerOptions.workerSrc = options.pdfjsWorkerSrc;
-                r.contentSourceType = p.PDF;
+                r.contentSourceType = sourceType.PDF;
                 var t = r.options.disableFontFace;
-                z || B || r.options.disableFontFace;
+                isSafari || isIOS || r.options.disableFontFace;
                 var o = (r.loading = pdfjsLib.getDocument(
                   r.options.docParameters
                     ? r.options.docParameters
                     : {
-                        url: d.httpsCorrection(n),
+                        url: utils.httpsCorrection(n),
                         rangeChunkSize: isNaN(r.options.rangeChunkSize)
                           ? 524288
                           : r.options.rangeChunkSize,
@@ -2428,7 +2428,7 @@ var DFLIP = DFLIP || {},
           null == window.pdfjsLib
             ? r &&
               (r.updateInfo(r.options.text.loading + " PDF Service ..."),
-              R(
+              loadScript(
                 options.pdfjsSrc + "?ver=" + element.version,
                 function () {
                   "function" == typeof define && define.amd && window.requirejs
@@ -2506,7 +2506,7 @@ var DFLIP = DFLIP || {},
         );
       }
       return (
-        j(i, {}),
+        inherits(i, {}),
         (i.prototype.updateInfo = function (e) {
           this.flipbook &&
             this.flipbook.updateInfo &&
@@ -2559,8 +2559,8 @@ var DFLIP = DFLIP || {},
                       .removeClass("df-selected"),
                     l.addClass("df-selected"),
                     s + r < (l = l[0]).offsetTop + l.scrollHeight
-                      ? d.scrollIntoView(l, null, !1)
-                      : s > l.offsetTop && d.scrollIntoView(l),
+                      ? utils.scrollIntoView(l, null, !1)
+                      : s > l.offsetTop && utils.scrollIntoView(l),
                     (n.activeThumb = n.targetObject._activePage))
                   : (t(a).scrollTop(124 * n.targetObject._activePage), i());
               }
@@ -2588,7 +2588,7 @@ var DFLIP = DFLIP || {},
           a.append(t(n.thumblist.container).addClass("df-thumb-wrapper"));
           n.targetObject.thumbContainer = a;
           n.targetObject.container.append(a);
-          var s = t(m.div, {
+          var s = t(htmlTmpl.div, {
             class: "df-ui-btn df-ui-sidemenu-close ti-close",
           });
           a.append(s);
@@ -2607,7 +2607,7 @@ var DFLIP = DFLIP || {},
           var e = this,
             n = t("<div>").addClass("df-outline-container df-sidemenu"),
             i = t("<div>").addClass("df-outline-wrapper"),
-            o = t(m.div, {
+            o = t(htmlTmpl.div, {
               class: "df-ui-btn df-ui-sidemenu-close ti-close",
             });
           function a(t) {
@@ -2652,11 +2652,11 @@ var DFLIP = DFLIP || {},
             a = e * n,
             r = t * n,
             l = i.cacheIndex;
-          if (i.contentSourceType == p.PDF) {
+          if (i.contentSourceType == sourceType.PDF) {
             if (
               ((i.cacheIndex = Math.ceil(Math.max(a, r))),
               (i.cacheIndex = Math.floor(Math.max(a, r))),
-              (i.cacheIndex = C(
+              (i.cacheIndex = clamp(
                 i.cacheIndex * options.pixelRatio,
                 i.minDimension,
                 i.maxDimension,
@@ -2676,7 +2676,7 @@ var DFLIP = DFLIP || {},
                 : i.refPage.getViewport({
                     scale: i.bookSize.height / i.normalViewport.height,
                   });
-            E(i.cacheIndex);
+            debugLog(i.cacheIndex);
             i.annotedPage = void 0;
             i.review();
           } else null == i.cache[i.cacheIndex] && (i.cache[i.cacheIndex] = []);
@@ -2733,8 +2733,8 @@ var DFLIP = DFLIP || {},
         (i.prototype.reviewPages = function (e, n) {
           var i = (e = e || this).targetObject;
           if (null != i) {
-            var o = M(i);
-            null != n && E(n);
+            var o = isBookletMode(i);
+            null != n && debugLog(n);
             var a,
               s = !1;
             for (a = 0; a < e.targetObject.children.length; a++)
@@ -2744,7 +2744,7 @@ var DFLIP = DFLIP || {},
               }
             if (0 == s) {
               var r = i.children.length > 3 ? 3 : i.children.length,
-                l = o ? i._activePage : O(i._activePage);
+                l = o ? i._activePage : getBasePage(i._activePage);
               for (
                 e.baseNumber = l, e.zoomScale > 1 && (r = 1), a = 0;
                 a < r;
@@ -2796,7 +2796,7 @@ var DFLIP = DFLIP || {},
               (e.review("Revisit request"),
               null != e.annotedPage && "css" !== i.mode)
             ) {
-              var b = O(i._activePage);
+              var b = getBasePage(i._activePage);
               t(i.getContentLayer(b)).html("");
               t(i.getContentLayer(b + 1)).html("");
               e.annotedPage = null;
@@ -2809,10 +2809,10 @@ var DFLIP = DFLIP || {},
             l = a.contentSource;
           n <= 0 && n >= a.pageCount
             ? a.setPage(n, options.textureLoadFallback, i, o)
-            : a.contentSourceType == p.PDF
+            : a.contentSourceType == sourceType.PDF
               ? null != a.getCache(n, o)
                 ? (a.setPage(n, a.getCache(n, o), i, o),
-                  E("Page " + n + " loaded from cache"))
+                  debugLog("Page " + n + " loaded from cache"))
                 : (!0 !== o && a.setLoading(n, !0),
                   a.options.pageSize == element.PAGE_SIZE.DOUBLEINTERNAL &&
                     n > 2 &&
@@ -2834,7 +2834,7 @@ var DFLIP = DFLIP || {},
                         d = a.cacheIndex / Math.max(c.width / l, c.height);
                       1 == a.webgl &&
                         (d =
-                          k(a.cacheIndex) /
+                          nearestPow2(a.cacheIndex) /
                           (a.pageRatio > 1 ? c.width / l : c.height));
                       var u = document.createElement("canvas"),
                         h = performance.now(),
@@ -2853,9 +2853,9 @@ var DFLIP = DFLIP || {},
                       c = t.getViewport({
                         scale: d,
                       });
-                      E("rendering " + n + " at " + u.width + "x" + u.height);
+                      debugLog("rendering " + n + " at " + u.width + "x" + u.height);
                       r &&
-                        (N(a.targetObject)
+                        (isRTL(a.targetObject)
                           ? n % 2 == 0 && (c.transform[4] = -u.width)
                           : n % 2 == 1 && (c.transform[4] = -u.width));
                       var f = {
@@ -2864,7 +2864,7 @@ var DFLIP = DFLIP || {},
                       };
                       t.cleanupAfterRender = !0;
                       t.render(f).promise.then(function () {
-                        E(performance.now() - h);
+                        debugLog(performance.now() - h);
                         h = performance.now();
                         1 == o ||
                         (1 == a.options.canvasToBlob && !0 !== a.webgl)
@@ -2874,23 +2874,23 @@ var DFLIP = DFLIP || {},
                                   t,
                                   "image/jpeg",
                                 );
-                                E(performance.now() - h);
+                                debugLog(performance.now() - h);
                                 a.setCache(n, s, o, p);
                                 a.setPage(n, s, i, o);
                               },
                               "image/jpeg",
                               a.pdfRenderQuality,
                             )
-                          : (E("Setting Page " + n), a.setPage(n, u, i, o));
+                          : (debugLog("Setting Page " + n), a.setPage(n, u, i, o));
                         f = null;
                       });
                     })(t, n, i, o);
                   }))
-              : (a.contentSourceType != p.IMAGE &&
-                  a.contentSourceType != p.HTML) ||
+              : (a.contentSourceType != sourceType.IMAGE &&
+                  a.contentSourceType != sourceType.HTML) ||
                 (null != a.getCache(n, o)
                   ? (a.setPage(n, a.getCache(n, o), i, o),
-                    E("Page " + n + " loaded from cache"))
+                    debugLog("Page " + n + " loaded from cache"))
                   : (!0 !== o && a.setLoading(n, !0),
                     a.options.pageSize == element.PAGE_SIZE.DOUBLEINTERNAL &&
                       n > 2 &&
@@ -2901,7 +2901,7 @@ var DFLIP = DFLIP || {},
                         .on("load", function () {
                           t(this).off();
                           null != n && n(e);
-                          E(this.height + ":" + this.width);
+                          debugLog(this.height + ":" + this.width);
                         });
                     })(
                       l[r - 1],
@@ -2922,18 +2922,18 @@ var DFLIP = DFLIP || {},
                 ? !0 !== i.isLoading &&
                   (i.addClass("df-loading"),
                   (i.isLoading = !0),
-                  E("Loading icon at " + e + " as " + n))
+                  debugLog("Loading icon at " + e + " as " + n))
                 : null != i.isLoading &&
                   (i.removeClass("df-loading"),
                   (i.isLoading = null),
-                  E("Loading icon at " + e + " as " + n));
+                  debugLog("Loading icon at " + e + " as " + n));
             } else {
               var o = t(this.targetObject.getContentLayer(e));
               null != o &&
                 (1 == n
                   ? o.addClass("df-page-loading")
                   : o.removeClass("df-page-loading"),
-                E("Loading icon at " + e + " as " + n));
+                debugLog("Loading icon at " + e + " as " + n));
             }
         }),
         (i.prototype.getAnnotations = function (n) {
@@ -2944,8 +2944,8 @@ var DFLIP = DFLIP || {},
             var a = i.contentSource,
               s = t(o.getContentLayer(n));
             if ((s.empty(), n > 0 && n <= i.pageCount)) {
-              if (i.contentSourceType == p.PDF) {
-                O(n);
+              if (i.contentSourceType == sourceType.PDF) {
+                getBasePage(n);
                 var r = n;
                 i.options.pageSize == element.PAGE_SIZE.DOUBLEINTERNAL &&
                   n > 2 &&
@@ -2999,18 +2999,18 @@ var DFLIP = DFLIP || {},
         (i.prototype.setPage = function (e, t, n, i) {
           var o = this,
             a = o.targetObject,
-            r = N(a),
-            l = M(a);
+            r = isRTL(a),
+            l = isBookletMode(a);
           if (1 == i) {
             o.targetObject.container.find("#df-thumb" + e).css({
-              backgroundImage: y(t),
+              backgroundImage: bgImage(t),
             });
           } else {
-            t == options.textureLoadFallback && E("Fallback on " + e);
+            t == options.textureLoadFallback && debugLog("Fallback on " + e);
             var c = a.getPageByNumber(e);
             null != c
               ? (e % 2 != 0 && !r) || (e % 2 != 1 && r && !l) || (l && !r)
-                ? (E(e + "rendered to back of " + c.color),
+                ? (debugLog(e + "rendered to back of " + c.color),
                   c.backImage(t, function (t, i) {
                     c.backTextureLoaded = !0;
                     o.setLoading(e);
@@ -3021,7 +3021,7 @@ var DFLIP = DFLIP || {},
                       ((i.repeat.x = 0.5), (i.offset.x = 0.5));
                     null != n && n();
                   }))
-                : (E(e + "rendered to front of " + c.color),
+                : (debugLog(e + "rendered to front of " + c.color),
                   c.frontImage(t, function (t, i) {
                     c.frontTextureLoaded = !0;
                     o.setLoading(e);
@@ -3032,13 +3032,13 @@ var DFLIP = DFLIP || {},
                       (i.repeat.x = 0.5);
                     null != n && n();
                   }))
-              : E("Invalid set request on Page " + e);
+              : debugLog("Invalid set request on Page " + e);
           }
         }),
         (i.prototype.setupAnnotations = function (n, i, o, a) {
           if (null != o && 0 != t(o).length) {
             var r = this,
-              l = N(this.targetObject);
+              l = isRTL(this.targetObject);
             return n.getAnnotations().then(function (c) {
               if (
                 ((i = i.clone({
@@ -3110,11 +3110,11 @@ var DFLIP = DFLIP || {},
         this.stiffness = e.angles || 0.1;
         this.segments = e.segments || 1;
         this.canvasMode =
-          e.contentSourceType !== p.IMAGE && 0 == e.canvasToBlob;
+          e.contentSourceType !== sourceType.IMAGE && 0 == e.canvasToBlob;
         this.initDOM();
       }
       function i(e) {
-        var n = (e.contentLayer = t(m.div, {
+        var n = (e.contentLayer = t(htmlTmpl.div, {
           class: "df-page-content",
         }));
         e.append(n);
@@ -3122,22 +3122,22 @@ var DFLIP = DFLIP || {},
       return (
         (n.prototype = {
           initDOM: function () {
-            var e = (this.element = t(m.div, {
+            var e = (this.element = t(htmlTmpl.div, {
                 class: "df-book-page",
               })),
-              n = (this.wrapper = t(m.div, {
+              n = (this.wrapper = t(htmlTmpl.div, {
                 class: "df-page-wrapper",
               })),
-              o = (this.front = t(m.div, {
+              o = (this.front = t(htmlTmpl.div, {
                 class: "df-page-front",
               })),
-              a = (this.back = t(m.div, {
+              a = (this.back = t(htmlTmpl.div, {
                 class: "df-page-back",
               })),
-              s = (this.foldInnerShadow = t(m.div, {
+              s = (this.foldInnerShadow = t(htmlTmpl.div, {
                 class: "df-page-fold-inner-shadow",
               })),
-              r = (this.foldOuterShadow = t(m.div, {
+              r = (this.foldOuterShadow = t(htmlTmpl.div, {
                 class: "df-page-fold-outer-shadow",
               }));
             this.frontIMG = new Image();
@@ -3159,19 +3159,19 @@ var DFLIP = DFLIP || {},
                 o = n.element.height(),
                 a = null != this.parent.corner ? this.parent.corner : t.corner,
                 s = element.CORNERS,
-                r = n.side == g.right,
+                r = n.side == dragDir.right,
                 l = a == s.BL || a == s.BR;
               t.rx = 1 == r ? 2 * i - t.x : t.x;
               t.ry = 1 == l ? o - t.y : t.y;
               var c = Math.atan2(t.ry, t.rx);
-              c = Math.PI / 2 - C(c, 0, b(90));
+              c = Math.PI / 2 - clamp(c, 0, toRadians(90));
               var d = r ? t.x / 2 : i - t.x / 2,
                 u = t.ry / 2,
-                h = Math.max(0, Math.sin(c - Math.atan2(u, d)) * L(d, u)),
-                p = 0.5 * L(t.rx, t.ry),
+                h = Math.max(0, Math.sin(c - Math.atan2(u, d)) * distFromOrigin(d, u)),
+                p = 0.5 * distFromOrigin(t.rx, t.ry),
                 f = Math.round(i - h * Math.sin(c)),
                 m = Math.round(h * Math.cos(c)),
-                v = w(c),
+                v = toDegrees(c),
                 y = l ? (r ? 90 - v + 180 : 180 + v) : r ? v : 90 - v,
                 I = l ? (r ? 90 - v + 180 : v) : r ? v + 180 : y,
                 S = l ? (r ? 90 - v : v + 90) : r ? y - 90 : y + 180,
@@ -3179,28 +3179,28 @@ var DFLIP = DFLIP || {},
                 k = l ? o + m : -m,
                 T = r ? -f : f - i,
                 O = l ? -o - m : m,
-                R = C((0.5 * t.distance) / i, 0, 0.5),
-                F = C((0.5 * (2 * i - t.rx)) / i, 0.05, 0.3);
+                R = clamp((0.5 * t.distance) / i, 0, 0.5),
+                F = clamp((0.5 * (2 * i - t.rx)) / i, 0.05, 0.3);
               n.element.addClass("df-folding");
               var M = r ? n.back : n.front,
                 N = r ? n.front : n.back,
                 A = n.foldOuterShadow,
                 _ = n.foldInnerShadow;
               n.wrapper.css({
-                transform: P(E, k) + x(y),
+                transform: translateStr(E, k) + rotateStr(y),
               });
               M.css({
-                transform: x(-y) + P(-E, -k),
+                transform: rotateStr(-y) + translateStr(-E, -k),
               });
               N.css({
-                transform: x(I) + P(T, O),
+                transform: rotateStr(I) + translateStr(T, O),
                 boxShadow: "rgba(0, 0, 0, " + R + ") 0px 0px 20px",
               });
               _.css({
-                transform: x(I) + P(T, O),
+                transform: rotateStr(I) + translateStr(T, O),
                 opacity: F / 2,
                 backgroundImage:
-                  D.css +
+                  cssPrefix.css +
                   "linear-gradient( " +
                   S +
                   "deg, rgba(0, 0, 0, 0.25) , rgb(0, 0, 0) " +
@@ -3214,7 +3214,7 @@ var DFLIP = DFLIP || {},
                 left: r ? "auto" : 0,
                 right: r ? 0 : "auto",
                 backgroundImage:
-                  D.css +
+                  cssPrefix.css +
                   "linear-gradient( " +
                   (180 - S) +
                   "deg, rgba(0, 0, 0,0) " +
@@ -3241,7 +3241,7 @@ var DFLIP = DFLIP || {},
                     ? "block"
                     : "none",
               transform:
-                ("MfS" !== D.dom ? "" : "perspective(" + n + "px) ") +
+                ("MfS" !== cssPrefix.dom ? "" : "perspective(" + n + "px) ") +
                 (1 == t ? "translateX(-100%) " : "") +
                 "rotateY(" +
                 ((1 == t ? 180 : 0) + e) +
@@ -3257,7 +3257,7 @@ var DFLIP = DFLIP || {},
                     ? "block"
                     : "none",
               transform:
-                ("MSd" !== D.dom ? "" : "perspective(" + n + "px) ") +
+                ("MSd" !== cssPrefix.dom ? "" : "perspective(" + n + "px) ") +
                 (0 == t ? "translateX(100%) " : "") +
                 "rotateY(" +
                 ((0 == t ? -180 : 0) + e) +
@@ -3268,8 +3268,8 @@ var DFLIP = DFLIP || {},
             var n = this;
             if (null != n && null != n.parent) {
               var i,
-                o = M(n.parent),
-                a = n.side == g.right,
+                o = isBookletMode(n.parent),
+                a = n.side == dragDir.right,
                 s = n.parent.direction == element.DIRECTION.RTL,
                 r =
                   n.parent.corner == element.CORNERS.BL ||
@@ -3292,7 +3292,7 @@ var DFLIP = DFLIP || {},
                 : TWEEN.Easing.Linear.None;
               var h = n.parent.duration;
               1 == n.isHard
-                ? (null != t && (d = S(t.distance, t.fullWidth)),
+                ? (null != t && (d = angleByDist(t.distance, t.fullWidth)),
                   (i = n.init =
                     {
                       angle: d * (a ? -1 : 1),
@@ -3341,9 +3341,9 @@ var DFLIP = DFLIP || {},
                       opacity: 1,
                     }),
                     (h =
-                      (n.parent.duration * I(i.x, i.y, u.x, u.y)) /
+                      (n.parent.duration * distBetween(i.x, i.y, u.x, u.y)) /
                       n.parent.fullWidth),
-                    (h = C(h, n.parent.duration / 3, n.parent.duration)));
+                    (h = clamp(h, n.parent.duration / 3, n.parent.duration)));
               i.index = 0;
               u.index = 1;
               n.isFlipping = !0;
@@ -3386,7 +3386,7 @@ var DFLIP = DFLIP || {},
                       });
                   n.element[0].style.opacity = 1;
                   !0 !== n.animateToReset
-                    ? (n.side = n.side == g.right ? g.left : g.right)
+                    ? (n.side = n.side == dragDir.right ? dragDir.left : dragDir.right)
                     : (n.animateToReset = null);
                   n.currentTween = null;
                   n.pendingPoint = null;
@@ -3430,7 +3430,7 @@ var DFLIP = DFLIP || {},
             var i = this;
             function o() {
               i.front.css({
-                backgroundImage: y(e),
+                backgroundImage: bgImage(e),
               });
               null != n && n();
             }
@@ -3446,7 +3446,7 @@ var DFLIP = DFLIP || {},
             var i = this;
             function o() {
               i.back.css({
-                backgroundImage: y(e),
+                backgroundImage: bgImage(e),
               });
               null != n && n();
             }
@@ -3513,18 +3513,18 @@ var DFLIP = DFLIP || {},
         a.duration = n.duration;
         a.container = t(o);
         a.options = n;
-        a.drag = g.none;
+        a.drag = dragDir.none;
         a.pageMode =
           n.pageMode ||
-          (A || a.pageCount <= 2
+          (isMobile || a.pageCount <= 2
             ? element.PAGE_MODE.SINGLE
             : element.PAGE_MODE.DOUBLE);
         a.singlePageMode =
           n.singlePageMode ||
-          (A
+          (isMobile
             ? element.SINGLE_PAGE_MODE.BOOKLET
             : element.SINGLE_PAGE_MODE.ZOOM);
-        a.swipe_threshold = A ? 15 : 50;
+        a.swipe_threshold = isMobile ? 15 : 50;
         a.direction = n.direction || element.DIRECTION.LTR;
         a.startPage = 1;
         a.endPage = a.pageCount;
@@ -3546,8 +3546,8 @@ var DFLIP = DFLIP || {},
               null != a.startTouches
             ) {
               a.zoomDirty = !0;
-              var o = d.getVectorAvg(d.getTouches(t, a.container.offset())),
-                s = d.calculateScale(a.startTouches, d.getTouches(t));
+              var o = utils.getVectorAvg(utils.getTouches(t, a.container.offset())),
+                s = utils.calculateScale(a.startTouches, utils.getTouches(t));
               a.lastScale;
               a.contentProvider.zoomScale;
               o.x;
@@ -3584,14 +3584,14 @@ var DFLIP = DFLIP || {},
                 if (!i(a)) {
                   if (null != a.dragPage || 1 == n.isInside) {
                     null != a.dragPage
-                      ? E("set mouse down move")
-                      : ((n.y = C(n.y, 1, a.height - 1)),
-                        (n.x = C(n.x, 1, n.fullWidth - 1)));
+                      ? debugLog("set mouse down move")
+                      : ((n.y = clamp(n.y, 1, a.height - 1)),
+                        (n.x = clamp(n.x, 1, n.fullWidth - 1)));
                     var l = a.corner || n.corner;
                     if (r.isHard) {
                       var c =
                           l == element.CORNERS.BR || l == element.CORNERS.TR,
-                        u = S(n.distance, n.fullWidth);
+                        u = angleByDist(n.distance, n.fullWidth);
                       r.updateAngle(u * (c ? -1 : 1), c);
                     } else r.updatePoint(n, a);
                     r.magnetic = !0;
@@ -3619,7 +3619,7 @@ var DFLIP = DFLIP || {},
                     a.lastTime;
                     Math.abs(h) > a.swipe_threshold &&
                       (h < 0 ? a.next() : a.prev(),
-                      (a.drag = g.none),
+                      (a.drag = dragDir.none),
                       (a.isPanning = !1),
                       t.preventDefault());
                     a.lastPos = n.x;
@@ -3633,7 +3633,7 @@ var DFLIP = DFLIP || {},
             if (null != t.touches && 0 == t.touches.length) {
               a.contentProvider.zoomScale;
               1 == a.zoomDirty &&
-                ((a.previewObject.contentProvider.zoomScale = d.limitAt(
+                ((a.previewObject.contentProvider.zoomScale = utils.limitAt(
                   a.previewObject.contentProvider.zoomScale * a.lastScale,
                   1,
                   a.previewObject.contentProvider.maxZoom,
@@ -3675,7 +3675,7 @@ var DFLIP = DFLIP || {},
                 a.dragPage &&
                   ((a.dragPage.pendingPoint = null),
                   (a.dragPage.magnetic = !1)));
-              a.drag = g.none;
+              a.drag = dragDir.none;
             }
           },
           u = function (t) {
@@ -3704,7 +3704,7 @@ var DFLIP = DFLIP || {},
               (null != t.touches &&
                 2 == t.touches.length &&
                 null == a.startTouches &&
-                ((a.startTouches = d.getTouches(t)), (a.lastScale = 1)),
+                ((a.startTouches = utils.getTouches(t)), (a.lastScale = 1)),
               !(
                 (null != t.touches && t.touches.length > 1) ||
                 (null == t.touches && 0 !== t.button)
@@ -3725,7 +3725,7 @@ var DFLIP = DFLIP || {},
                   (a.drag = o.drag),
                   (a.dragPage = o.page),
                   (a.corner = o.corner),
-                  E(a.corner),
+                  debugLog(a.corner),
                   (n = a.dragPage).parent.container
                     .find(".df-folding")
                     .removeClass("df-folding"),
@@ -3825,7 +3825,7 @@ var DFLIP = DFLIP || {},
         };
       }
       return (
-        j(o, {}),
+        inherits(o, {}),
         (o.prototype = {
           add: function (e) {
             e instanceof q
@@ -3837,8 +3837,8 @@ var DFLIP = DFLIP || {},
               n = this.contentProvider.zoomScale,
               i = this.left + (e.raw.x - t.raw.x),
               o = this.top + (e.raw.y - t.raw.y);
-            this.left = Math.round(C(i, -this.shiftWidth, this.shiftWidth));
-            this.top = Math.round(C(o, -this.shiftHeight, this.shiftHeight));
+            this.left = Math.round(clamp(i, -this.shiftWidth, this.shiftWidth));
+            this.top = Math.round(clamp(o, -this.shiftHeight, this.shiftHeight));
             1 == n && ((this.left = 0), (this.top = 0));
             this.startPoint = e;
             this.stage.css({
@@ -3849,7 +3849,7 @@ var DFLIP = DFLIP || {},
           getPageByNumber: function (e) {
             for (
               var t,
-                n = M(this) ? (N(this) ? e + 1 : e) : Math.floor((e - 1) / 2),
+                n = isBookletMode(this) ? (isRTL(this) ? e + 1 : e) : Math.floor((e - 1) / 2),
                 i = 0;
               i < this.pages.length;
               i++
@@ -3861,7 +3861,7 @@ var DFLIP = DFLIP || {},
             var n = this.direction == element.DIRECTION.RTL,
               i = this.getPageByNumber(t);
             if (null != i)
-              return M(this)
+              return isBookletMode(this)
                 ? n
                   ? i.front
                   : i.back
@@ -3880,13 +3880,13 @@ var DFLIP = DFLIP || {},
         }),
         (o.prototype.init = function (e) {
           var n = this;
-          n.stage = t(m.div, {
+          n.stage = t(htmlTmpl.div, {
             class: "df-book-stage",
           });
-          n.wrapper = t(m.div, {
+          n.wrapper = t(htmlTmpl.div, {
             class: "df-book-wrapper",
           });
-          n.shadow = t(m.div, {
+          n.shadow = t(htmlTmpl.div, {
             class: "df-book-shadow",
           });
           n.container.append(n.stage);
@@ -3916,14 +3916,14 @@ var DFLIP = DFLIP || {},
           this.children = this.pages;
         }),
         (o.prototype.isPageHard = function (e) {
-          return d.isHardPage(this.hardConfig, e, this.pageCount, M(this));
+          return utils.isHardPage(this.hardConfig, e, this.pageCount, isBookletMode(this));
         }),
         (o.prototype.setDuration = function (e) {
           this.duration = e;
         }),
         (o.prototype.moveBy = function (e) {
           var t = this._activePage + e;
-          t = C(t, this.startPage, this.endPage);
+          t = clamp(t, this.startPage, this.endPage);
           1 != this.firstFlipped &&
             (this.previewObject.analytics({
               eventAction: "First Page Flip",
@@ -3949,7 +3949,7 @@ var DFLIP = DFLIP || {},
           this.moveBy(t);
         }),
         (o.prototype.eventToPoint = function (n) {
-          n = F(n);
+          n = fixMouseEvent(n);
           var i = this.wrapper,
             o = this.pages,
             a = this.pageWidth,
@@ -3967,20 +3967,20 @@ var DFLIP = DFLIP || {},
           l.y = l.y - this.container[0].getBoundingClientRect().top;
           var u,
             h =
-              this.drag == g.none
+              this.drag == dragDir.none
                 ? c < a
                   ? c
                   : s - c
-                : this.drag == g.left
+                : this.drag == dragDir.left
                   ? c
                   : s - c,
             p = c < a ? o[this.stackCount / 2 - 1] : o[this.stackCount / 2],
             f =
               c < this.foldSense
-                ? g.left
+                ? dragDir.left
                 : c > s - this.foldSense
-                  ? g.right
-                  : g.none,
+                  ? dragDir.right
+                  : dragDir.none,
             m = c,
             v = d,
             b = r,
@@ -4039,8 +4039,8 @@ var DFLIP = DFLIP || {},
         }),
         (o.prototype.updatePage = function (n) {
           var i = this.direction == element.DIRECTION.RTL,
-            o = M(this),
-            a = (O(n), o ? 1 : 2);
+            o = isBookletMode(this),
+            a = (getBasePage(n), o ? 1 : 2);
           n = Math.floor(n / a);
           i && (n = Math.ceil(this.pageCount / a) - n);
           var r = this.oldBaseNumber || 0,
@@ -4082,7 +4082,7 @@ var DFLIP = DFLIP || {},
             t(h.element).attr("pageNumber", m);
             h.isEdge = !1;
             0 == u || u == c - 1 || (h.isEdge = !1);
-            p = u < d ? g.left : g.right;
+            p = u < d ? dragDir.left : dragDir.right;
             0 == h.isFlipping &&
               (p !== f && 0 == h.skipFlip
                 ? (this.animatePage(h),
@@ -4161,7 +4161,7 @@ var DFLIP = DFLIP || {},
         !0 !== s.options.parsed &&
           null != s.options.links &&
           element.parseLinks(s.options.links);
-        var r = (s.webgl = 1 == a.webgl && 1 == _ && d.canSupport3D());
+        var r = (s.webgl = 1 == a.webgl && 1 == hasWebGL && utils.canSupport3D());
         if (
           (i.addClass(
             "df-container df-loading df-init df-floating df-controls-" +
@@ -4170,12 +4170,12 @@ var DFLIP = DFLIP || {},
           (s.commentPopup = t('<div class="df-comment-popup">').appendTo(i)),
           1 == s.options.transparent && i.addClass("df-transparent"),
           s.options.direction == element.DIRECTION.RTL && i.addClass("df-rtl"),
-          (s.container.info = t(m.div, {
+          (s.container.info = t(htmlTmpl.div, {
             class: "loading-info",
           })
             .appendTo(s.container)
             .html(s.options.text.loading + "...")),
-          c.match(/msie\s[5-9]/i))
+          userAgent.match(/msie\s[5-9]/i))
         )
           return (
             s.container.info
@@ -4208,7 +4208,7 @@ var DFLIP = DFLIP || {},
         );
       }
       return (
-        j(i, n),
+        inherits(i, n),
         (i.prototype.init = function (n) {
           var i,
             o,
@@ -4222,7 +4222,7 @@ var DFLIP = DFLIP || {},
                 minWidth: 300,
               });
               a.stage = new H(
-                T(a.options, {
+                mergeOptions(a.options, {
                   container: a.container,
                 }),
               );
@@ -4240,7 +4240,7 @@ var DFLIP = DFLIP || {},
                   a.target =
                     r =
                     a.stage.target =
-                      new MOCKUP.Book(T(a.options, o), a.stage);
+                      new MOCKUP.Book(mergeOptions(a.options, o), a.stage);
                   a.extendtarget();
                   U(a.container, a);
                   r.ui = a.ui;
@@ -4252,8 +4252,8 @@ var DFLIP = DFLIP || {},
                       i = a.stage.cssScene.divLeft.element,
                       o = a.stage.cssScene.divRight.element;
                     return (
-                      O(r._activePage),
-                      M(r) ? (n ? i : o) : t % 2 == 0 ? (n ? o : i) : n ? i : o
+                      getBasePage(r._activePage),
+                      isBookletMode(r) ? (n ? i : o) : t % 2 == 0 ? (n ? o : i) : n ? i : o
                     );
                   };
                   r.stage = a.stage;
@@ -4262,7 +4262,7 @@ var DFLIP = DFLIP || {},
                       a.contentProvider.review("flipCallback");
                       var n,
                         i,
-                        o = O(r._activePage),
+                        o = getBasePage(r._activePage),
                         s = r.getPageByNumber(o),
                         l = r.getPageByNumber(o + 1),
                         c = r.parent.cssScene.divLeft,
@@ -4372,7 +4372,7 @@ var DFLIP = DFLIP || {},
                     require(["three"], function (t) {
                       return (
                         (window.THREE = t),
-                        R(
+                        loadScript(
                           options.mockupjsSrc + "?ver=" + element.version,
                           function () {
                             o();
@@ -4388,10 +4388,10 @@ var DFLIP = DFLIP || {},
                       ], function (e, t) {
                         e(function () {});
                       })
-                    : R(
+                    : loadScript(
                         options.threejsSrc + "?ver=" + element.version,
                         function () {
-                          R(
+                          loadScript(
                             options.mockupjsSrc + "?ver=" + element.version,
                             function () {
                               o();
@@ -4408,7 +4408,7 @@ var DFLIP = DFLIP || {},
                   pageCount: e.pageCount,
                   contentSourceType: e.contentSourceType,
                 };
-                a.target = r = new Z(T(a.options, i), a.container);
+                a.target = r = new Z(mergeOptions(a.options, i), a.container);
                 a.target.previewObject = a;
                 a.extendtarget();
                 U(a.container, a);
@@ -4461,7 +4461,7 @@ var DFLIP = DFLIP || {},
         (i.prototype.getURLHash = function () {
           if (null != this.options.id) {
             var e =
-              d.getSharePrefix() +
+              utils.getSharePrefix() +
               (null != this.options.slug
                 ? this.options.slug
                 : this.options.id) +
