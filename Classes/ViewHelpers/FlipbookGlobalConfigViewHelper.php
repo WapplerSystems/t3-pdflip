@@ -17,14 +17,14 @@ class FlipbookGlobalConfigViewHelper extends AbstractViewHelper
 
     }
 
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('as', 'string', 'Variable name for the JS code', false, 'flipbookLabelsJs');
         $this->registerArgument('useNonce', 'bool', 'Whether to use the global nonce value', false, false);
 
     }
 
-    public function render()
+    public function render(): void
     {
         $options = [
             'useNonce' => $this->arguments['useNonce'],
