@@ -83,7 +83,7 @@ class PdflipLinkBuilder extends PageLinkBuilder
         }
 
 
-        $url = $this->generateUrlForPageWithSiteConfiguration($page, $siteOfTargetPage, $queryParameters, $fragment, $conf);
+        $url = $this->generateUrlForPageWithSiteConfiguration($page, $siteOfTargetPage, $queryParameters, $fragment, $conf, $request);
         // no scheme => always not external
         if (!$url->getScheme() || !$url->getHost()) {
             $treatAsExternalLink = false;

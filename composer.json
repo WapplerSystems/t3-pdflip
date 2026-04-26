@@ -1,31 +1,33 @@
 {
-	"name": "wapplersystems/pdflip",
-	"description": "",
-	"type": "typo3-cms-extension",
-	"homepage": "https://github.com/wapplersystems/zabbix_client",
-	"license": "GPL-2.0-or-later",
-	"authors": [
-		{
-			"name": "Sven Wappler",
-			"role": "Developer",
-			"homepage": "https://wappler.systems"
-		}
-	],
-	"require": {
-		"typo3/cms-core": "^13.4"
-	},
-	"autoload": {
-		"psr-4": {
-			"WapplerSystems\\Pdflip\\": "Classes/"
-		}
-	},
-	"config": {
-	},
-	"scripts": {
-	},
-	"extra": {
-		"typo3/cms": {
-			"extension-key": "pdflip"
-		}
-	}
+    "name": "wapplersystems/pdflip",
+    "type": "typo3-cms-extension",
+    "description": "PDF Flip Book extension for TYPO3",
+    "homepage": "https://github.com/WapplerSystems/t3-pdflip",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Sven Wappler",
+            "email": "typo3@wappler.systems",
+            "role": "Developer",
+            "homepage": "https://wappler.systems"
+        }
+    ],
+    "support": {
+        "source": "https://github.com/WapplerSystems/t3-pdflip",
+        "issues": "https://github.com/WapplerSystems/t3-pdflip/issues"
+    },
+    "require": {
+        "php": "^8.2",
+        "typo3/cms-core": "^14.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "WapplerSystems\\Pdflip\\": "Classes/"
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "pdflip"
+        }
+    }
 }
