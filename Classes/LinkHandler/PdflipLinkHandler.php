@@ -13,6 +13,7 @@ use TYPO3\CMS\Backend\LinkHandler\LinkHandlerInterface;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\RecordList\ElementBrowserRecordList;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\FolderUtilityRenderer;
 use TYPO3\CMS\Backend\View\RecordSearchBoxComponent;
@@ -24,6 +25,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -50,11 +52,13 @@ class PdflipLinkHandler extends AbstractResourceLinkHandler
         ResourceFactory $resourceFactory,
         PageRenderer $pageRenderer,
         UriBuilder $uriBuilder,
+        TcaSchemaFactory $tcaSchemaFactory,
         LanguageServiceFactory $languageServiceFactory,
+        ComponentFactory $componentFactory,
         private readonly ViewFactoryInterface $viewFactory,
         private readonly LinkService $linkService,
     ) {
-        parent::__construct($iconFactory, $resourceFactory, $pageRenderer, $uriBuilder, $languageServiceFactory);
+        parent::__construct($iconFactory, $resourceFactory, $pageRenderer, $uriBuilder, $tcaSchemaFactory, $languageServiceFactory, $componentFactory);
     }
 
 
