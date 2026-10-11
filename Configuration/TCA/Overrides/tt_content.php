@@ -1,16 +1,16 @@
 <?php
 
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 defined('TYPO3') || die();
 
-
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addRecordType(
+ExtensionManagementUtility::addRecordType(
     [
         'label' => 'LLL:EXT:pdflip/Resources/Private/Language/Backend.xlf:pdflip-gallery',
         'description' => 'LLL:EXT:pdflip/Resources/Private/Language/Backend.xlf:pdflip-gallery.description',
         'value' => 'pdflip-gallery',
-        'icon' => 'mimetypes-x-content-text-media',
+        'icon' => 'mimetypes-pdf',
     ],
     '
         --palette--;;headers,
@@ -32,19 +32,14 @@ defined('TYPO3') || die();
     ]
 );
 
-
-
-
-
 /*  Embedded */
 
-
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addRecordType(
+ExtensionManagementUtility::addRecordType(
     [
         'label' => 'LLL:EXT:pdflip/Resources/Private/Language/Backend.xlf:pdflip-embedded',
         'description' => 'LLL:EXT:pdflip/Resources/Private/Language/Backend.xlf:pdflip-embedded.description',
         'value' => 'pdflip-embedded',
-        'icon' => 'mimetypes-x-content-text-media',
+        'icon' => 'mimetypes-pdf',
     ],
     '
         --palette--;;headers,
@@ -68,8 +63,11 @@ defined('TYPO3') || die();
     ]
 );
 
-ExtensionManagementUtility::addPiFlexFormValue(
-    '*',
-    'FILE:EXT:pdflip/Configuration/FlexForms/Embedded.xml',
-    'pdflip-embedded'
-);
+// v14 reads the data structure from columnsOverrides (addPiFlexFormValue() is deprecated there),
+// v13 from the ds array of pi_flexform
+$flexForm = 'FILE:EXT:pdflip/Configuration/FlexForms/Embedded.xml';
+if ((new Typo3Version())->getMajorVersion() >= 14) {
+    $GLOBALS['TCA']['tt_content']['types']['pdflip-embedded']['columnsOverrides']['pi_flexform']['config']['ds'] = $flexForm;
+} else {
+    ExtensionManagementUtility::addPiFlexFormValue('*', $flexForm, 'pdflip-embedded');
+}

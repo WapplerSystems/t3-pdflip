@@ -4,112 +4,90 @@ declare(strict_types=1);
 
 namespace WapplerSystems\Pdflip\LinkHandler;
 
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\LinkHandling\LinkService;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Resource\FileInterface;
-use TYPO3\CMS\Core\Resource\Folder;
-use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Typolink\LinkResult;
 use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
-use TYPO3\CMS\Frontend\Typolink\PageLinkBuilder;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 
-class PdflipLinkBuilder extends PageLinkBuilder
+/**
+ * Builds the frontend URL of a `t3://pdflip?uid=…` link: the current page with the page
+ * type 68724, which renders nothing but the flip book of that file.
+ *
+ * It deliberately extends no core link builder: their constructors and entry points differ
+ * between TYPO3 v13 (`build()`, constructed with the content object) and v14 (`_build()` /
+ * `buildLink()`), so this class offers all of them and lets the core build the page URL.
+ */
+final class PdflipLinkBuilder
 {
+    public const PAGE_TYPE = 68724;
 
+    public function __construct(
+        private ?ContentObjectRenderer $contentObjectRenderer = null,
+        mixed $typoScriptFrontendController = null
+    ) {}
 
+    /** TYPO3 v13 */
     public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
     {
+        return $this->createLink($linkDetails, $linkText, $target, $conf, $this->contentObjectRenderer);
+    }
 
-        // TODO: verschiedene Arten der Einbindung unterstützen,
+    /** TYPO3 v14, called for builders that are no TypolinkBuilderInterface */
+    public function _build(
+        array &$linkDetails,
+        string $linkText,
+        string $target,
+        array $conf,
+        ServerRequestInterface $request,
+        ContentObjectRenderer $contentObjectRenderer
+    ): LinkResultInterface {
+        return $this->createLink($linkDetails, $linkText, $target, $conf, $contentObjectRenderer);
+    }
 
-        $file = $linkDetails['file'] ?? false;
-        // check if the file exists or if a / is contained (same check as in detectLinkType)
-        if (!($file instanceof FileInterface) && !($file instanceof Folder)) {
+    /** Signature of TYPO3\CMS\Frontend\Typolink\TypolinkBuilderInterface (v14), present so that v14 does not warn */
+    public function buildLink(array $linkDetails, array $configuration, ServerRequestInterface $request, string $linkText = ''): LinkResultInterface
+    {
+        $contentObjectRenderer = $request->getAttribute('currentContentObject');
+        return $this->createLink(
+            $linkDetails,
+            $linkText,
+            (string)($linkDetails['target'] ?? ''),
+            $configuration,
+            $contentObjectRenderer instanceof ContentObjectRenderer ? $contentObjectRenderer : null
+        );
+    }
+
+    private function createLink(array $linkDetails, string $linkText, string $target, array $conf, ?ContentObjectRenderer $contentObjectRenderer): LinkResultInterface
+    {
+        $file = $linkDetails['file'] ?? null;
+        if (!$file instanceof FileInterface || $contentObjectRenderer === null) {
             throw new UnableToLinkException(
-                'File "' . $linkDetails['typoLinkParameter'] . '" did not exist, so "' . $linkText . '" was not linked.',
-                1490989449,
+                'File "' . ($linkDetails['typoLinkParameter'] ?? '') . '" does not exist, so "' . $linkText . '" was not linked.',
+                1791750001,
                 null,
                 $linkText
             );
         }
-
-        $fragment = $this->calculateUrlFragment($conf, $linkDetails);
-        $queryParameters = $this->calculateQueryParameters($conf, $linkDetails);
-
-        $linkDetails['type'] = LinkService::TYPE_PAGE;
-
-
-        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
-        $request = $this->contentObjectRenderer->getRequest();
-
-        $pageId = $request->getAttribute('frontend.page.information')?->getId();
-        if ($pageId === null) {
-            $site = $request->getAttribute('site');
-            if ($site !== null) {
-                $pageId = $site->getRootPageId();
-            } else {
-                // @todo: We can usually expect a site to be always set. This fallback here may only be
-                //        required due to incomplete setup in transform.html VH functional test?!
-                $allSites = $siteFinder->getAllSites();
-                $firstSite = reset($allSites);
-                $pageId = $firstSite->getRootPageId();
-            }
+        $request = $contentObjectRenderer->getRequest();
+        $pageId = $request->getAttribute('frontend.page.information')?->getId()
+            ?? $request->getAttribute('routing')?->getPageId()
+            ?? $request->getAttribute('site')?->getRootPageId();
+        $url = $contentObjectRenderer->createUrl([
+            'parameter' => (int)$pageId,
+            'additionalParams' => '&type=' . self::PAGE_TYPE . '&file=' . $file->getUid(),
+            'forceAbsoluteUrl' => $conf['forceAbsoluteUrl'] ?? 0,
+        ]);
+        if ($url === '') {
+            throw new UnableToLinkException('No URL for the flip book of file ' . $file->getUid(), 1791750002, null, $linkText);
         }
-        $linkDetails['pageuid'] = $pageId;
-
-        $queryParameters['type'] = 68724;
-        $queryParameters['file'] = $file->getUid();
-
-
-        $page = $this->resolvePage($linkDetails, $conf, true);
-
-        if (empty($page)) {
-            throw new UnableToLinkException('Page id "' . $linkDetails['pageuid'] . '" was not found, so "' . $linkText . '" was not linked.', 1490987336, null, $linkText);
+        if ($linkText === '') {
+            $linkText = $file->getName();
         }
-
-        try {
-            $siteOfTargetPage = $siteFinder->getSiteByPageId((int)$page['uid'], null, $queryParameters['MP'] ?? '');
-            $currentSite = $this->getCurrentSite();
-        } catch (SiteNotFoundException $e) {
-            // Usually happens in tests, as sites with configuration should be available everywhere.
-            $siteOfTargetPage = null;
-            $currentSite = null;
-        }
-        if ($siteOfTargetPage === null) {
-            throw new UnableToLinkException('Could not link to page with ID: ' . $page['uid'], 1546887172, null, $linkText);
-        }
-
-
-        $url = $this->generateUrlForPageWithSiteConfiguration($page, $siteOfTargetPage, $queryParameters, $fragment, $conf, $request);
-        // no scheme => always not external
-        if (!$url->getScheme() || !$url->getHost()) {
-            $treatAsExternalLink = false;
-        } else {
-            // URL has a scheme, possibly because someone requested a full URL. So now lets check if the URL
-            // is on the same site pagetree. If this is the case, we'll treat it as internal
-            // @todo: currently this does not check if the target page is a mounted page in a different site,
-            // so it is treating this as an absolute URL, which is wrong
-            if ($currentSite && $currentSite->getRootPageId() === $siteOfTargetPage->getRootPageId()) {
-                $treatAsExternalLink = false;
-            }
-        }
-        $url = (string)$url;
-
-        $linkLocation = $file->getPublicUrl();
-        if ($linkLocation === null) {
-            // set the linkLocation to an empty string if null,
-            // so it does not collide with the various string functions
-            $linkLocation = '';
-        }
-        // Setting title if blank value to link
-        $linkText = $this->encodeFallbackLinkTextIfLinkTextIsEmpty($linkText, rawurldecode($linkLocation));
-        return (new LinkResult($linkDetails['type'], $this->forceAbsoluteUrl($url, $conf)))
+        return (new LinkResult('pdflip', $url))
+            ->withTarget($target)
             ->withLinkConfiguration($conf)
-            ->withTarget($target ?: $this->resolveTargetAttribute($conf, 'fileTarget'))
             ->withLinkText($linkText);
     }
-
 }

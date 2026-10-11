@@ -1,31 +1,11 @@
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en"
-      xmlns:f="http://typo3.org/ns/fluid/ViewHelpers"
-      xmlns:pdflip="http://typo3.org/ns/WapplerSystems/Pdflip/ViewHelpers"
-      data-namespace-typo3-fluid="true">
-
-
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:layout name="Default" />
 <f:section name="Main">
-
-    <f:render partial="PdflipAssets" arguments="{assets: settings.assets}" />
-    {pdflip:flipbookGlobalConfig(useNonce:settings.assets.useNonce)}
-
-
     <f:if condition="{files.0}">
-        <f:then>
-
-            <div
-                class="_df_book" id="pdflip-{data.uid}" height="{f:if(condition:flexFormData.settings.height, then:flexFormData.settings.height, else:'500')}"
-                source="{files.0.publicUrl}">
-            </div>
-
-        </f:then>
-        <f:else>
-
-            <div class="alert alert-info">No PDF selected</div>
-
-        </f:else>
+        <div class="pdflip-embedded" data-pdflip="{files.0.publicUrl}" data-pdflip-options="{pdflipOptions}" data-theme="{pdflipSettings.theme}">
+            <f:comment>Shown without JavaScript and readable for search engines; replaced by the book.</f:comment>
+            <a href="{files.0.publicUrl}">{f:if(condition: files.0.title, then: files.0.title, else: files.0.name)}</a>
+        </div>
     </f:if>
-
 </f:section>
 </html>

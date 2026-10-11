@@ -6,8 +6,15 @@ services:
 
   WapplerSystems\Pdflip\:
     resource: '../Classes/*'
+    # instantiated by the core with makeInstance(), not a service
+    exclude: '../Classes/LinkHandler/PdflipLinkBuilder.php'
 
   WapplerSystems\Pdflip\DataProcessing\FilePublicUrlDataProcessor:
     tags:
       - name: 'data.processor'
         identifier: 'pdflip-file-public-url'
+
+  WapplerSystems\Pdflip\DataProcessing\PdflipOptionsProcessor:
+    tags:
+      - name: 'data.processor'
+        identifier: 'pdflip-options'

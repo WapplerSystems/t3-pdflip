@@ -1,2 +1,4 @@
 name: wapplersystems/pdflip
-label: Pdflip
+label: 'PDF Flip Book'
+dependencies:
+  - typo3/fluid-styled-content

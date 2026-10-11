@@ -1,29 +1,34 @@
 # PDFlip – PDF flip books for TYPO3
 
-PDFlip shows PDF files as page-turning flip books in the TYPO3 frontend. The PDF is rendered
-in the browser with pdf.js — there is no need to convert it into images beforehand.
+PDFlip shows PDF files as page-turning flip books in the TYPO3 frontend: embedded in the page,
+as a gallery that opens the books in a lightbox, or as the target of a link.
 
-It is the successor of [t3-flipbook](https://github.com/WapplerSystems/t3-flipbook)
-(`wapplersystems/flipbook`).
+It integrates the open-source library [pdflip](https://github.com/WapplerSystems/pdflip)
+(BSD-3-Clause, pdf.js, no jQuery, no WebGL). The library is bundled in
+`Resources/Public/Pdflip/`; nothing has to be installed separately.
 
 ## Features
 
-* **Content element "PDFlip embedded"** – a flip book embedded directly in the page.
-* **Content element "PDFlip gallery"** – a grid of PDF thumbnails, each opening its flip book in a lightbox.
-* **Link type "Pdflip"** – link any text (RTE, link fields) to a PDF that opens as a full-page flip book.
-* Sound on page turn, thumbnails, outline, zoom, fullscreen, download.
-* Works with TYPO3's Content Security Policy: scripts are included with the CSP nonce.
+* Realistic page turn (soft paper, hard covers or hard pages), single and double pages, right-to-left books
+* Zoom with sharp re-rendering, pan, pinch, keyboard control
+* Thumbnails, table of contents of the PDF, full-text search with highlights, selectable text
+* Clickable links of the PDF, deep links to pages, share, download, fullscreen, autoplay
+* Accessible controls (buttons with labels, keyboard, focus handling in the lightbox)
+* Works with TYPO3's Content Security Policy: no inline scripts, nonce on the script tag
+* pdf.js is loaded only when a book comes into view
 
 ## Requirements
 
-| PDFlip | TYPO3 | PHP  | Branch        |
-|--------|-------|------|---------------|
-| 14.x   | 14    | ≥ 8.2 | `release/v14` |
-| 13.x   | 13.4  | ≥ 8.2 | `release/v13` (not tagged yet, use `dev-release/v13`) |
+| PDFlip | TYPO3 | PHP |
+|---|---|---|
+| 14.1 (`release/v14`) | 13.4 and 14 | ≥ 8.2 |
+| 13.1 (`release/v13`) | 13.4 and 14 | ≥ 8.2 |
+| 14.0 and older | – | dFlip-based, no longer maintained |
 
-The content elements are based on `lib.contentElement`, so **fluid_styled_content** (or a site
-package providing `lib.contentElement`) is required. The flip book library needs **jQuery** — either
-already on your site or loaded by the extension (see [Configuration](#configuration)).
+`release/v14` and `release/v13` carry the same code; the library is updated in both by the
+workflow `sync-pdflip.yml` whenever pdflip passes its CI.
+
+The content elements are based on `lib.contentElement`, so **fluid_styled_content** is required.
 
 ## Installation
 
@@ -31,98 +36,85 @@ already on your site or loaded by the extension (see [Configuration](#configurat
 composer require wapplersystems/pdflip
 ```
 
-Then add the site set **Pdflip** (`wapplersystems/pdflip`) as a dependency of your site — either in
-the backend under *Site Management › Sites › Edit site › Sets*, or in your site package:
+Add the site set **PDF Flip Book** (`wapplersystems/pdflip`) to your site — in the backend under
+*Site Management › Sites › Edit site › Sets*, or in the site configuration:
 
 ```yaml
-# config/sites/<site>/config.yaml or Configuration/Sets/<YourSet>/config.yaml
 dependencies:
   - wapplersystems/pdflip
 ```
 
-The set provides the TypoScript for both content elements, the page type for the link type and the
-Page TSconfig that adds the "Pdflip" tab to the link browser.
-
 ## Usage
 
-### Embedded flip book
+**PDF flip book: embedded** — select one PDF on the *Media* tab. The *Flip book* tab sets the
+height (empty = derived from width and page format), start page, page mode, page turn,
+reading direction, sound, the panel to open on start and controls to hide. Empty values use
+the site settings.
 
-1. Add a content element of type **PDFlip embedded**.
-2. On the *Media* tab, select exactly one PDF file.
-3. Optionally set the **height** in pixels (default: 500).
+**PDF flip book: gallery** — select several PDFs. Each is shown with its cover (file metadata
+*Title* as caption, otherwise the file name); a click opens the book in a lightbox.
 
-### Gallery
-
-1. Add a content element of type **PDFlip gallery**.
-2. On the *Media* tab, select one or more PDF files.
-
-Each PDF is shown as a thumbnail with its title (file metadata *Title*, falling back to the file
-name). A click opens the flip book in a lightbox. The thumbnail is generated from the first page by
-TYPO3's image processing, so GraphicsMagick/ImageMagick must be able to read PDFs.
-
-### Link to a flip book
-
-In the link browser, choose the **Pdflip** tab and select a PDF from the file list. The link is stored
-as `t3://pdflip?uid=<sys_file uid>`.
-
-In the frontend, the link points to the current page with the page type `68724` and the file uid as
-parameter (`?type=68724&file=<uid>`). That page type renders nothing but the flip book in full size —
-open it in a new window or in your own lightbox.
+**Link type "Pdflip"** — in the link browser, choose the *Pdflip* tab and a PDF. The link opens
+the current page with the page type `68724`, which shows only the book, filling the window.
+If your site has a `PageType` route enhancer, map a suffix for it, e.g. `flipbook: 68724`.
 
 ## Configuration
 
-TypoScript constants (`plugin.tx_pdflip`):
+Site settings (*Site Management › Settings › PDF Flip Book*):
 
-| Constant | Default | Description |
+| Setting | Default | |
 |---|---|---|
-| `settings.importJQuery` | `0` | Load the bundled jQuery. Set to `1` if your site does not include jQuery already. |
-| `settings.useNonce` | `1` | Add the CSP nonce to the script tags. |
-| `view.templateRootPath` | `EXT:pdflip/Resources/Private/Templates/` | Additional template path (priority 20). |
-| `view.partialRootPath` | `EXT:pdflip/Resources/Private/Partials/` | Additional partial path (priority 20). |
-| `view.layoutRootPath` | `EXT:pdflip/Resources/Private/Layouts/` | Additional layout path (priority 20). |
+| `pdflip.pageMode` | `auto` | `auto`, `single`, `double` |
+| `pdflip.flipStyle` | `soft` | `soft`, `cover` (hard covers), `hard` |
+| `pdflip.direction` | `ltr` | `ltr`, `rtl` |
+| `pdflip.controls` | all | Toolbar controls, comma-separated |
+| `pdflip.controlsPosition` | `bottom` | `bottom`, `top`, `hidden` |
+| `pdflip.sound` | off | Page turn sound |
+| `pdflip.wheel` | `zoom` | Mouse wheel: `zoom` (with Ctrl, always in fullscreen/lightbox), `flip`, `none` |
+| `pdflip.theme` | `light` | Toolbar theme: `light`, `dark` |
+| `pdflip.galleryCovers` | `server` | Gallery covers rendered by TYPO3 (`server`, needs GraphicsMagick/ImageMagick with PDF support) or by pdf.js in the browser (`client`) |
+| `pdflip.galleryThumbnailWidth` | `300` | Width of the gallery covers in px |
 
-The full-page flip book of the link type (page type `68724`) always loads its own jQuery.
+Colours and sizes are CSS custom properties (`--pdflip-accent`, `--pdflip-toolbar-background`,
+…), see the [library README](https://github.com/WapplerSystems/pdflip#theming).
 
-### Overriding templates
+### Own templates
 
-The content elements use the templates `PdflipEmbedded.html` and `PdflipGallery.html` and the
-partial `PdflipAssets.html` (all script and style includes). Copy them into your site package and
-point the `view.*RootPath` constants to it.
+```typoscript
+tt_content.pdflip-embedded.templateRootPaths.20 = EXT:my_site/Resources/Private/Pdflip/
+tt_content.pdflip-gallery.templateRootPaths.20 = EXT:my_site/Resources/Private/Pdflip/
+```
 
-The flip book is initialised by the library from the markup: every element with the class
-`_df_book` (embedded) or `_df_thumb` (lightbox) and a `source` attribute pointing to the PDF becomes
-a flip book. Global defaults (sound file, image path, labels, WebGL off) are set by the ViewHelper
-`{pdflip:flipbookGlobalConfig()}` on `DFLIP.defaults`; further library options can be set there in
-your own JavaScript.
+The templates only need an element with `data-pdflip="<pdf url>"` (embedded) or
+`data-pdflip-lightbox` on a link to the PDF; options go into `data-pdflip-options` as JSON
+(`{pdflipOptions}`) or into single `data-pdflip-*` attributes.
 
 ### Content Security Policy
 
-The extension extends the frontend CSP (`Configuration/ContentSecurityPolicies.php`):
+The extension adds `'wasm-unsafe-eval'` to `script-src` in the frontend; pdf.js needs it to
+decode JBIG2 and JPEG 2000 images. No `'unsafe-eval'` and no inline scripts are required.
+PDFs from another domain need CORS headers on that domain and an entry in `connect-src`.
 
-* `script-src 'unsafe-eval'` – required by the bundled flip book library,
-* `img-src blob:` – the rendered PDF pages are displayed as blob images.
+## Upgrading from the dFlip-based versions
 
-If your PDFs are served from another domain (CDN, object storage), add that domain to
-`connect-src` in your site's `csp.yaml`, as pdf.js loads the file via XHR.
+The content types and the height setting are unchanged, existing content elements keep working.
+Removed: the TypoScript constants `importJQuery` and `useNonce` (jQuery is no longer needed,
+the nonce is always set) and the old `plugin.tx_pdflip.view.*` constants (use the TypoScript
+above). The `Configuration/TypoScript` folder is gone — include the site set instead.
 
-## Migrating from t3-flipbook
+## Updating the bundled library
 
-There is no automatic migration. Replace the old *Flipbook* plugin by a **PDFlip embedded**
-content element and select the same PDF file. Flip books built from an image folder are not
-supported — PDFlip works with PDF files only.
+Automatically: the CI of [pdflip](https://github.com/WapplerSystems/pdflip) triggers
+`.github/workflows/sync-pdflip.yml` here after every green build on `main`. By hand:
 
-## Third-party libraries
-
-PDFlip bundles
-
-* [dFlip](https://dearhive.com) 1.7.36 by DearHive (flip book rendering),
-* [pdf.js](https://mozilla.github.io/pdf.js/) by Mozilla (Apache-2.0),
-* [three.js](https://threejs.org) (MIT),
-* [jQuery](https://jquery.com) (MIT),
-* [Themify Icons](https://themify.me/themify-icons).
+```bash
+Build/sync-pdflip.sh                # latest main of WapplerSystems/pdflip
+Build/sync-pdflip.sh ../pdflip      # a local checkout
+```
 
 ## License
 
 GPL-2.0-or-later. Developed by [WapplerSystems](https://wappler.systems).
+The bundled pdflip library is BSD-3-Clause, pdf.js Apache-2.0 (see `Resources/Public/Pdflip/`).
 
 Issues and pull requests: https://github.com/WapplerSystems/t3-pdflip/issues
