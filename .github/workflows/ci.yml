@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: ['release/**']
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: PHP ${{ matrix.php }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ['8.2', '8.3', '8.4', '8.5']
+    steps:
+      - uses: actions/checkout@v6
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: none
+      - name: PHP syntax
+        run: find . -name '*.php' -not -path './vendor/*' -print0 | xargs -0 -n1 php -l
+      - name: XML, XLIFF and YAML
+        run: |
+          sudo apt-get install -y -qq libxml2-utils >/dev/null
+          find Configuration Resources/Private -name '*.xml' -o -name '*.xlf' | xargs -n1 xmllint --noout
+          python3 -c "import glob, yaml; [yaml.safe_load(open(f)) for f in glob.glob('Configuration/**/*.yaml', recursive=True)]"
+      - name: Bundled pdflip
+        run: node --check Resources/Public/Pdflip/pdflip.global.js

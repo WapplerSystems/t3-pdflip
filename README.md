@@ -21,8 +21,12 @@ It integrates the open-source library [pdflip](https://github.com/WapplerSystems
 
 | PDFlip | TYPO3 | PHP |
 |---|---|---|
-| 13.1 (`release/v13-os`) | 13.4 and 14 | ≥ 8.2 |
-| 14.0 (`release/v14`) | 14 | ≥ 8.2 |
+| 14.1 (`release/v14`) | 13.4 and 14 | ≥ 8.2 |
+| 13.1 (`release/v13`) | 13.4 and 14 | ≥ 8.2 |
+| 14.0 and older | – | dFlip-based, no longer maintained |
+
+`release/v14` and `release/v13` carry the same code; the library is updated in both by the
+workflow `sync-pdflip.yml` whenever pdflip passes its CI.
 
 The content elements are based on `lib.contentElement`, so **fluid_styled_content** is required.
 
@@ -99,6 +103,9 @@ the nonce is always set) and the old `plugin.tx_pdflip.view.*` constants (use th
 above). The `Configuration/TypoScript` folder is gone — include the site set instead.
 
 ## Updating the bundled library
+
+Automatically: the CI of [pdflip](https://github.com/WapplerSystems/pdflip) triggers
+`.github/workflows/sync-pdflip.yml` here after every green build on `main`. By hand:
 
 ```bash
 Build/sync-pdflip.sh                # latest main of WapplerSystems/pdflip
