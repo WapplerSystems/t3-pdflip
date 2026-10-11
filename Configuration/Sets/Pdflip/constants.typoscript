@@ -1,1 +1,2 @@
-@import 'EXT:pdflip/Configuration/TypoScript/constants.typoscript'
+# The flip book is configured with site settings (Site Management › Settings › PDF Flip Book).
+# Own templates: tt_content.pdflip-embedded.templateRootPaths.20 = EXT:my_site/Resources/Private/Pdflip/

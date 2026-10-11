@@ -18,7 +18,6 @@ use TYPO3\CMS\Backend\View\FolderUtilityRenderer;
 use TYPO3\CMS\Backend\View\RecordSearchBoxComponent;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
-use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -27,8 +26,6 @@ use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\View\ViewFactoryData;
-use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Filelist\LinkHandler\AbstractResourceLinkHandler;
 use TYPO3\CMS\Filelist\Matcher\Matcher;
 use TYPO3\CMS\Filelist\Matcher\ResourceFileExtensionMatcher;
@@ -45,17 +42,8 @@ class PdflipLinkHandler extends AbstractResourceLinkHandler
 
     protected LinkType $type = LinkType::FILE;
 
-    public function __construct(
-        IconFactory $iconFactory,
-        ResourceFactory $resourceFactory,
-        PageRenderer $pageRenderer,
-        UriBuilder $uriBuilder,
-        LanguageServiceFactory $languageServiceFactory,
-        private readonly ViewFactoryInterface $viewFactory,
-        private readonly LinkService $linkService,
-    ) {
-        parent::__construct($iconFactory, $resourceFactory, $pageRenderer, $uriBuilder, $languageServiceFactory);
-    }
+    // No own constructor: the parent constructor differs between TYPO3 v13 and v14 and is
+    // autowired by the container in both.
 
 
     public function getLinkAttributes(): array
@@ -85,8 +73,6 @@ class PdflipLinkHandler extends AbstractResourceLinkHandler
         $this->resourceDisplayMatcher->addMatcher($fileExtensionMatcher);
     }
 
-
-
     /**
      * Format the current link for HTML output
      *
@@ -113,17 +99,6 @@ class PdflipLinkHandler extends AbstractResourceLinkHandler
      */
     public function render(ServerRequestInterface $request): string
     {
-
-
-
-        $viewFactoryData = new ViewFactoryData(
-            templateRootPaths: ['EXT:filelist/Resources/Private/Templates/','EXT:pdflip/Resources/Private/Backend/Templates/'],
-            partialRootPaths: ['EXT:backend/Resources/Private/Partials/','EXT:pdflip/Resources/Private/Backend/Partials/'],
-            layoutRootPaths: ['EXT:backend/Resources/Private/Layouts/'],
-            request: $request,
-        );
-        $view = $this->viewFactory->create($viewFactoryData);
-
 
         $contentHtml = '';
         if ($this->selectedFolder !== null) {

@@ -1,0 +1,84 @@
+categories:
+  pdflip:
+    label: 'PDF Flip Book'
+
+settings:
+  pdflip.pageMode:
+    label: 'Page mode'
+    description: 'Automatic shows double pages when there is enough room.'
+    category: pdflip
+    type: string
+    default: auto
+    enum:
+      auto: 'Automatic'
+      single: 'Single pages'
+      double: 'Double pages'
+  pdflip.flipStyle:
+    label: 'Page turn'
+    category: pdflip
+    type: string
+    default: soft
+    enum:
+      soft: 'Soft (paper)'
+      cover: 'Hard covers, soft pages'
+      hard: 'Hard (board)'
+  pdflip.direction:
+    label: 'Reading direction'
+    category: pdflip
+    type: string
+    default: ltr
+    enum:
+      ltr: 'Left to right'
+      rtl: 'Right to left'
+  pdflip.controls:
+    label: 'Toolbar controls'
+    description: 'Comma-separated, in this order: first, prev, pageNumber, next, last, thumbnails, outline, search, zoomIn, zoomOut, autoplay, pageMode, sound, share, download, fullscreen'
+    category: pdflip
+    type: string
+    default: 'first,prev,pageNumber,next,last,thumbnails,outline,search,zoomIn,zoomOut,autoplay,pageMode,sound,share,download,fullscreen'
+  pdflip.controlsPosition:
+    label: 'Toolbar position'
+    category: pdflip
+    type: string
+    default: bottom
+    enum:
+      bottom: 'Bottom'
+      top: 'Top'
+      hidden: 'Hidden'
+  pdflip.sound:
+    label: 'Page turn sound'
+    category: pdflip
+    type: bool
+    default: false
+  pdflip.wheel:
+    label: 'Mouse wheel'
+    description: 'Zoom: with Ctrl, and always in fullscreen and lightbox. Flip: turns the pages.'
+    category: pdflip
+    type: string
+    default: zoom
+    enum:
+      zoom: 'Zoom'
+      flip: 'Turn pages'
+      none: 'Nothing'
+  pdflip.theme:
+    label: 'Toolbar theme'
+    category: pdflip
+    type: string
+    default: light
+    enum:
+      light: 'Light'
+      dark: 'Dark'
+  pdflip.galleryCovers:
+    label: 'Gallery: cover images'
+    description: 'Server: rendered by TYPO3 (needs GraphicsMagick/ImageMagick with PDF support). Browser: rendered from the first page by pdf.js.'
+    category: pdflip
+    type: string
+    default: server
+    enum:
+      server: 'Server (image processing)'
+      client: 'Browser (pdf.js)'
+  pdflip.galleryThumbnailWidth:
+    label: 'Gallery: width of the cover images (px)'
+    category: pdflip
+    type: int
+    default: 300

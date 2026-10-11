@@ -1,11 +1,13 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-      xmlns:pdflip="http://typo3.org/ns/WapplerSystems/Pdflip/ViewHelpers"
-      data-namespace-typo3-fluid="true">
-
-<div class="_df_book" id="flipbook_{data.uid}" source="{filePublicUrl}"></div>
-
-{pdflip:flipbookGlobalConfig(useNonce:settings.assets.useNonce)}
-{pdflip:flipbookConfig(identifier:'flipbook_{data.uid}',useNonce:settings.assets.useNonce)}
-
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:comment>Page type 68724: target of the "Pdflip" link type, the book fills the window.</f:comment>
+<f:if condition="{filePublicUrl}">
+    <f:then>
+        <div class="pdflip-fullpage" data-pdflip="{filePublicUrl}" data-pdflip-options="{pdflipOptions}" data-pdflip-height="100dvh" data-pdflip-lazy="false" data-theme="{pdflipSettings.theme}">
+            <a href="{filePublicUrl}">{filePublicUrl}</a>
+        </div>
+    </f:then>
+    <f:else>
+        <p>No PDF given.</p>
+    </f:else>
+</f:if>
 </html>
-

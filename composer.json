@@ -1,15 +1,10 @@
 {
     "name": "wapplersystems/pdflip",
-    "description": "PDF flipbook viewer extension for TYPO3",
     "type": "typo3-cms-extension",
-    "homepage": "https://github.com/WapplerSystems/t3-flipbook",
+    "description": "PDF flip books for TYPO3: page-turning PDF viewer based on the open-source pdflip library",
+    "keywords": ["TYPO3", "extension", "pdf", "flipbook", "flip book", "pdf viewer"],
+    "homepage": "https://github.com/WapplerSystems/t3-pdflip",
     "license": "GPL-2.0-or-later",
-    "keywords": [
-        "TYPO3",
-        "extension",
-        "pdf",
-        "flipbook"
-    ],
     "authors": [
         {
             "name": "Sven Wappler",
@@ -19,11 +14,16 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/WapplerSystems/t3-flipbook/issues",
-        "source": "https://github.com/WapplerSystems/t3-flipbook"
+        "source": "https://github.com/WapplerSystems/t3-pdflip",
+        "issues": "https://github.com/WapplerSystems/t3-pdflip/issues"
     },
     "require": {
-        "typo3/cms-core": "^13.4"
+        "php": "^8.2",
+        "typo3/cms-core": "^13.4 || ^14.0",
+        "typo3/cms-backend": "^13.4 || ^14.0",
+        "typo3/cms-filelist": "^13.4 || ^14.0",
+        "typo3/cms-fluid-styled-content": "^13.4 || ^14.0",
+        "typo3/cms-frontend": "^13.4 || ^14.0"
     },
     "autoload": {
         "psr-4": {

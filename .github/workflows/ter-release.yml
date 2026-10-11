@@ -10,8 +10,8 @@ jobs:
     name: TER release
     runs-on: ubuntu-latest
     env:
-      TYPO3_EXTENSION_KEY: 'oauth_service'
-      REPOSITORY_URL: 'https://github.com/WapplerSystems/t3-oauth-service'
+      TYPO3_EXTENSION_KEY: 'pdflip'
+      REPOSITORY_URL: 'https://github.com/WapplerSystems/t3-pdflip'
       TYPO3_API_TOKEN: ${{ secrets.TYPO3_API_TOKEN }}
       TYPO3_API_USERNAME: ${{ secrets.TYPO3_API_USERNAME }}
       TYPO3_API_PASSWORD: ${{ secrets.TYPO3_API_PASSWORD }}
@@ -19,16 +19,19 @@ jobs:
     steps:
       - name: Get the version
         id: get_version
-        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: '8.3'
           extensions: intl, mbstring, xml, soap, zip, curl
 
       - name: Install EXT:tailor
-        run: composer global require typo3/tailor --prefer-dist --no-progress --no-suggest
+        run: composer global require typo3/tailor --prefer-dist --no-progress
 
-      - name: Upload EXT:${{ env.EXTENSION_KEY }} as ${{ steps.get_version.outputs.VERSION }} to TER
-        run: php ~/.composer/vendor/bin/tailor ter:publish ${{ steps.get_version.outputs.VERSION }} --artefact=${{ env.REPOSITORY_URL }}/archive/${{ steps.get_version.outputs.VERSION }}.zip --comment="New release of version ${{ steps.get_version.outputs.VERSION }} - see details, changelog and documentation on ${{ env.REPOSITORY_URL }}"
+      - name: Upload EXT:${{ env.TYPO3_EXTENSION_KEY }} as ${{ steps.get_version.outputs.VERSION }} to TER
+        run: |
+          "$(composer global config bin-dir --absolute --quiet)/tailor" ter:publish ${{ steps.get_version.outputs.VERSION }} \
+            --artefact=${{ env.REPOSITORY_URL }}/archive/${{ steps.get_version.outputs.VERSION }}.zip \
+            --comment="New release of version ${{ steps.get_version.outputs.VERSION }} - see details, changelog and documentation on ${{ env.REPOSITORY_URL }}"

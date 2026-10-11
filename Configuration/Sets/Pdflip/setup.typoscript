@@ -1,1 +1,57 @@
-@import 'EXT:pdflip/Configuration/TypoScript/setup.typoscript'
+lib.pdflip.settings {
+  pageMode = {$pdflip.pageMode}
+  flipStyle = {$pdflip.flipStyle}
+  direction = {$pdflip.direction}
+  controls = {$pdflip.controls}
+  controlsPosition = {$pdflip.controlsPosition}
+  sound = {$pdflip.sound}
+  wheel = {$pdflip.wheel}
+  theme = {$pdflip.theme}
+  galleryCovers = {$pdflip.galleryCovers}
+  galleryThumbnailWidth = {$pdflip.galleryThumbnailWidth}
+}
+
+tt_content.pdflip-embedded =< lib.contentElement
+tt_content.pdflip-embedded {
+  templateName = PdflipEmbedded
+  templateRootPaths.10 = EXT:pdflip/Resources/Private/Frontend/Templates/
+  settings.pdflip < lib.pdflip.settings
+  dataProcessing {
+    10 = files
+    10.references.fieldName = assets
+    20 = flex-form
+    30 = pdflip-options
+  }
+}
+
+tt_content.pdflip-gallery =< lib.contentElement
+tt_content.pdflip-gallery {
+  templateName = PdflipGallery
+  templateRootPaths.10 = EXT:pdflip/Resources/Private/Frontend/Templates/
+  settings.pdflip < lib.pdflip.settings
+  dataProcessing {
+    10 = files
+    10.references.fieldName = assets
+    30 = pdflip-options
+  }
+}
+
+# Target of the "Pdflip" link type: the book alone, filling the window.
+pdflip = PAGE
+pdflip {
+  typeNum = 68724
+  config {
+    disableAllHeaderCode = 0
+    admPanel = 0
+    debug = 0
+  }
+  10 = FLUIDTEMPLATE
+  10 {
+    file = EXT:pdflip/Resources/Private/Frontend/Templates/PDFlip.html
+    settings.pdflip < lib.pdflip.settings
+    dataProcessing {
+      10 = pdflip-file-public-url
+      30 = pdflip-options
+    }
+  }
+}
