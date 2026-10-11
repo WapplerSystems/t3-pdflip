@@ -107,8 +107,8 @@ final class PdflipOptionsProcessor implements DataProcessorInterface
     {
         // the nonce option was renamed from "useNonce" (v13) to "csp" (v14)
         $csp = $this->typo3Version->getMajorVersion() >= 14 ? ['csp' => true] : ['useNonce' => true];
-        $this->assetCollector->addStyleSheet('pdflip', 'EXT:pdflip/Resources/Public/Pdflip/pdflip.css', [], $csp);
-        $this->assetCollector->addJavaScript('pdflip', 'EXT:pdflip/Resources/Public/Pdflip/pdflip.global.js', ['defer' => 'defer'], $csp);
+        $this->assetCollector->addStyleSheet('pdflip', 'EXT:ws_pdflip/Resources/Public/Pdflip/pdflip.css', [], $csp);
+        $this->assetCollector->addJavaScript('pdflip', 'EXT:ws_pdflip/Resources/Public/Pdflip/pdflip.global.js', ['defer' => 'defer'], $csp);
     }
 
     /** TypoScript arrays without the trailing dots of sub keys. */
