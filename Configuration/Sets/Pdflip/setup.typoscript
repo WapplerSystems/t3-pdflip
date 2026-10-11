@@ -14,7 +14,7 @@ lib.pdflip.settings {
 tt_content.pdflip-embedded =< lib.contentElement
 tt_content.pdflip-embedded {
   templateName = PdflipEmbedded
-  templateRootPaths.10 = EXT:pdflip/Resources/Private/Frontend/Templates/
+  templateRootPaths.10 = EXT:ws_pdflip/Resources/Private/Frontend/Templates/
   settings.pdflip < lib.pdflip.settings
   dataProcessing {
     10 = files
@@ -27,7 +27,7 @@ tt_content.pdflip-embedded {
 tt_content.pdflip-gallery =< lib.contentElement
 tt_content.pdflip-gallery {
   templateName = PdflipGallery
-  templateRootPaths.10 = EXT:pdflip/Resources/Private/Frontend/Templates/
+  templateRootPaths.10 = EXT:ws_pdflip/Resources/Private/Frontend/Templates/
   settings.pdflip < lib.pdflip.settings
   dataProcessing {
     10 = files
@@ -47,7 +47,7 @@ pdflip {
   }
   10 = FLUIDTEMPLATE
   10 {
-    file = EXT:pdflip/Resources/Private/Frontend/Templates/PDFlip.html
+    file = EXT:ws_pdflip/Resources/Private/Frontend/Templates/PDFlip.html
     settings.pdflip < lib.pdflip.settings
     dataProcessing {
       10 = pdflip-file-public-url

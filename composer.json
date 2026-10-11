@@ -32,7 +32,7 @@
     },
     "extra": {
         "typo3/cms": {
-            "extension-key": "pdflip"
+            "extension-key": "ws_pdflip"
         }
     }
 }

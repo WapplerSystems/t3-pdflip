@@ -97,6 +97,11 @@ PDFs from another domain need CORS headers on that domain and an entry in `conne
 
 ## Upgrading from the dFlip-based versions
 
+The extension key is now **`ws_pdflip`** (the key `pdflip` is taken in the TER). The Composer
+package name `wapplersystems/pdflip`, the site set `wapplersystems/pdflip`, the content types and
+the link type stay the same. Only own references to `EXT:pdflip/…` have to become
+`EXT:ws_pdflip/…`.
+
 The content types and the height setting are unchanged, existing content elements keep working.
 Removed: the TypoScript constants `importJQuery` and `useNonce` (jQuery is no longer needed,
 the nonce is always set) and the old `plugin.tx_pdflip.view.*` constants (use the TypoScript

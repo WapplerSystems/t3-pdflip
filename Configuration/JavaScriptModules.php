@@ -2,6 +2,6 @@
 
 return [
     'imports' => [
-        '@pdflip/pdflip-link-handler.js' => 'EXT:pdflip/Resources/Public/JavaScript/Backend/pdflip-link-handler.js',
+        '@pdflip/pdflip-link-handler.js' => 'EXT:ws_pdflip/Resources/Public/JavaScript/Backend/pdflip-link-handler.js',
     ],
 ];

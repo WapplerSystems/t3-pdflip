@@ -10,7 +10,7 @@ jobs:
     name: TER release
     runs-on: ubuntu-latest
     env:
-      TYPO3_EXTENSION_KEY: 'pdflip'
+      TYPO3_EXTENSION_KEY: 'ws_pdflip'
       REPOSITORY_URL: 'https://github.com/WapplerSystems/t3-pdflip'
       TYPO3_API_TOKEN: ${{ secrets.TYPO3_API_TOKEN }}
       TYPO3_API_USERNAME: ${{ secrets.TYPO3_API_USERNAME }}

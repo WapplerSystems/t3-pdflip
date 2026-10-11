@@ -2,13 +2,13 @@
 <f:layout name="Default" />
 <f:section name="Main">
     <f:if condition="{files}">
-        <f:asset.css identifier="pdflip-gallery" href="EXT:pdflip/Resources/Public/Css/pdflip-gallery.css" />
+        <f:asset.css identifier="pdflip-gallery" href="EXT:ws_pdflip/Resources/Public/Css/pdflip-gallery.css" />
         <ul class="pdflip-gallery">
             <f:for each="{files}" as="file">
                 <f:variable name="title">{f:if(condition: file.title, then: file.title, else: file.name)}</f:variable>
                 <li class="pdflip-gallery-item">
                     <a href="{file.publicUrl}" id="c{data.uid}-{file.uid}" data-pdflip-lightbox data-pdflip-options="{pdflipOptions}"
-                       aria-label="{f:translate(key: 'LLL:EXT:pdflip/Resources/Private/Language/Backend.xlf:gallery.open', arguments: {0: title})}">
+                       aria-label="{f:translate(key: 'LLL:EXT:ws_pdflip/Resources/Private/Language/Backend.xlf:gallery.open', arguments: {0: title})}">
                         <f:if condition="{pdflipSettings.galleryCovers} == 'client'">
                             <f:then>
                                 <img class="pdflip-gallery-cover" data-pdflip-cover="{file.publicUrl}" alt="" width="{pdflipSettings.galleryThumbnailWidth}" />

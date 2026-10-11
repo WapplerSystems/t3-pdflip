@@ -7,8 +7,8 @@ defined('TYPO3') || die();
 
 ExtensionManagementUtility::addRecordType(
     [
-        'label' => 'LLL:EXT:pdflip/Resources/Private/Language/Backend.xlf:pdflip-gallery',
-        'description' => 'LLL:EXT:pdflip/Resources/Private/Language/Backend.xlf:pdflip-gallery.description',
+        'label' => 'LLL:EXT:ws_pdflip/Resources/Private/Language/Backend.xlf:pdflip-gallery',
+        'description' => 'LLL:EXT:ws_pdflip/Resources/Private/Language/Backend.xlf:pdflip-gallery.description',
         'value' => 'pdflip-gallery',
         'icon' => 'mimetypes-pdf',
     ],
@@ -36,8 +36,8 @@ ExtensionManagementUtility::addRecordType(
 
 ExtensionManagementUtility::addRecordType(
     [
-        'label' => 'LLL:EXT:pdflip/Resources/Private/Language/Backend.xlf:pdflip-embedded',
-        'description' => 'LLL:EXT:pdflip/Resources/Private/Language/Backend.xlf:pdflip-embedded.description',
+        'label' => 'LLL:EXT:ws_pdflip/Resources/Private/Language/Backend.xlf:pdflip-embedded',
+        'description' => 'LLL:EXT:ws_pdflip/Resources/Private/Language/Backend.xlf:pdflip-embedded.description',
         'value' => 'pdflip-embedded',
         'icon' => 'mimetypes-pdf',
     ],
@@ -65,7 +65,7 @@ ExtensionManagementUtility::addRecordType(
 
 // v14 reads the data structure from columnsOverrides (addPiFlexFormValue() is deprecated there),
 // v13 from the ds array of pi_flexform
-$flexForm = 'FILE:EXT:pdflip/Configuration/FlexForms/Embedded.xml';
+$flexForm = 'FILE:EXT:ws_pdflip/Configuration/FlexForms/Embedded.xml';
 if ((new Typo3Version())->getMajorVersion() >= 14) {
     $GLOBALS['TCA']['tt_content']['types']['pdflip-embedded']['columnsOverrides']['pi_flexform']['config']['ds'] = $flexForm;
 } else {
