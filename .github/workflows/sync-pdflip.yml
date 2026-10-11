@@ -1,0 +1,87 @@
+name: Sync pdflip
+
+# Takes over a new build of the pdflip library (WapplerSystems/pdflip) into
+# Resources/Public/Pdflip/ of every maintained branch.
+#
+# Triggered by the CI of pdflip after a green build on main (repository_dispatch
+# "pdflip-build" with the commit SHA) or by hand with a pdflip ref.
+# repository_dispatch always runs this file from the default branch.
+#
+# Needs: Settings → Actions → General → Workflow permissions → "Read and write".
+
+on:
+  repository_dispatch:
+    types: [pdflip-build]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: pdflip branch, tag or SHA
+        required: true
+        default: main
+
+concurrency:
+  group: sync-pdflip
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    name: ${{ matrix.branch }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        branch: [release/v14, release/v13]
+    env:
+      PDFLIP_REF: ${{ github.event.client_payload.sha || inputs.ref }}
+    steps:
+      - name: Checkout extension (${{ matrix.branch }})
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ matrix.branch }}
+
+      - name: Checkout pdflip (${{ env.PDFLIP_REF }})
+        uses: actions/checkout@v6
+        with:
+          repository: WapplerSystems/pdflip
+          ref: ${{ env.PDFLIP_REF }}
+          path: _pdflip
+
+      - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: _pdflip/package.json
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Build pdflip and copy it into the extension
+        run: Build/sync-pdflip.sh _pdflip
+
+      - name: Verify the bundle
+        run: |
+          set -e
+          dir=Resources/Public/Pdflip
+          for file in pdflip.global.js pdflip.css pdfjs/pdf.min.mjs pdfjs/pdf.worker.min.mjs; do
+            test -s "$dir/$file" || { echo "::error::$dir/$file is missing"; exit 1; }
+          done
+          node --check "$dir/pdflip.global.js"
+          size=$(stat -c%s "$dir/pdflip.global.js")
+          test "$size" -gt 20000 -a "$size" -lt 150000 || { echo "::error::unexpected bundle size $size"; exit 1; }
+          cat "$dir/VERSION"
+
+      - name: Commit
+        run: |
+          rm -rf _pdflip
+          if git diff --quiet -- Resources/Public/Pdflip && [ -z "$(git status --porcelain -- Resources/Public/Pdflip)" ]; then
+            echo "pdflip is up to date on ${{ matrix.branch }}"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Resources/Public/Pdflip
+          git commit -m "[TASK] Update pdflip to $(cut -d' ' -f2- Resources/Public/Pdflip/VERSION)"
+          git push origin HEAD:${{ matrix.branch }}

@@ -1,30 +1,27 @@
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en"
-      xmlns:f="http://typo3.org/ns/fluid/ViewHelpers"
-      xmlns:pdflip="http://typo3.org/ns/WapplerSystems/Pdflip/ViewHelpers"
-      data-namespace-typo3-fluid="true">
-
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:layout name="Default" />
 <f:section name="Main">
-
-    <f:render partial="PdflipAssets" arguments="{assets: settings.assets}" />
-    {pdflip:flipbookGlobalConfig(useNonce:settings.assets.useNonce)}
-
-    <div class="df-posts">
-
-        <f:for each="{files}" as="file">
-
-            {pdflip:flipbookConfig(identifier:'flipbook_{file.uid}',useNonce:true)}
-
-            <div class="_df_thumb"
-                 id="df_intro_thumb-{file.uid}"
-                 source="{file.publicUrl}"
-                 thumb="{f:uri.image(image:file)}" >
-                {f:if(condition:file.properties.title,then:file.properties.title,else:file.properties.name)}
-            </div>
-
-
-        </f:for>
-
-    </div>
+    <f:if condition="{files}">
+        <f:asset.css identifier="pdflip-gallery" href="EXT:pdflip/Resources/Public/Css/pdflip-gallery.css" />
+        <ul class="pdflip-gallery">
+            <f:for each="{files}" as="file">
+                <f:variable name="title">{f:if(condition: file.title, then: file.title, else: file.name)}</f:variable>
+                <li class="pdflip-gallery-item">
+                    <a href="{file.publicUrl}" id="c{data.uid}-{file.uid}" data-pdflip-lightbox data-pdflip-options="{pdflipOptions}"
+                       aria-label="{f:translate(key: 'LLL:EXT:pdflip/Resources/Private/Language/Backend.xlf:gallery.open', arguments: {0: title})}">
+                        <f:if condition="{pdflipSettings.galleryCovers} == 'client'">
+                            <f:then>
+                                <img class="pdflip-gallery-cover" data-pdflip-cover="{file.publicUrl}" alt="" width="{pdflipSettings.galleryThumbnailWidth}" />
+                            </f:then>
+                            <f:else>
+                                <f:image image="{file}" maxWidth="{pdflipSettings.galleryThumbnailWidth}" class="pdflip-gallery-cover" alt="" loading="lazy" />
+                            </f:else>
+                        </f:if>
+                        <span class="pdflip-gallery-title">{title}</span>
+                    </a>
+                </li>
+            </f:for>
+        </ul>
+    </f:if>
 </f:section>
 </html>

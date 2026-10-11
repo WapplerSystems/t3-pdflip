@@ -1,20 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2025-12-26T00:00:00Z">
-		<header/>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:pdflip/Resources/Private/Language/Backend.xlf">
 		<body>
-
 			<trans-unit id="pdflip-gallery">
-				<source>PDFlip gallery</source>
+				<source>PDF flip book: gallery</source>
+			</trans-unit>
+			<trans-unit id="pdflip-gallery.description">
+				<source>Cover images of several PDFs; a click opens the flip book in a lightbox.</source>
 			</trans-unit>
 			<trans-unit id="pdflip-embedded">
-				<source>PDFlip embedded</source>
+				<source>PDF flip book: embedded</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.height">
-				<source>Height</source>
+			<trans-unit id="pdflip-embedded.description">
+				<source>A PDF as page-turning book directly in the page.</source>
 			</trans-unit>
-
-
+			<trans-unit id="flexform.main">
+				<source>Flip book</source>
+			</trans-unit>
+			<trans-unit id="flexform.height">
+				<source>Height in pixels</source>
+			</trans-unit>
+			<trans-unit id="flexform.height.description">
+				<source>Empty or 0: the height follows the width and the page format.</source>
+			</trans-unit>
+			<trans-unit id="flexform.startPage">
+				<source>Start page</source>
+			</trans-unit>
+			<trans-unit id="flexform.siteDefault">
+				<source>Site setting</source>
+			</trans-unit>
+			<trans-unit id="flexform.yes">
+				<source>Yes</source>
+			</trans-unit>
+			<trans-unit id="flexform.no">
+				<source>No</source>
+			</trans-unit>
+			<trans-unit id="flexform.pageMode">
+				<source>Page mode</source>
+			</trans-unit>
+			<trans-unit id="flexform.pageMode.auto">
+				<source>Automatic</source>
+			</trans-unit>
+			<trans-unit id="flexform.pageMode.single">
+				<source>Single pages</source>
+			</trans-unit>
+			<trans-unit id="flexform.pageMode.double">
+				<source>Double pages</source>
+			</trans-unit>
+			<trans-unit id="flexform.flipStyle">
+				<source>Page turn</source>
+			</trans-unit>
+			<trans-unit id="flexform.flipStyle.soft">
+				<source>Soft (paper)</source>
+			</trans-unit>
+			<trans-unit id="flexform.flipStyle.cover">
+				<source>Hard covers, soft pages</source>
+			</trans-unit>
+			<trans-unit id="flexform.flipStyle.hard">
+				<source>Hard (board)</source>
+			</trans-unit>
+			<trans-unit id="flexform.direction">
+				<source>Reading direction</source>
+			</trans-unit>
+			<trans-unit id="flexform.direction.ltr">
+				<source>Left to right</source>
+			</trans-unit>
+			<trans-unit id="flexform.direction.rtl">
+				<source>Right to left</source>
+			</trans-unit>
+			<trans-unit id="flexform.openPanel">
+				<source>Open on start</source>
+			</trans-unit>
+			<trans-unit id="flexform.openPanel.none">
+				<source>Nothing</source>
+			</trans-unit>
+			<trans-unit id="flexform.openPanel.thumbnails">
+				<source>Thumbnails</source>
+			</trans-unit>
+			<trans-unit id="flexform.openPanel.outline">
+				<source>Table of contents</source>
+			</trans-unit>
+			<trans-unit id="flexform.sound">
+				<source>Page turn sound</source>
+			</trans-unit>
+			<trans-unit id="flexform.hideControls">
+				<source>Hide controls</source>
+			</trans-unit>
+			<trans-unit id="flexform.control.thumbnails">
+				<source>Thumbnails</source>
+			</trans-unit>
+			<trans-unit id="flexform.control.outline">
+				<source>Table of contents</source>
+			</trans-unit>
+			<trans-unit id="flexform.control.search">
+				<source>Search</source>
+			</trans-unit>
+			<trans-unit id="flexform.control.zoomIn">
+				<source>Zoom in</source>
+			</trans-unit>
+			<trans-unit id="flexform.control.zoomOut">
+				<source>Zoom out</source>
+			</trans-unit>
+			<trans-unit id="flexform.control.autoplay">
+				<source>Autoplay</source>
+			</trans-unit>
+			<trans-unit id="flexform.control.pageMode">
+				<source>Single/double page</source>
+			</trans-unit>
+			<trans-unit id="flexform.control.sound">
+				<source>Sound</source>
+			</trans-unit>
+			<trans-unit id="flexform.control.share">
+				<source>Share</source>
+			</trans-unit>
+			<trans-unit id="flexform.control.download">
+				<source>Download</source>
+			</trans-unit>
+			<trans-unit id="flexform.control.fullscreen">
+				<source>Fullscreen</source>
+			</trans-unit>
+			<trans-unit id="gallery.open">
+				<source>Open %s as flip book</source>
+			</trans-unit>
+			<trans-unit id="embedded.noPdf">
+				<source>No PDF selected</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
