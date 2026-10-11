@@ -25,8 +25,13 @@ jobs:
         run: find . -name '*.php' -not -path './vendor/*' -print0 | xargs -0 -n1 php -l
       - name: XML, XLIFF and YAML
         run: |
-          sudo apt-get install -y -qq libxml2-utils >/dev/null
-          find Configuration Resources/Private -name '*.xml' -o -name '*.xlf' | xargs -n1 xmllint --noout
-          python3 -c "import glob, yaml; [yaml.safe_load(open(f)) for f in glob.glob('Configuration/**/*.yaml', recursive=True)]"
+          python3 - <<'PY'
+          import glob, xml.etree.ElementTree as ET, yaml
+          for f in glob.glob('Configuration/**/*.xml', recursive=True) + glob.glob('Resources/Private/**/*.xlf', recursive=True):
+              ET.parse(f)
+          for f in glob.glob('Configuration/**/*.yaml', recursive=True):
+              yaml.safe_load(open(f))
+          print('ok')
+          PY
       - name: Bundled pdflip
         run: node --check Resources/Public/Pdflip/pdflip.global.js
