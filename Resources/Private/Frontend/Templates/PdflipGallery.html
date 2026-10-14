@@ -11,7 +11,7 @@
                     support, or a PDF it fails on), TYPO3 hands back the PDF itself instead of an image.
                     The browser then renders the cover with pdf.js.
                 </f:comment>
-                <f:variable name="cover"><f:if condition="{pdflipSettings.galleryCovers} != 'client'">{f:uri.image(image: file, maxWidth: pdflipSettings.galleryThumbnailWidth)}</f:if></f:variable>
+                <f:variable name="cover"><f:if condition="{pdflipSettings.galleryCovers} != 'client'">{f:uri.image(image: file, maxWidth: pdflipSettings.galleryThumbnailWidth, fileExtension: 'jpg')}</f:if></f:variable>
                 <li class="pdflip-gallery-item">
                     <f:comment>data-pdflip-legacy-id: the id of the dFlip-based versions, so shared links (#flipbook-df_intro_thumb-<uid>/<page>/) keep opening the book.</f:comment>
                     <a href="{file.publicUrl}" id="c{data.uid}-{file.uid}" data-pdflip-legacy-id="df_intro_thumb-{file.uid}" data-pdflip-lightbox data-pdflip-options="{pdflipOptions}"
