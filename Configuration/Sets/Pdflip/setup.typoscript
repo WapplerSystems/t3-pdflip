@@ -7,6 +7,8 @@ lib.pdflip.settings {
   sound = {$pdflip.sound}
   wheel = {$pdflip.wheel}
   theme = {$pdflip.theme}
+  background = {$pdflip.background}
+  galleryTitle = {$pdflip.galleryTitle}
   galleryCovers = {$pdflip.galleryCovers}
   galleryThumbnailWidth = {$pdflip.galleryThumbnailWidth}
 }

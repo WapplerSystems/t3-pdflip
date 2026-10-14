@@ -75,6 +75,11 @@ final class PdflipOptionsProcessor implements DataProcessorInterface
         if (MathUtility::canBeInterpretedAsInteger($settings['height'] ?? null) && (int)$settings['height'] > 0) {
             $options['height'] = (int)$settings['height'];
         }
+        // a CSS colour; anything that could leave the property value is dropped
+        $background = trim((string)($settings['background'] ?? ''));
+        if ($background !== '' && preg_match('/^[#a-z0-9(),.%\s\/-]+$/i', $background) === 1) {
+            $options['background'] = $background;
+        }
         $controls = array_values(array_intersect(
             GeneralUtility::trimExplode(',', (string)($settings['controls'] ?? ''), true),
             self::CONTROLS

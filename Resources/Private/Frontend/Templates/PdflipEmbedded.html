@@ -2,7 +2,8 @@
 <f:layout name="Default" />
 <f:section name="Main">
     <f:if condition="{files.0}">
-        <div class="pdflip-embedded" data-pdflip="{files.0.publicUrl}" data-pdflip-options="{pdflipOptions}" data-theme="{pdflipSettings.theme}">
+        <f:comment>data-pdflip-legacy-id: the id of the dFlip-based versions, so shared page links (#flipbook-pdflip-<uid>/<page>/) keep working.</f:comment>
+        <div class="pdflip-embedded" data-pdflip="{files.0.publicUrl}" data-pdflip-options="{pdflipOptions}" data-pdflip-legacy-id="pdflip-{data.uid}" data-theme="{pdflipSettings.theme}">
             <f:comment>Shown without JavaScript and readable for search engines; replaced by the book.</f:comment>
             <a href="{files.0.publicUrl}">{f:if(condition: files.0.title, then: files.0.title, else: files.0.name)}</a>
         </div>

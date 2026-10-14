@@ -68,6 +68,21 @@ settings:
     enum:
       light: 'Light'
       dark: 'Dark'
+  pdflip.background:
+    label: 'Book background'
+    description: 'CSS colour behind the pages, e.g. #ffffff (the dFlip-based versions used white). Empty: transparent, the page background shows through.'
+    category: pdflip
+    type: string
+    default: ''
+  pdflip.galleryTitle:
+    label: 'Gallery: title'
+    description: 'Below the cover, or laid over its lower edge while the pointer is on it (as in the dFlip-based versions). The title stays readable for screen readers either way.'
+    category: pdflip
+    type: string
+    default: below
+    enum:
+      below: 'Below the cover'
+      hover: 'On the cover when pointed at'
   pdflip.galleryCovers:
     label: 'Gallery: cover images'
     description: 'Server: rendered by TYPO3 (needs GraphicsMagick/ImageMagick with PDF support). Browser: rendered from the first page by pdf.js.'

@@ -72,7 +72,9 @@ Site settings (*Site Management › Settings › PDF Flip Book*):
 | `pdflip.sound` | off | Page turn sound |
 | `pdflip.wheel` | `zoom` | Mouse wheel: `zoom` (with Ctrl, always in fullscreen/lightbox), `flip`, `none` |
 | `pdflip.theme` | `light` | Toolbar theme: `light`, `dark` |
-| `pdflip.galleryCovers` | `server` | Gallery covers rendered by TYPO3 (`server`, needs GraphicsMagick/ImageMagick with PDF support) or by pdf.js in the browser (`client`) |
+| `pdflip.background` | empty | Colour behind the pages, e.g. `#ffffff` like the dFlip-based versions; empty = transparent |
+| `pdflip.galleryTitle` | `below` | Gallery title below the cover, or `hover`: on the cover while pointed at (as with dFlip) |
+| `pdflip.galleryCovers` | `server` | Gallery covers rendered by TYPO3 (`server`, needs GraphicsMagick/ImageMagick with PDF support) or by pdf.js in the browser (`client`). If TYPO3 cannot render a PDF, that cover falls back to the browser |
 | `pdflip.galleryThumbnailWidth` | `300` | Width of the gallery covers in px |
 
 Colours and sizes are CSS custom properties (`--pdflip-accent`, `--pdflip-toolbar-background`,
@@ -103,6 +105,10 @@ the link type stay the same. Only own references to `EXT:pdflip/…` have to bec
 `EXT:ws_pdflip/…`.
 
 The content types and the height setting are unchanged, existing content elements keep working.
+Links shared from the dFlip books keep working: `#flipbook-pdflip-<uid>/<page>/` opens the embedded
+book on that page, `#flipbook-df_intro_thumb-<reference uid>/<page>/` the gallery book in the
+lightbox. New links have the form `#pdflip-c<uid>/<page>`. The dFlip look comes closest with
+`pdflip.background: '#ffffff'` and `pdflip.galleryTitle: hover`.
 Removed: the TypoScript constants `importJQuery` and `useNonce` (jQuery is no longer needed,
 the nonce is always set) and the old `plugin.tx_pdflip.view.*` constants (use the TypoScript
 above). The `Configuration/TypoScript` folder is gone — include the site set instead.
