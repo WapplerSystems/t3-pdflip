@@ -1,0 +1,18 @@
+# TYPO3 v12: the new content element wizard is configured with page TSconfig (v13+ reads the TCA)
+mod.wizards.newContentElement.wizardItems.common {
+  elements {
+    pdflip-gallery {
+      iconIdentifier = mimetypes-pdf
+      title = LLL:EXT:ws_pdflip/Resources/Private/Language/Backend.xlf:pdflip-gallery
+      description = LLL:EXT:ws_pdflip/Resources/Private/Language/Backend.xlf:pdflip-gallery.description
+      tt_content_defValues.CType = pdflip-gallery
+    }
+    pdflip-embedded {
+      iconIdentifier = mimetypes-pdf
+      title = LLL:EXT:ws_pdflip/Resources/Private/Language/Backend.xlf:pdflip-embedded
+      description = LLL:EXT:ws_pdflip/Resources/Private/Language/Backend.xlf:pdflip-embedded.description
+      tt_content_defValues.CType = pdflip-embedded
+    }
+  }
+  show := addToList(pdflip-gallery,pdflip-embedded)
+}

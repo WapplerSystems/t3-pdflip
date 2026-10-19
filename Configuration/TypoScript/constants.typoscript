@@ -1,0 +1,15 @@
+# Static template for TYPO3 v12 (no site sets): defaults of Configuration/Sets/Pdflip/settings.definitions.yaml
+pdflip {
+  pageMode = auto
+  flipStyle = soft
+  direction = ltr
+  controls = first,prev,pageNumber,next,last,thumbnails,outline,search,zoomIn,zoomOut,autoplay,pageMode,sound,share,download,fullscreen
+  controlsPosition = bottom
+  sound = 0
+  wheel = zoom
+  theme = light
+  background = 
+  galleryTitle = below
+  galleryCovers = server
+  galleryThumbnailWidth = 300
+}

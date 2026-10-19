@@ -5,7 +5,28 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 defined('TYPO3') || die();
 
-ExtensionManagementUtility::addRecordType(
+// addRecordType() exists since TYPO3 v13; v12 gets the CType select item and the type by hand
+$addRecordType = static function (array $item, string $showitem, array $typeConfiguration = []): void {
+    if (method_exists(ExtensionManagementUtility::class, 'addRecordType')) {
+        ExtensionManagementUtility::addRecordType($item, $showitem, $typeConfiguration);
+        return;
+    }
+    ExtensionManagementUtility::addTcaSelectItem('tt_content', 'CType', [
+        'label' => $item['label'],
+        'description' => $item['description'] ?? '',
+        'value' => $item['value'],
+        'icon' => $item['icon'] ?? '',
+        'group' => $item['group'] ?? 'default',
+    ]);
+    $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'][$item['value']] = $item['icon'] ?? '';
+    $GLOBALS['TCA']['tt_content']['types'][$item['value']] = array_replace(
+        $typeConfiguration,
+        ['showitem' => '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,' . $showitem
+            . ',--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,--palette--;;hidden,--palette--;;access']
+    );
+};
+
+$addRecordType(
     [
         'label' => 'LLL:EXT:ws_pdflip/Resources/Private/Language/Backend.xlf:pdflip-gallery',
         'description' => 'LLL:EXT:ws_pdflip/Resources/Private/Language/Backend.xlf:pdflip-gallery.description',
@@ -34,7 +55,7 @@ ExtensionManagementUtility::addRecordType(
 
 /*  Embedded */
 
-ExtensionManagementUtility::addRecordType(
+$addRecordType(
     [
         'label' => 'LLL:EXT:ws_pdflip/Resources/Private/Language/Backend.xlf:pdflip-embedded',
         'description' => 'LLL:EXT:ws_pdflip/Resources/Private/Language/Backend.xlf:pdflip-embedded.description',

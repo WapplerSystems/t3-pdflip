@@ -17,7 +17,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\FolderUtilityRenderer;
 use TYPO3\CMS\Backend\View\RecordSearchBoxComponent;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Imaging\IconSize;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -101,6 +101,8 @@ class PdflipLinkHandler extends AbstractResourceLinkHandler
     {
 
         $contentHtml = '';
+        // file list API of TYPO3 v12: sorting via query parameters, no sorting buttons, folder utility without request
+        $isV12 = (new Typo3Version())->getMajorVersion() < 13;
         if ($this->selectedFolder !== null) {
 
             // store the selected folder
@@ -113,8 +115,8 @@ class PdflipLinkHandler extends AbstractResourceLinkHandler
             $this->filelist->start(
                 $this->selectedFolder,
                 MathUtility::forceIntegerInRange($this->currentPage, 1, 100000),
-                $this->sortField,
-                $this->sortDirection,
+                $isV12 ? ($request->getQueryParams()['sort'] ?? '') : $this->sortField,
+                $isV12 ? ($request->getQueryParams()['reverse'] ?? '') === '1' : $this->sortDirection,
                 Mode::BROWSE
             );
             $this->filelist->setResourceDisplayMatcher($this->resourceDisplayMatcher);
@@ -145,7 +147,9 @@ class PdflipLinkHandler extends AbstractResourceLinkHandler
             $markup[] = '<div class="row justify-content-between mb-2">';
             $markup[] = '    <div class="col-auto"></div>';
             $markup[] = '    <div class="col-auto">';
-            $markup[] = '        ' . $this->getSortingModeButtons($request, $this->filelist->mode);
+            if (!$isV12) {
+                $markup[] = '        ' . $this->getSortingModeButtons($request, $this->filelist->mode);
+            }
             $markup[] = '        ' . $this->getViewModeButton($request);
             $markup[] = '    </div>';
             $markup[] = '</div>';
@@ -156,7 +160,9 @@ class PdflipLinkHandler extends AbstractResourceLinkHandler
             // Render the file upload and folder creation form
             $folderUtilityRenderer = GeneralUtility::makeInstance(FolderUtilityRenderer::class, $this);
             //$markup[] = $folderUtilityRenderer->uploadForm($request, $this->selectedFolder);
-            $markup[] = $folderUtilityRenderer->createFolder($request, $this->selectedFolder);
+            $markup[] = $isV12
+                ? $folderUtilityRenderer->createFolder($this->selectedFolder)
+                : $folderUtilityRenderer->createFolder($request, $this->selectedFolder);
 
             $contentHtml = implode(PHP_EOL, $markup);
         }

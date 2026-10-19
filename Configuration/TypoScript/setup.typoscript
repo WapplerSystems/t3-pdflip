@@ -1,0 +1,2 @@
+# Static template for TYPO3 v12 (no site sets) - same setup as the site set
+@import 'EXT:ws_pdflip/Configuration/Sets/Pdflip/setup.typoscript'
