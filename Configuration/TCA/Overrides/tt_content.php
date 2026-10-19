@@ -19,6 +19,18 @@ $addRecordType = static function (array $item, string $showitem, array $typeConf
         'group' => $item['group'] ?? 'default',
     ]);
     $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'][$item['value']] = $item['icon'] ?? '';
+    // v12 has no "media" and "appearance" keys in core's locallang_tabs.xlf
+    $showitem = str_replace(
+        [
+            'LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:media',
+            'LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance',
+        ],
+        [
+            'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.media',
+            'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.appearance',
+        ],
+        $showitem
+    );
     $GLOBALS['TCA']['tt_content']['types'][$item['value']] = array_replace(
         $typeConfiguration,
         ['showitem' => '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,' . $showitem
